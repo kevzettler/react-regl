@@ -39,6 +39,8 @@ class Nothing extends Draw{
   
 }
 
+
+
 class TriangleWrapper extends Draw{
   renderTriangles(){
     return this.props.triangles.map((triangleData, index) => {
@@ -57,6 +59,8 @@ class TriangleWrapper extends Draw{
     );
   }
 }
+
+
 
 class Root extends Component {
   constructor(props, context){
