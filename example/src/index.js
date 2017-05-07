@@ -2,8 +2,8 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 
-import Regl from '../../dist/bundle.js';
-import { Draw }  from '../../dist/bundle.js';
+import Regl from '../../src/Regl.js';
+import Draw  from '../../src/Draw.js';
 
 class Triangle extends Draw {
   drawCommand(regl){
