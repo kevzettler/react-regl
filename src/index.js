@@ -1,5 +1,5 @@
-var Regl = require('./Regl.js');
-var Draw = require('./Draw.js');
+import Regl from './Regl.js';
+import Draw from './Draw.js';
 
-exports.Draw = Draw;
-exports.default = Regl;
+export { Draw };
+export default Regl;

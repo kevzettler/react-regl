@@ -1,6 +1,6 @@
 {
   "name": "react-regl",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A React \"Stack\" custom renderer for regl webGL",
   "main": "dist/bundle.js",
   "directories": {
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "./node_modules/.bin/budo ./example/src/index.js --live --open -- -t [ babelify --presets [ es2015 react stage-0 ] ]",
-    "build": "./node_modules/.bin/browserify ./src/index.js -o ./dist/bundle.js -t [ babelify --presets [ es2015 react stage-0 ] ]"
+    "build": "./node_modules/.bin/browserify ./src/index.js --standalone react-regl -o ./dist/bundle.js -t [ babelify --presets [ es2015 react stage-0 ] ]"
   },
   "repository": {
     "type": "git",

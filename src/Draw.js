@@ -1,4 +1,3 @@
-//import CPrimitive from './CPrimitive';
 import Node from 'display-tree';
 import ReactUpdates from 'react-dom/lib/ReactUpdates';
 import ContainerMixin from './ContainerMixin';
