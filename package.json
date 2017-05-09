@@ -1,6 +1,6 @@
 {
   "name": "react-regl",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "A React \"Stack\" custom renderer for regl webGL",
   "main": "dist/index.js",
   "directories": {
