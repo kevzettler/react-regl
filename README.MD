@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/react-regl.svg)](https://badge.fury.io/js/react-regl)
 [![Dependency Status](https://david-dm.org/kevzettler/react-regl.svg)](https://david-dm.org/kevzettler/react-regl)
+[![Build Status](https://travis-ci.org/kevzettler/react-regl.svg?branch=master)](https://travis-ci.org/kevzettler/react-regl)
 
 ## Install
 
