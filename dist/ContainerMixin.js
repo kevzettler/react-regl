@@ -57,3 +57,4 @@ var ContainerMixin = {
 };
 
 exports.default = Object.assign(_ReactMultiChild2.default.Mixin, ContainerMixin);
+//# sourceMappingURL=ContainerMixin.js.map

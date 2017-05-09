@@ -185,3 +185,4 @@ var Regl = function (_Component) {
 
 Object.assign(Regl.prototype, _ContainerMixin2.default);
 exports.default = Regl;
+//# sourceMappingURL=Regl.js.map

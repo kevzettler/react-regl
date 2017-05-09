@@ -157,3 +157,4 @@ exports.default = ReglComponent;
 
 Object.assign(ReglComponent.prototype, _ContainerMixin2.default);
 ReglComponent.displayName = "ReglComponent";
+//# sourceMappingURL=Draw.js.map
