@@ -1,3 +1,5 @@
+import batchChildren from "./batchChildren.js";
+
 const topDownDrawScopes = (node) => {
   if(!node){ return () => {};}
 
