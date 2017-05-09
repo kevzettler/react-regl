@@ -49,9 +49,9 @@ var ContainerMixin = {
     var i = 0;
     for (var key in this._renderedChildren) {
       if (this._renderedChildren.hasOwnProperty(key)) {
+        var child = this._renderedChildren[key];
+        child._mountImage = mountedImages[i];
         if (_typeof(mountedImages[i]) === 'object') {
-          var child = this._renderedChildren[key];
-          child._mountImage = mountedImages[i];
           this.node.addOne(mountedImages[i]);
         }
         i++;
