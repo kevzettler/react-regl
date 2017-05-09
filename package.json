@@ -34,12 +34,10 @@
     "display-tree": "^1.1.0",
     "regl": "^1.3.0"
   },
-
-  "peerDependencies":{
+  "peerDependencies": {
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   },
-  
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-cli": "^6.24.1",
@@ -48,6 +46,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "babel-tape-runner": "^2.0.1",
     "babelify": "^7.3.0",
     "browserify-global-shim": "^1.0.3",
     "budo": "^10.0.3",
@@ -55,6 +54,7 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "tape": "^4.6.3"
   }
 }
