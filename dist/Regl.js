@@ -34,6 +34,14 @@ var _displayTree = require('display-tree');
 
 var _displayTree2 = _interopRequireDefault(_displayTree);
 
+var _batchChildren = require('./util/batchChildren');
+
+var _batchChildren2 = _interopRequireDefault(_batchChildren);
+
+var _topDownDrawScopes = require('./util/topDownDrawScopes');
+
+var _topDownDrawScopes2 = _interopRequireDefault(_topDownDrawScopes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -41,78 +49,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var batchChildren = function batchChildren(children) {
-  if (!children) {
-    return [];
-  }
-
-  if (children.length === 1) {
-    return children;
-  }
-
-  return children.reduce(function (accum, child, idx, orgArray) {
-    if (child.children) {
-      accum['scope-' + idx] = child;
-    }
-
-    if (!child.data.drawCommand) {
-      accum['scope-nodraw-' + idx] = child;
-    }
-
-    if (!child.children && child.data.drawCommand) {
-      var key = '' + (child.data.drawCommand && child.data.drawCommand.toString());
-      if (!accum[key]) {
-        var data = new Array();
-        data.drawCommand = child.data.drawCommand;
-        accum[key] = {
-          data: data
-        };
-      }
-
-      delete child.data.drawCommand;
-      accum[key].data.push(child.data);
-    }
-
-    return idx === orgArray.length - 1 && Object.values(accum) || accum;
-  }, {});
-};
-
-var topDownDrawScopes = function topDownDrawScopes(node) {
-  if (!node) {
-    return function () {};
-  }
-
-  if (!node.children && node.data.drawCommand) {
-    return function () {
-      node.data.drawCommand(node.data);
-    };
-  }
-
-  if (node.children) {
-    var children = batchChildren(node.children);
-
-    if (node.data.drawCommand) {
-      return function () {
-        node.data.drawCommand(node.data, function () {
-          children.forEach(function (child) {
-            topDownDrawScopes(child)();
-          });
-        });
-      };
-    }
-
-    if (!node.data.drawCommand) {
-      return function () {
-        children.forEach(function (child) {
-          topDownDrawScopes(child)();
-        });
-      };
-    }
-  }
-
-  return function () {};
-};
 
 var Regl = function (_Component) {
   _inherits(Regl, _Component);
@@ -137,7 +73,6 @@ var Regl = function (_Component) {
       this.node = (0, _displayTree2.default)();
       this.node.type = "Regl";
 
-      debugger;
       var canvasRef = this.props.canvas || this.refs.canvas;
 
       var regl = (0, _regl2.default)(canvasRef);
@@ -153,7 +88,7 @@ var Regl = function (_Component) {
 
       _ReactUpdates2.default.ReactReconcileTransaction.release(transaction);
 
-      this.drawScope = topDownDrawScopes(this.node);
+      this.drawScope = (0, _topDownDrawScopes2.default)(this.node);
       this.drawScope();
     }
   }, {
