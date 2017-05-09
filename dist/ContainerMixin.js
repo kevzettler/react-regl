@@ -52,7 +52,7 @@ var ContainerMixin = {
         if (_typeof(mountedImages[i]) === 'object') {
           var child = this._renderedChildren[key];
           child._mountImage = mountedImages[i];
-          this.node.add(mountedImages);
+          this.node.addOne(mountedImages[i]);
         }
         i++;
       }
