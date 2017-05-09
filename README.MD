@@ -18,13 +18,12 @@ Define a `react-regl` component `Triangle.js`:
 
 ### Standalone ReglComponents
 ```javascript
-import { Draw } from 'react-regl';
+import { Component } from 'react-regl';
 
-// Draw is an enhanced react component
-// Draw components support a `drawCommand` Method which return a regl draw command
+// ReglComponents components support a `drawCommand` Method which return a regl draw command
 
 
-class Triangle extends Draw {
+class Triangle extends Component {
   drawCommand(regl){
     return regl({
       frag: `
