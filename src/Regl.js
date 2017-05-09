@@ -23,6 +23,7 @@ class Regl extends Component {
       height: props.height || window.innerHeight
     };
   }
+
   
   componentDidMount() {
     this._debugID = this._reactInternalInstance._debugID;

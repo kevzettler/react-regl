@@ -29,6 +29,12 @@ var ContainerMixin = {
     child._mountImage = childNode;
     injectAfter(this.node, afterNode, childNode);
   },
+  getNativeNode: function getNativeNode() {
+    return this.node;
+  },
+  getPublicInstance: function getPublicInstance() {
+    return this.node;
+  },
   removeChild: function removeChild(child) {
     var childNode = child._mountImage;
     child._mountImage = null;
