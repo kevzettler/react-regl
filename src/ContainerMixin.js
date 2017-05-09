@@ -48,9 +48,11 @@ const ContainerMixin = {
     let i = 0;
     for (let key in this._renderedChildren) {
       if (this._renderedChildren.hasOwnProperty(key)) {
-        const child = this._renderedChildren[key];
-        child._mountImage = mountedImages[i];
-        this.node.add(mountedImages);
+        if(typeof mountedImages[i] === 'object'){
+          const child = this._renderedChildren[key];
+          child._mountImage = mountedImages[i];
+          this.node.add(mountedImages);
+        }
         i++;
       }
     }

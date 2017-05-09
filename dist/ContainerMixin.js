@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _ReactMultiChild = require('react-dom/lib/ReactMultiChild');
 
 var _ReactMultiChild2 = _interopRequireDefault(_ReactMultiChild);
@@ -47,9 +49,11 @@ var ContainerMixin = {
     var i = 0;
     for (var key in this._renderedChildren) {
       if (this._renderedChildren.hasOwnProperty(key)) {
-        var child = this._renderedChildren[key];
-        child._mountImage = mountedImages[i];
-        this.node.add(mountedImages);
+        if (_typeof(mountedImages[i]) === 'object') {
+          var child = this._renderedChildren[key];
+          child._mountImage = mountedImages[i];
+          this.node.add(mountedImages);
+        }
         i++;
       }
     }
