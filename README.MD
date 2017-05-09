@@ -74,7 +74,7 @@ This repo, `react-regl` brings a JSX interface to `regl`, enabling easy integrat
 ## Regl vs Other WebGL frameworks
 Regl follows the unix philosophy of "small sharp tools" or "do one thing and do it well". Regl has full test coverage and aims for stable non-breaking updates. Other popular WebGL frameworks encompass much more responsiblity, usually including heavy abstractions for: scene graphs, animation systems, input systems, and cross device compatibility. The large amount of responsiblity in these other libraries leads to unstable, breaking releases, and lacking documentation and support.
 
-## Working towards higher level abastractions
+## Working towards higher level abstractions
 The goal of this repo is to provide a solid foundation for building a higher level 3d applications. 
 
 # Caveats
