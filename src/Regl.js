@@ -97,7 +97,6 @@ class Regl extends Component {
     this.node = Node();
     this.node.type = "Regl";
 
-    debugger;
     const canvasRef = this.props.canvas || this.refs.canvas;
 
     const regl = ReglInit(canvasRef);
