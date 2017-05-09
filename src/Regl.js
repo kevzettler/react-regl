@@ -27,6 +27,10 @@ class Regl extends Component {
   componentDidMount() {
     this._debugID = this._reactInternalInstance._debugID;
 
+    this._hostContainerInfo = {
+      _idCounter: 0
+    };
+
     this.node = Node();
     this.node.type = "Regl";
 

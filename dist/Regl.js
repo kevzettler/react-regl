@@ -70,6 +70,10 @@ var Regl = function (_Component) {
     value: function componentDidMount() {
       this._debugID = this._reactInternalInstance._debugID;
 
+      this._hostContainerInfo = {
+        _idCounter: 0
+      };
+
       this.node = (0, _displayTree2.default)();
       this.node.type = "Regl";
 
