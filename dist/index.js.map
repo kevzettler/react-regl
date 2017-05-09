@@ -1,1 +1,0 @@
-{"version":3,"sources":["../src/index.js"],"names":["Draw"],"mappings":";;;;;;;AAAA;;;;AACA;;;;;;QAESA,I","file":"index.js","sourcesContent":["import Regl from './Regl.js';\nimport Draw from './Draw.js';\n\nexport { Draw };\nexport default Regl;\n"]}
