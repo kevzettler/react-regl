@@ -82,15 +82,22 @@ const topDownDrawScopes = (node) => {
 
 
 class Regl extends Component {
+  constructor(props, context){
+    super(props, context);
+    
+    this.state = {
+      width: props.width || window.innerWidth,
+      height: props.height || window.innerHeight
+    };
+  }
+  
   componentDidMount() {
     this._debugID = this._reactInternalInstance._debugID;
-    
-    const width  = this.props.width || window.innerWidth;
-    const height = this.props.height || window.innerHeight;
-    
+
     this.node = Node();
     this.node.type = "Regl";
 
+    debugger;
     const canvasRef = this.props.canvas || this.refs.canvas;
 
     const regl = ReglInit(canvasRef);
@@ -140,7 +147,7 @@ class Regl extends Component {
       return null;
     }
     
-    const { width, height } = this.props;
+    const { width, height } = this.state;
     return (
       <canvas ref="canvas" width={width} height={height} />
     )

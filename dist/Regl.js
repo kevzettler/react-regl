@@ -117,10 +117,16 @@ var topDownDrawScopes = function topDownDrawScopes(node) {
 var Regl = function (_Component) {
   _inherits(Regl, _Component);
 
-  function Regl() {
+  function Regl(props, context) {
     _classCallCheck(this, Regl);
 
-    return _possibleConstructorReturn(this, (Regl.__proto__ || Object.getPrototypeOf(Regl)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Regl.__proto__ || Object.getPrototypeOf(Regl)).call(this, props, context));
+
+    _this.state = {
+      width: props.width || window.innerWidth,
+      height: props.height || window.innerHeight
+    };
+    return _this;
   }
 
   _createClass(Regl, [{
@@ -128,12 +134,10 @@ var Regl = function (_Component) {
     value: function componentDidMount() {
       this._debugID = this._reactInternalInstance._debugID;
 
-      var width = this.props.width || window.innerWidth;
-      var height = this.props.height || window.innerHeight;
-
       this.node = (0, _displayTree2.default)();
       this.node.type = "Regl";
 
+      debugger;
       var canvasRef = this.props.canvas || this.refs.canvas;
 
       var regl = (0, _regl2.default)(canvasRef);
@@ -172,9 +176,9 @@ var Regl = function (_Component) {
         return null;
       }
 
-      var _props = this.props,
-          width = _props.width,
-          height = _props.height;
+      var _state = this.state,
+          width = _state.width,
+          height = _state.height;
 
       return _react2.default.createElement('canvas', { ref: 'canvas', width: width, height: height });
     }
@@ -185,4 +189,3 @@ var Regl = function (_Component) {
 
 Object.assign(Regl.prototype, _ContainerMixin2.default);
 exports.default = Regl;
-//# sourceMappingURL=Regl.js.map

@@ -17,4 +17,3 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.Draw = _Draw2.default;
 exports.default = _Regl2.default;
-//# sourceMappingURL=index.js.map
