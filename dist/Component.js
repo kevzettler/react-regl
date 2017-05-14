@@ -22,6 +22,10 @@ var _ReactInstanceMap = require('react-dom/lib/ReactInstanceMap');
 
 var _ReactInstanceMap2 = _interopRequireDefault(_ReactInstanceMap);
 
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -152,8 +156,15 @@ var ReglComponent = function () {
   return ReglComponent;
 }();
 
-exports.default = ReglComponent;
+ReglComponent.displayName = "ReglComponent";
+ReglComponent.contextTypes = {
+  regl: _propTypes2.default.func
+};
+ReglComponent.childContextTypes = {
+  regl: _propTypes2.default.func
+};
 
 
 Object.assign(ReglComponent.prototype, _ContainerMixin2.default);
-ReglComponent.displayName = "ReglComponent";
+
+exports.default = ReglComponent;

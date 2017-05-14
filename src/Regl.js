@@ -12,7 +12,7 @@ import Node from 'display-tree';
 import batchChildren from './util/batchChildren';
 import topDownDrawScopes from './util/topDownDrawScopes';
 
-
+import PropTypes from 'prop-types';
 
 class Regl extends Component {
   constructor(props, context){
@@ -92,4 +92,9 @@ class Regl extends Component {
 }
 
 Object.assign(Regl.prototype, ContainerMixin);
+
+Regl.childContextTypes = {
+  regl: PropTypes.func
+};
+
 export default Regl;

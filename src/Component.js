@@ -2,8 +2,9 @@ import Node from 'display-tree';
 import ReactUpdates from 'react-dom/lib/ReactUpdates';
 import ContainerMixin from './ContainerMixin';
 import ReactInstanceMap from 'react-dom/lib/ReactInstanceMap';
+import PropTypes from 'prop-types';
 
-export default class ReglComponent {
+class ReglComponent {
   constructor(element){
     this.node = null;
     this.subscriptions = null;
@@ -125,8 +126,20 @@ export default class ReglComponent {
     }
 
     return this.node;
-  }  
+  }
+
+  static displayName = "ReglComponent";
+
+  static contextTypes = {
+    regl: PropTypes.func
+  };
+
+  static childContextTypes = {
+    regl: PropTypes.func
+  };
 }
 
 Object.assign(ReglComponent.prototype, ContainerMixin);
-ReglComponent.displayName = "ReglComponent";
+
+
+export default ReglComponent;
