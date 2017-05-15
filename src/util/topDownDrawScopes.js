@@ -1,7 +1,7 @@
 import batchChildren from "./batchChildren.js";
 
 const topDownDrawScopes = (node) => {
-  if(!node){ return () => {};}
+  if(!node){ return () => { debugger; };}
 
   if(!node.children && node.data.drawCommand){
     return () => {
@@ -11,27 +11,28 @@ const topDownDrawScopes = (node) => {
 
   if(node.children){
     const children = batchChildren(node.children);
+    const childCommands = children.map(topDownDrawScopes);
 
     if(node.data.drawCommand){
       return () => {
         node.data.drawCommand(node.data, () => {
-          children.forEach((child) => {
-            topDownDrawScopes(child)();
-          })
+          childCommands.forEach((childCommand) => {
+            childCommand()
+          });
         });
       }
     }
 
     if(!node.data.drawCommand){
       return () => {
-        children.forEach((child) => {
-          topDownDrawScopes(child)();
-        });      
+        childCommands.forEach((childCommand) => {
+          childCommand()
+        });
       }
     }
   }
 
-  return () => {};
+  return () => { };
 };
 
 export default topDownDrawScopes;
