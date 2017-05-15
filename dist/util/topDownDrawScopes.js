@@ -12,7 +12,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var topDownDrawScopes = function topDownDrawScopes(node) {
   if (!node) {
-    return function () {};
+    return function () {
+      debugger;
+    };
   }
 
   if (!node.children && node.data.drawCommand) {
@@ -23,12 +25,13 @@ var topDownDrawScopes = function topDownDrawScopes(node) {
 
   if (node.children) {
     var children = (0, _batchChildren2.default)(node.children);
+    var childCommands = children.map(topDownDrawScopes);
 
     if (node.data.drawCommand) {
       return function () {
         node.data.drawCommand(node.data, function () {
-          children.forEach(function (child) {
-            topDownDrawScopes(child)();
+          childCommands.forEach(function (childCommand) {
+            childCommand();
           });
         });
       };
@@ -36,8 +39,8 @@ var topDownDrawScopes = function topDownDrawScopes(node) {
 
     if (!node.data.drawCommand) {
       return function () {
-        children.forEach(function (child) {
-          topDownDrawScopes(child)();
+        childCommands.forEach(function (childCommand) {
+          childCommand();
         });
       };
     }
