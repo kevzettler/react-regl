@@ -72,7 +72,7 @@ class Triangle extends Component {
 ```
 
 ### Motivation and Goals
-The goal of this repo is to provide a solid foundation for building a higher level 3d applications.
+The goal of this repo is to provide a solid foundation for building higher level 3d applications.
 
 This repo, `react-regl` brings a JSX interface to `regl`, enabling easy integration of regl UI into existing `react` projects. 
 
