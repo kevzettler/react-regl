@@ -36,11 +36,6 @@ class Triangle extends Draw {
   }
 }
 
-class Nothing extends Draw{
-  
-}
-
-
 
 class TriangleWrapper extends Draw{
   renderTriangles(){
