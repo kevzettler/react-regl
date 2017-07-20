@@ -5,18 +5,20 @@ import { render } from 'react-dom'
 import Regl from '../../src/Regl';
 import Draw  from '../../src/Component';
 
+
+      
+const triVert = `
+   precision mediump float;
+   attribute vec2 positions;
+   void main () {
+     gl_Position = vec4(positions, 0, 1);
+   }`;
+
 const triFrag =  `
    precision mediump float;
    uniform vec4 color;
    void main () {
      gl_FragColor = color;
-   }`;
-      
-const triVert = `
-   precision mediump float;
-   attribute vec2 position;
-   void main () {
-     gl_Position = vec4(position, 0, 1);
    }`;
 
 
@@ -86,14 +88,20 @@ class Root extends Component {
   render(){
     return (
       <div>
-        <h1>React Regl Example</h1>
+        <h1>...rre</h1>
         <Regl width={window.innerWidth}
               height={window.innerHeight}
               onFrame={this.onFrameHandler.bind(this)}>
-          <Draw vert={triVert} 
-                frag={triFrag} 
-                positions={[[-0.5, 0],[0, -0.5],[0.25, 1]]}
-                color={[1,1,0.5,1]}/>
+          <Draw vert={triVert}
+                frag={triFrag}
+                attributes={{
+                  positions:[[-0.5, 0],[0, -0.5],[0.25, 1]],
+                }}
+                uniforms={{
+                  color: [1,1,0.5,1] 
+                }}
+                count={3}
+          />
         </Regl >
       </div>
     );
