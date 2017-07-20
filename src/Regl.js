@@ -14,6 +14,49 @@ import topDownDrawScopes from './util/topDownDrawScopes';
 
 import PropTypes from 'prop-types';
 
+
+const bucketDrawCalls = (tree, regl) => {
+  const buckets = tree.flat().reduce((accum, node, index, orgArray) => {
+    if(!node.data.drawDefinition){
+      if(index === orgArray.length - 1){
+        return Object.values(accum);
+      }
+      return accum;
+    }
+    
+    key = `${node.data.drawDefinition && node.data.drawDefinition.toString()}`;
+
+    if(!regl.cache[key]){
+      regl.cache[key] = node.data.drawDefinition(regl);
+    }
+    
+    node.data.drawCommand = regl.cache[key];
+
+    if(!accum[key]){
+      accum[key] = [];
+    }
+
+    accum[key].push(Object.assign({},
+                                  {
+                                    modelMatrix: node.modelMatrix,
+                                    normalMatirx: node.normalMatrix
+                                  },
+                                  node.data));
+
+    if(index === orgArray.length - 1){
+      return Object.values(accum);
+    }
+
+    return accum;
+  }, {});
+
+  return () => {
+    buckets.forEach((bucket) => {
+      bucket[0].drawCommand(bucket);
+    });
+  };
+};
+
 class Regl extends Component {
   constructor(props, context){
     super(props, context);
@@ -38,7 +81,6 @@ class Regl extends Component {
     const canvasRef = this.props.canvas || this.refs.canvas;
 
     const regl = ReglInit(canvasRef);
-    regl.renderers = {};
     this.regl = regl;
 
     if(this.props.onFrame){
@@ -56,8 +98,10 @@ class Regl extends Component {
     
     ReactUpdates.ReactReconcileTransaction.release(transaction);
 
-    this.drawScope = topDownDrawScopes(this.node);
+    this.drawScope = bucketDrawCalls(this.node);
     this.drawScope();
+//    this.drawScope = topDownDrawScopes(this.node);
+//    this.drawScope();
   }
   
   componentDidUpdate(oldProps) {

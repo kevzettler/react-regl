@@ -5,37 +5,35 @@ import { render } from 'react-dom'
 import Regl from '../../src/Regl';
 import Draw  from '../../src/Component';
 
-
-class Triangle extends Draw {
-  drawCommand(regl){
-    return regl({
-      frag: `
+const triFrag =  `
    precision mediump float;
    uniform vec4 color;
    void main () {
      gl_FragColor = color;
-   }`,
+   }`;
       
-      vert: `
+const triVert = `
    precision mediump float;
    attribute vec2 position;
    void main () {
      gl_Position = vec4(position, 0, 1);
-   }`,
-      
-      attributes: {
-        position: regl.prop('position')
-      },
-      
-      uniforms: {
-        color: regl.prop('color')
-      },
-      
-      count: 3
-    });
-  }
-}
+   }`;
 
+
+/* 
+ * attributes: {
+ *   position: regl.prop('position')
+ * },
+ * 
+ * uniforms: {
+ *   color: regl.prop('color')
+ * },
+ * 
+ * count: 3
+   });
+   }
+   }
+ */
 
 class TriangleWrapper extends Draw{
   renderTriangles(){
@@ -72,6 +70,7 @@ class Root extends Component {
   }
   
   onFrameHandler(frameState){
+    return;
     const live = 0.5 * frameState.tick * 0.01;
     
     this.setState({
@@ -91,7 +90,10 @@ class Root extends Component {
         <Regl width={window.innerWidth}
               height={window.innerHeight}
               onFrame={this.onFrameHandler.bind(this)}>
-          <TriangleWrapper triangles={this.state.triangles} />
+          <Draw vert={triVert} 
+                frag={triFrag} 
+                positions={[[-0.5, 0],[0, -0.5],[0.25, 1]]}
+                color={[1,1,0.5,1]}/>
         </Regl >
       </div>
     );
