@@ -14,6 +14,55 @@ import topDownDrawScopes from './util/topDownDrawScopes';
 
 import PropTypes from 'prop-types';
 
+const getReglDefintionFroNode = (node, regl) =>{
+  
+  const reglDefinition = {}
+  const reglKeys = [
+    'vert', 'frag', 'attributes', 'uniforms', 'count', 'primitive',
+    'count', 'offset', 'instances', 'elements'
+  ];
+
+  const sceneNodeKeys = ['position', 'rotation', 'scale'];
+
+  reglKeys.forEach((reglKey) => {
+    if(node.data[reglKey]){
+      reglDefinition[reglKey] = node.data[reglKey];
+      delete node.data[reglKey];
+    }
+  });
+
+  Object.keys(reglDefinition).forEach((definitionKey) => {
+    if(['vert', 'frag', 'attributes', 'uniforms'].indexOf(definitionKey)){
+      return;
+    }
+
+    if(['string', 'number', 'boolean'].indexOf(typeof definitionKey)){
+      node.data[definitionKey] = reglDefinition[definitionKey];
+      reglDefinition[definitionKey] = regl.prop(definitionKey);
+      return;
+    }
+
+    node.data[definitionKey] = reglDefinition[definitionKey];
+    reglDefinition[definitionKey] = (context, props, batchId) => {
+      return props[definitionKey];
+    };
+    
+  });
+
+  Object.keys(reglDefinition.attributes).forEach((attributeKey) => {
+    node.data[attributeKey] = reglDefinition.attributes[attributeKey]
+    reglDefinition.attributes[attributeKey] = regl.prop(attributeKey);
+  });
+
+
+  Object.keys(reglDefinition.uniforms).forEach((uniformKey) => {
+    node.data[uniformKey] = reglDefinition.uniforms[uniformKey];
+    reglDefinition.uniforms[uniformKey] = regl.prop(uniformKey);
+  });
+
+  return reglDefinition;
+}
+
 const bucketDrawCalls = (tree, regl) => {
   const buckets = tree.flat().reduce((accum, node, index, orgArray) => {
     if(!node.data.vert && !node.data.frag){
@@ -24,40 +73,9 @@ const bucketDrawCalls = (tree, regl) => {
     }
     
     const shaderKey = `${node.data.vert && node.data.frag && node.data.vert + node.data.frag}`;
-
-    const reglDefinition = {}
-    const reglKeys = [
-      'vert', 'frag', 'attributes', 'uniforms', 'count', 'primitive',
-      'count', 'offset', 'instances', 'elements'
-    ];
-
-    const sceneNodeKeys = ['position', 'rotation', 'scale'];
-
-    reglKeys.forEach((reglKey) => {
-      if(node.data[reglKey]){
-        reglDefinition[reglKey] = node.data[reglKey];
-        delete node.data[reglKey];
-      }
-    });
-
-    Object.keys(reglDefinition.attributes).forEach((attributeKey) => {
-      node.data[attributeKey] = reglDefinition.attributes[attributeKey]
-      reglDefinition.attributes[attributeKey] = regl.prop(attributeKey);
-    });
-
-
-    Object.keys(reglDefinition.uniforms).forEach((uniformKey) => {
-      node.data[uniformKey] = reglDefinition.uniforms[uniformKey];
-      reglDefinition.uniforms[uniformKey] = regl.prop(uniformKey);
-    });
-
-    node.data.count = reglDefinition.count;
-    reglDefinition.count = regl.prop('count');
     
-    debugger;
-    
-    if(!regl.cache[shaderKey]){
-      regl.cache[shaderKey] = node.data.drawCommand = regl(reglDefinition);
+    if(!regl.cache[shaderKey]){      
+      regl.cache[shaderKey] = node.data.drawCommand = regl(getReglDefintionFroNode(node, regl));
     }
     
     node.data.drawCommand = regl.cache[shaderKey];

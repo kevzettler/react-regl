@@ -88,10 +88,9 @@ class Root extends Component {
   render(){
     return (
       <div>
-        <h1>...rre</h1>
+        <h1>...</h1>
         <Regl width={window.innerWidth}
-              height={window.innerHeight}
-              onFrame={this.onFrameHandler.bind(this)}>
+              height={window.innerHeight}>
           <Draw vert={triVert}
                 frag={triFrag}
                 attributes={{
@@ -102,7 +101,7 @@ class Root extends Component {
                 }}
                 count={3}
           />
-        </Regl >
+        </Regl>
       </div>
     );
   }
