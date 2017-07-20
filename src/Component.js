@@ -19,7 +19,6 @@ class ReglComponent {
   construct(element) {
     this._currentElement = element;
 
-    //Oh shit how to update?
     this.props = this._currentElement.props;
   }
 
