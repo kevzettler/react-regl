@@ -29,10 +29,10 @@ class Triangle extends Component {
       <Draw vert={triVert}
             frag={triFrag}
             attributes={{
-              positions: positions || [[-0.5, 0],[0, -0.5],[0.25, 1]],
+              positions: this.props.positions
             }}
             uniforms={{
-              color: color || [1,1,0.5,1] 
+              color: color this.props.color
             }}
             count={3}
       />
@@ -53,7 +53,7 @@ class Triangle extends Component {
               height={window.innerHeight}
               onFrame={this.onFrameHandler.bind(this)}>
               <Triangle color={[1,1,0.5,1]}
-                        position={[[-0.5, 0],[0, -0.5],[0.25, 1]]} />
+                        positions={[[-0.5, 0],[0, -0.5],[0.25, 1]]} />
         </Regl >
     </div>
 ```
