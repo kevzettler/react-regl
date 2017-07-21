@@ -76,9 +76,7 @@ class Root extends Component {
   }
   
   onFrameHandler(frameState){
-    return;
     const live = 0.5 * frameState.tick * 0.01;
-    
     this.setState({
       triangles: [
         {color:[1,1,0.5,1], positions:[[-0.5, 0],[0, -0.5],[live, 1]]},
@@ -94,7 +92,8 @@ class Root extends Component {
       <div> 
         <h1>...</h1>
         <Regl width={window.innerWidth}
-              height={window.innerHeight}>
+              height={window.innerHeight}
+              onFrame={this.onFrameHandler.bind(this)}>
           <TriangleWrapper triangles={this.state.triangles}/>
         </Regl>
       </div>
