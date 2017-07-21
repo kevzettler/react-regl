@@ -90,7 +90,7 @@ class Root extends Component {
   render(){
     return (
       <div> 
-        <h1>...</h1>
+        <h1>React Regl Example</h1>
         <Regl width={window.innerWidth}
               height={window.innerHeight}
               onFrame={this.onFrameHandler.bind(this)}>
