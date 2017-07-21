@@ -23,7 +23,7 @@ const triFrag =  `
 
 
 
-class Triangle extends Component {
+class Triangle extends Draw {
   render(){
     const {positions, color} = this.props;
 
@@ -69,8 +69,8 @@ class Root extends Component {
     this.state = {      
       triangles: [
         {color:[1,1,0.5,1], positions:[[-0.5, 0],[0, -0.5],[0.25, 1]]},
-        {color:[1,0.5,1,1], positions:[[-1, 0],[0, -1],[1, 1]]},
-        {color:[0.5,1,1,1], positions:[[-1, 1],[1, -1],[1, 0.5]]}
+//        {color:[1,0.5,1,1], positions:[[-1, 0],[0, -1],[1, 1]]},
+//        {color:[0.5,1,1,1], positions:[[-1, 1],[1, -1],[1, 0.5]]}
       ]
     };
   }
@@ -80,8 +80,8 @@ class Root extends Component {
     this.setState({
       triangles: [
         {color:[1,1,0.5,1], positions:[[-0.5, 0],[0, -0.5],[live, 1]]},
-        {color:[1,0.5,1,1], positions:[[-1, live],[0, -1],[1, 1]]},
-        {color:[0.5,1,1,1], positions:[[-1, 1],[1, -live],[1, 0.5]]}
+//        {color:[1,0.5,1,1], positions:[[-1, live],[0, -1],[1, 1]]},
+//        {color:[0.5,1,1,1], positions:[[-1, 1],[1, -live],[1, 0.5]]}
       ]
     });
     

@@ -7,7 +7,7 @@ import ReactInstanceMap from 'react-dom/lib/ReactInstanceMap';
 
 import ContainerMixin from './ContainerMixin';
 
-import Node from 'display-tree';
+import Node from 'scene-tree';
 
 import batchChildren from './util/batchChildren';
 import topDownDrawScopes from './util/topDownDrawScopes';
@@ -26,39 +26,34 @@ const getReglDefintionForNode = (node, regl) =>{
 
   const sceneNodeKeys = ['position', 'rotation', 'scale'];
 
-  reglKeys.forEach((reglKey) => {
-    if(node.data[reglKey]){
-      reglDefinition[reglKey] = node.data[reglKey];
-      delete node.data[reglKey];
-    }
-  });
-
-  Object.keys(reglDefinition).forEach((definitionKey) => {
-    if(['vert', 'frag', 'attributes', 'uniforms'].indexOf(definitionKey)){
+  Object.keys(node.data).forEach((definitionKey) => {
+    if(['vert', 'frag'].indexOf(definitionKey) !== -1){
+      reglDefinition[definitionKey] = node.data[definitionKey];
+      delete node.data[definitionKey];
       return;
     }
 
-    if(['string', 'number', 'boolean'].indexOf(typeof definitionKey)){
-      node.data[definitionKey] = reglDefinition[definitionKey];
+    if(sceneNodeKeys.indexOf(definitionKey) !== -1){
+      return;
+    }
+
+    if(['attributes', 'uniforms'].indexOf(definitionKey) !== -1){
+      reglDefinition[definitionKey] = {};
+      Object.keys(node.data[definitionKey]).forEach((reglProp) => {
+        node.data[reglProp] = node.data[definitionKey][reglProp];
+        reglDefinition[definitionKey][reglProp] = regl.prop(`${definitionKey}.${reglProp}`);
+      });
+      return;
+    }
+    
+    if(['string', 'number', 'boolean'].indexOf(typeof definitionKey) !== -1){
       reglDefinition[definitionKey] = regl.prop(definitionKey);
       return;
     }
 
-    node.data[definitionKey] = reglDefinition[definitionKey];
     reglDefinition[definitionKey] = (context, props, batchId) => {
       return props[definitionKey];
     };
-  });
-
-  Object.keys(reglDefinition.attributes).forEach((attributeKey) => {
-    node.data[attributeKey] = reglDefinition.attributes[attributeKey]
-    reglDefinition.attributes[attributeKey] = regl.prop(attributeKey);
-  });
-
-
-  Object.keys(reglDefinition.uniforms).forEach((uniformKey) => {
-    node.data[uniformKey] = reglDefinition.uniforms[uniformKey];
-    reglDefinition.uniforms[uniformKey] = regl.prop(uniformKey);
   });
 
   return reglDefinition;
@@ -77,8 +72,9 @@ const bucketDrawCalls = (tree, regl) => {
 
     //Mutates the node 1!!
     const drawDef = getReglDefintionForNode(node, regl);
-    
-    if(!regl.cache[shaderKey]){    
+
+
+    if(!regl.cache[shaderKey]){
       regl.cache[shaderKey] = node.data.drawCommand = regl(drawDef);
     }
     
@@ -88,10 +84,14 @@ const bucketDrawCalls = (tree, regl) => {
       accum[shaderKey] = [];
     }
 
-    accum[shaderKey].push(Object.assign({
+    node.data.positions = node.data.attributes.positions;
+
+    accum[shaderKey].push(Object.assign(node.data, {
       modelMatrix: node.modelMatrix,
-      normalMatirx: node.normalMatrix
-    }, node.data));
+      normalMatirx: node.normalMatrix,
+    }));
+
+    accum[shaderKey].push(node.data);
 
     if(index === orgArray.length - 1){
       return Object.values(accum);
@@ -101,6 +101,7 @@ const bucketDrawCalls = (tree, regl) => {
   }, {});
 
   return () => {
+    //console.log(tree.flat()[2].data.positions[2], buckets[0][0].attributes.positions[2], buckets[0][0].positions[2], buckets[0][0].superpos[2]);    
     buckets.forEach((bucket) => {
       bucket[0].drawCommand(bucket);
     });

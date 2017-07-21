@@ -1,4 +1,4 @@
-import Node from 'display-tree';
+import Node from 'scene-tree';
 import ReactUpdates from 'react-dom/lib/ReactUpdates';
 import ContainerMixin from './ContainerMixin';
 import ReactInstanceMap from 'react-dom/lib/ReactInstanceMap';
@@ -77,8 +77,9 @@ class ReglComponent {
   
   receiveComponent(nextComponent, transaction, context) {
     const nodeProps = {};
-    
+
     Object.assign(this.node.data, nodeProps, this._currentElement.props, nextComponent.props);
+    
     this._currentElement = nextComponent;
     this.props = nextComponent.props;
 
