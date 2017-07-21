@@ -14,12 +14,14 @@ import topDownDrawScopes from './util/topDownDrawScopes';
 
 import PropTypes from 'prop-types';
 
-const getReglDefintionFroNode = (node, regl) =>{
-  
+// Mutates the node!!!
+const getReglDefintionForNode = (node, regl) =>{
+
   const reglDefinition = {}
   const reglKeys = [
     'vert', 'frag', 'attributes', 'uniforms', 'count', 'primitive',
-    'count', 'offset', 'instances', 'elements'
+    'count', 'offset', 'instances', 'elements', 'profile', 'depth',
+    'blend', 'stencil', 'cull', 'polygonOffset', 'cull', 'scissor'
   ];
 
   const sceneNodeKeys = ['position', 'rotation', 'scale'];
@@ -46,7 +48,6 @@ const getReglDefintionFroNode = (node, regl) =>{
     reglDefinition[definitionKey] = (context, props, batchId) => {
       return props[definitionKey];
     };
-    
   });
 
   Object.keys(reglDefinition.attributes).forEach((attributeKey) => {
@@ -73,9 +74,12 @@ const bucketDrawCalls = (tree, regl) => {
     }
     
     const shaderKey = `${node.data.vert && node.data.frag && node.data.vert + node.data.frag}`;
+
+    //Mutates the node 1!!
+    const drawDef = getReglDefintionForNode(node, regl);
     
-    if(!regl.cache[shaderKey]){      
-      regl.cache[shaderKey] = node.data.drawCommand = regl(getReglDefintionFroNode(node, regl));
+    if(!regl.cache[shaderKey]){    
+      regl.cache[shaderKey] = node.data.drawCommand = regl(drawDef);
     }
     
     node.data.drawCommand = regl.cache[shaderKey];

@@ -22,27 +22,32 @@ const triFrag =  `
    }`;
 
 
-/* 
- * attributes: {
- *   position: regl.prop('position')
- * },
- * 
- * uniforms: {
- *   color: regl.prop('color')
- * },
- * 
- * count: 3
-   });
-   }
-   }
- */
+
+class Triangle extends Component {
+  render(){
+    const {positions, color} = this.props;
+
+    return (
+      <Draw vert={triVert}
+            frag={triFrag}
+            attributes={{
+              positions: positions || [[-0.5, 0],[0, -0.5],[0.25, 1]],
+            }}
+            uniforms={{
+              color: color || [1,1,0.5,1] 
+            }}
+            count={3}
+      />
+    );
+  }
+}
 
 class TriangleWrapper extends Draw{
   renderTriangles(){
     return this.props.triangles.map((triangleData, index) => {
       return <Triangle key={index}
                        color={triangleData.color}
-                       position={triangleData.position}/>;
+                       positions={triangleData.positions}/>;
     });
   }
   
@@ -50,7 +55,6 @@ class TriangleWrapper extends Draw{
     return (
       <Draw>
         {this.renderTriangles()}
-        <Nothing />
       </Draw>
     );
   }
@@ -64,9 +68,9 @@ class Root extends Component {
 
     this.state = {      
       triangles: [
-        {color:[1,1,0.5,1], position:[[-0.5, 0],[0, -0.5],[0.25, 1]]},
-        {color:[1,0.5,1,1], position:[[-1, 0],[0, -1],[1, 1]]},
-        {color:[0.5,1,1,1], position:[[-1, 1],[1, -1],[1, 0.5]]}
+        {color:[1,1,0.5,1], positions:[[-0.5, 0],[0, -0.5],[0.25, 1]]},
+        {color:[1,0.5,1,1], positions:[[-1, 0],[0, -1],[1, 1]]},
+        {color:[0.5,1,1,1], positions:[[-1, 1],[1, -1],[1, 0.5]]}
       ]
     };
   }
@@ -77,9 +81,9 @@ class Root extends Component {
     
     this.setState({
       triangles: [
-        {color:[1,1,0.5,1], position:[[-0.5, 0],[0, -0.5],[live, 1]]},
-        {color:[1,0.5,1,1], position:[[-1, live],[0, -1],[1, 1]]},
-        {color:[0.5,1,1,1], position:[[-1, 1],[1, -live],[1, 0.5]]}
+        {color:[1,1,0.5,1], positions:[[-0.5, 0],[0, -0.5],[live, 1]]},
+        {color:[1,0.5,1,1], positions:[[-1, live],[0, -1],[1, 1]]},
+        {color:[0.5,1,1,1], positions:[[-1, 1],[1, -live],[1, 0.5]]}
       ]
     });
     
@@ -87,20 +91,11 @@ class Root extends Component {
   
   render(){
     return (
-      <div>
+      <div> 
         <h1>...</h1>
         <Regl width={window.innerWidth}
               height={window.innerHeight}>
-          <Draw vert={triVert}
-                frag={triFrag}
-                attributes={{
-                  positions:[[-0.5, 0],[0, -0.5],[0.25, 1]],
-                }}
-                uniforms={{
-                  color: [1,1,0.5,1] 
-                }}
-                count={3}
-          />
+          <TriangleWrapper triangles={this.state.triangles}/>
         </Regl>
       </div>
     );
