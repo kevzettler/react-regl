@@ -1,4 +1,4 @@
-import Node from 'display-tree';
+import Node from 'scene-tree';
 import ReactUpdates from 'react-dom/lib/ReactUpdates';
 import ContainerMixin from './ContainerMixin';
 import ReactInstanceMap from 'react-dom/lib/ReactInstanceMap';
@@ -40,17 +40,6 @@ class ReglComponent {
 
   mountComponent(transaction, nativeParent, nativeContainerInfo, context) {    
     const nodeProps = {};
-    
-    if(this.drawCommand){
-      //Cache the regl renderer for this component on context
-      //TODO more efficent hash than BASE64?    
-      const rendererKey = btoa(this.drawCommand.toString());
-      if(!context.regl.renderers[rendererKey]){
-        context.regl.renderers[rendererKey] = this.drawCommand(context.regl);
-      }
-
-      nodeProps.drawCommand = context.regl.renderers[rendererKey];
-    }
 
     this.node = Node(Object.assign({}, nodeProps, this._currentElement.props));
     this.node.type = this.constructor.name;
@@ -83,24 +72,14 @@ class ReglComponent {
       );
     }
     
-    return this.node;    
+    return this.node;
   }
   
   receiveComponent(nextComponent, transaction, context) {
     const nodeProps = {};
-    
-    if(this.drawCommand){
-      //Cache the regl renderer for this component on context
-      //TODO more efficent hash than BASE64?    
-      const rendererKey = btoa(this.drawCommand.toString());
-      if(!context.regl.renderers[rendererKey]){
-        context.regl.renderers[rendererKey] = this.drawCommand(context.regl);
-      }
 
-      nodeProps.drawCommand = context.regl.renderers[rendererKey];
-    }    
-    
     Object.assign(this.node.data, nodeProps, this._currentElement.props, nextComponent.props);
+    
     this._currentElement = nextComponent;
     this.props = nextComponent.props;
 

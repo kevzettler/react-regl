@@ -7,12 +7,106 @@ import ReactInstanceMap from 'react-dom/lib/ReactInstanceMap';
 
 import ContainerMixin from './ContainerMixin';
 
-import Node from 'display-tree';
+import Node from 'scene-tree';
 
 import batchChildren from './util/batchChildren';
 import topDownDrawScopes from './util/topDownDrawScopes';
 
 import PropTypes from 'prop-types';
+
+// Mutates the node!!!
+const getReglDefintionForNode = (node, regl) =>{
+
+  const reglDefinition = {}
+  const reglKeys = [
+    'vert', 'frag', 'attributes', 'uniforms', 'count', 'primitive',
+    'count', 'offset', 'instances', 'elements', 'profile', 'depth',
+    'blend', 'stencil', 'cull', 'polygonOffset', 'cull', 'scissor'
+  ];
+
+  const sceneNodeKeys = ['position', 'rotation', 'scale'];
+
+  Object.keys(node.data).forEach((definitionKey) => {
+    if(['vert', 'frag'].indexOf(definitionKey) !== -1){
+      reglDefinition[definitionKey] = node.data[definitionKey];
+      delete node.data[definitionKey];
+      return;
+    }
+
+    if(sceneNodeKeys.indexOf(definitionKey) !== -1){
+      return;
+    }
+
+    if(['attributes', 'uniforms'].indexOf(definitionKey) !== -1){
+      reglDefinition[definitionKey] = {};
+      Object.keys(node.data[definitionKey]).forEach((reglProp) => {
+        node.data[reglProp] = node.data[definitionKey][reglProp];
+        reglDefinition[definitionKey][reglProp] = regl.prop(`${definitionKey}.${reglProp}`);
+      });
+      return;
+    }
+    
+    if(['string', 'number', 'boolean'].indexOf(typeof definitionKey) !== -1){
+      reglDefinition[definitionKey] = regl.prop(definitionKey);
+      return;
+    }
+
+    reglDefinition[definitionKey] = (context, props, batchId) => {
+      return props[definitionKey];
+    };
+  });
+
+  return reglDefinition;
+}
+
+const bucketDrawCalls = (tree, regl) => {
+  const buckets = tree.flat().reduce((accum, node, index, orgArray) => {
+    if(!node.data.vert && !node.data.frag){
+      if(index === orgArray.length - 1){
+        return Object.values(accum);
+      }
+      return accum;
+    }
+    
+    const shaderKey = `${node.data.vert && node.data.frag && node.data.vert + node.data.frag}`;
+
+    //Mutates the node 1!!
+    const drawDef = getReglDefintionForNode(node, regl);
+
+
+    if(!regl.cache[shaderKey]){
+      regl.cache[shaderKey] = node.data.drawCommand = regl(drawDef);
+    }
+    
+    node.data.drawCommand = regl.cache[shaderKey];
+
+    if(!accum[shaderKey]){
+      accum[shaderKey] = [];
+    }
+
+    node.data.positions = node.data.attributes.positions;
+
+    accum[shaderKey].push(Object.assign(node.data, {
+      modelMatrix: node.modelMatrix,
+      normalMatirx: node.normalMatrix,
+    }));
+
+    accum[shaderKey].push(node.data);
+
+    if(index === orgArray.length - 1){
+      return Object.values(accum);
+    }
+
+    return accum;
+  }, {});
+
+  return () => {
+    //console.log(tree.flat()[2].data.positions[2], buckets[0][0].attributes.positions[2], buckets[0][0].positions[2], buckets[0][0].superpos[2]);    
+    buckets.forEach((bucket) => {
+      bucket[0].drawCommand(bucket);
+    });
+  };
+};
 
 class Regl extends Component {
   constructor(props, context){
@@ -23,7 +117,6 @@ class Regl extends Component {
       height: props.height || window.innerHeight
     };
   }
-
   
   componentDidMount() {
     this._debugID = this._reactInternalInstance._debugID;
@@ -38,7 +131,7 @@ class Regl extends Component {
     const canvasRef = this.props.canvas || this.refs.canvas;
 
     const regl = ReglInit(canvasRef);
-    regl.renderers = {};
+    regl.cache = {};
     this.regl = regl;
 
     if(this.props.onFrame){
@@ -56,8 +149,10 @@ class Regl extends Component {
     
     ReactUpdates.ReactReconcileTransaction.release(transaction);
 
-    this.drawScope = topDownDrawScopes(this.node);
+    this.drawScope = bucketDrawCalls(this.node, this.regl);
     this.drawScope();
+//    this.drawScope = topDownDrawScopes(this.node);
+//    this.drawScope();
   }
   
   componentDidUpdate(oldProps) {
