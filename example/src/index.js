@@ -23,7 +23,7 @@ const triFrag =  `
 
 
 
-class Triangle extends Draw {
+class Triangle extends Component {
   render(){
     const {positions, color} = this.props;
 
@@ -42,7 +42,7 @@ class Triangle extends Draw {
   }
 }
 
-class TriangleWrapper extends Draw{
+class TriangleWrapper extends Component{
   renderTriangles(){
     return this.props.triangles.map((triangleData, index) => {
       return <Triangle key={index}

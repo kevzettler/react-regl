@@ -18,38 +18,25 @@ Define a `react-regl` component `Triangle.js`:
 
 ### Standalone ReglComponents
 ```javascript
-import { Component } from 'react-regl';
-
-// ReglComponents components support a `drawCommand` Method which return a regl draw command
-
+import React, { Component } from 'react';
+import { Draw } from 'react-regl';
 
 class Triangle extends Component {
-  drawCommand(regl){
-    return regl({
-      frag: `
-   precision mediump float;
-   uniform vec4 color;
-   void main () {
-     gl_FragColor = color;
-   }`,
-      
-      vert: `
-   precision mediump float;
-   attribute vec2 position;
-   void main () {
-     gl_Position = vec4(position, 0, 1);
-   }`,
-      
-      attributes: {
-        position: regl.prop('position')
-      },
-      
-      uniforms: {
-        color: regl.prop('color')
-      },
-      
-      count: 3
-    });
+  render(){
+    const {positions, color} = this.props;
+
+    return (
+      <Draw vert={triVert}
+            frag={triFrag}
+            attributes={{
+              positions: positions || [[-0.5, 0],[0, -0.5],[0.25, 1]],
+            }}
+            uniforms={{
+              color: color || [1,1,0.5,1] 
+            }}
+            count={3}
+      />
+    );
   }
 }
 ```
@@ -72,8 +59,6 @@ class Triangle extends Component {
 ```
 
 ### Motivation and Goals
-The goal of this repo is to provide a solid foundation for building higher level 3d applications.
-
 This repo, `react-regl` brings a JSX interface to `regl`, enabling easy integration of regl UI into existing `react` projects. 
 
 [regl](http://regl.party/) is a stateless functional abstraction for WebGl. Regl makes working with WebGL a more productive experience. Its stateless nature makes it easier to reason about WebGL programs. Regl's design was influenced by React. It follows React's unidirectional data flow to stateless component model.
