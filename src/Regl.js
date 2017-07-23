@@ -152,6 +152,7 @@ class Regl extends Component {
     
     ReactUpdates.ReactReconcileTransaction.release(transaction);
 
+    this.node.tick();
     this.drawScope = bucketDrawCalls(this.node, this.regl);
 
     if(this.props.clear){
@@ -178,6 +179,7 @@ class Regl extends Component {
       this.regl.clear(this.props.clear);
     }
 
+    this.node.tick();
     this.drawScope();
   }
   

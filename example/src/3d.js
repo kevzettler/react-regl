@@ -39,6 +39,7 @@ class Plane extends Component {
               projection: this.props.projection,
               color: this.props.color 
             }}
+            rotation={this.props.rotation}
             elements={geometry.cells}/>
     );    
   }
@@ -68,6 +69,26 @@ class Sphere extends Component {
 }
 
 class Root extends Component {
+  constructor(props,context){
+    super(props,context);
+
+    this.state = {};
+    this.state.view = mat4.lookAt([],
+                                  [0, 45, -100],
+                                  [0, 0, 0],
+                                  [0, 1, 0]);
+  }
+  
+  onFrameTick({tick}){
+    const t = 0.01 * tick
+    this.setState({
+      view: mat4.lookAt([],
+                        [100 * Math.cos(t), 45, -100 * Math.sin(t)],
+                        [0, 0, 0],
+                        [0, 1, 0])
+    });
+  }
+  
   render(){
     const projection = mat4.perspective([],
                                         Math.PI / 4,
@@ -75,31 +96,29 @@ class Root extends Component {
                                         0.1,
                                         1000.0);
 
-    const view = mat4.lookAt([],
-                             [0, 45, -100],
-                             [0, 35, 0],
-                             [0, 1, 0]);
-
-    return (
-      <div>
-        <Regl width={window.innerWidth}
-              height={window.innerHeight}
-              clear={{
-                color: [0.40625, 0.94921, 0.996, 1]
-              }}>
-          <Sphere projection={projection}
-                  view={view}
-                  color={[0.5, 0.25, 0, 1]}
-                  radius={10}
-                  segments={16}/>
-          <Plane projection={projection}
-                 view={view}
-                 color={[0, 0.75, 0.3, 1]}
-                 width={100}
-                 height={100}/>
-        </Regl>
-      </div>
-    )
+      return (
+        <div>
+          <h1>React Regl 3d!</h1>
+          <Regl width={window.innerWidth}
+                height={window.innerHeight}
+                onFrame={this.onFrameTick.bind(this)}
+                clear={{
+                  color: [0.40625, 0.94921, 0.996, 1]
+                }}>
+            <Sphere projection={projection}
+                    view={this.state.view}
+                    color={[0.5, 0.25, 0, 1]}
+                    radius={10}
+                    segments={16}/>
+            <Plane projection={projection}
+                   view={this.state.view}
+                   color={[0, 0.75, 0.3, 1]}
+                   rotation={[Math.sqrt(0.5) ,0, 0, Math.sqrt(0.5)]}
+                   width={50}
+                   height={50}/>
+          </Regl>
+        </div>
+      )
   }
 }
 
