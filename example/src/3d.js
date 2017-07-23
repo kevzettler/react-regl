@@ -47,8 +47,8 @@ class Plane extends Component {
 class Sphere extends Component {
   render(){
     const radius = 1;
-    const geometry = createSphere(radius, {
-      segments: 16
+    const geometry = createSphere(this.props.radius, {
+      segments: this.props.segments
     });
 
     return (
@@ -87,6 +87,11 @@ class Root extends Component {
               clear={{
                 color: [0.40625, 0.94921, 0.996, 1]
               }}>
+          <Sphere projection={projection}
+                  view={view}
+                  color={[0.5, 0.25, 0, 1]}
+                  radius={10}
+                  segments={16}/>
           <Plane projection={projection}
                  view={view}
                  color={[0, 0.75, 0.3, 1]}
