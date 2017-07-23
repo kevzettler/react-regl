@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/babel-tape-runner ./test/**/*-test.js",
-    "start": "./node_modules/.bin/budo ./example/src/index.js --live --open -- -t [ babelify --presets [ es2015 react stage-0 ] ]",
+    "start": "./node_modules/.bin/budo ./example/src/3d.js --live --open -- -t [ babelify --presets [ es2015 react stage-0 ] ]",
     "build": "./node_modules/.bin/gulp build"
   },
   "repository": {
@@ -31,6 +31,8 @@
   },
   "homepage": "https://github.com/kevzettler/react-regl#readme",
   "dependencies": {
+    "primitive-plane": "^2.0.0",
+    "primitive-sphere": "^3.0.0",
     "prop-types": "^15.5.10",
     "regl": "^1.3.0",
     "scene-tree": "^3.0.0"
@@ -53,6 +55,7 @@
     "browserify-global-shim": "^1.0.3",
     "budo": "^10.0.3",
     "derequire": "^2.0.6",
+    "gl-matrix": "^2.4.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "react": "15.5.4",

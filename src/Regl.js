@@ -73,6 +73,9 @@ const bucketDrawCalls = (tree, regl) => {
     //Mutates the node 1!!
     const drawDef = getReglDefintionForNode(node, regl);
 
+    //modelMatrix is automattically calculated by scene-tree behind the scenes
+    drawDef.uniforms.modelMatrix = regl.prop('modelMatrix');
+    drawDef.uniforms.normalMatrix = regl.prop('normalMatrix');    
 
     if(!regl.cache[shaderKey]){
       regl.cache[shaderKey] = node.data.drawCommand = regl(drawDef);
@@ -85,13 +88,12 @@ const bucketDrawCalls = (tree, regl) => {
     }
 
     node.data.positions = node.data.attributes.positions;
-
+    
     accum[shaderKey].push(Object.assign(node.data, {
       modelMatrix: node.modelMatrix,
       normalMatirx: node.normalMatrix,
     }));
 
-    accum[shaderKey].push(node.data);
 
     if(index === orgArray.length - 1){
       return Object.values(accum);
@@ -101,7 +103,8 @@ const bucketDrawCalls = (tree, regl) => {
   }, {});
 
   return () => {
-    //console.log(tree.flat()[2].data.positions[2], buckets[0][0].attributes.positions[2], buckets[0][0].positions[2], buckets[0][0].superpos[2]);    
+    if(!buckets || !buckets.length){ console.log('no drag calls'); return null; }
+    //console.log(tree.flat()[2].data.positions[2], buckets[0][0].attributes.positions[2], buckets[0][0].positions[2], buckets[0][0].superpos[2]);
     buckets.forEach((bucket) => {
       bucket[0].drawCommand(bucket);
     });
@@ -150,9 +153,14 @@ class Regl extends Component {
     ReactUpdates.ReactReconcileTransaction.release(transaction);
 
     this.drawScope = bucketDrawCalls(this.node, this.regl);
+
+    if(this.props.clear){
+      this.regl.clear(this.props.clear);
+    }
+    
     this.drawScope();
-//    this.drawScope = topDownDrawScopes(this.node);
-//    this.drawScope();
+    //    this.drawScope = topDownDrawScopes(this.node);
+    //    this.drawScope();
   }
   
   componentDidUpdate(oldProps) {
@@ -165,7 +173,6 @@ class Regl extends Component {
       Object.assign({}, ReactInstanceMap.get(this)._context, { regl: this.regl })
     );
     ReactUpdates.ReactReconcileTransaction.release(transaction);
-
 
     if(this.props.clear){
       this.regl.clear(this.props.clear);
