@@ -61,16 +61,10 @@ class Triangle extends Component {
 ### Motivation and Goals
 This repo, `react-regl` brings a JSX interface to `regl`, enabling easy integration of regl UI into existing `react` projects.
 
-[regl](http://regl.party/) is a stateless functional abstraction for WebGl. Regl makes working with WebGL a more productive experience. Its stateless nature makes it easier to reason about WebGL programs. Regl's design was influenced by React. It follows React's unidirectional data flow to stateless component model.
+[regl](http://regl.party/) is a stateless functional abstraction for WebGl. Regl makes working with WebGL a more productive experience. Its stateless nature makes it easier to reason about WebGL programs. Regl's design was influenced by React. It follows React's unidirectional data flow to stateless component model. This module wraps Regl with a React reconciler for a fuller React experience
 
 ### Regl vs Other WebGL frameworks
 Regl follows the unix philosophy of "small sharp tools" or "do one thing and do it well". Regl has full test coverage and aims for stable non-breaking updates. Other popular WebGL frameworks encompass much more responsiblity, usually including heavy abstractions for: scene graphs, animation systems, input systems, and cross device compatibility. The large amount of responsiblity in these other libraries leads to unstable, breaking releases, and lacking documentation and support.
-
-## Caveats
-
-This project currently uses a react "Stack" model reconciler. This projects "Stack" implementation was modeled after a guide on ["Making custom renders for react"](https://goshakkk.name/react-custom-renderers/) and the accompanying [example project](https://github.com/goshakkk/pabla). It's unclear if this was the "correct" way to implement a renderer. The react renderer API is private, un-documented and changing with each update. This project could probably be improved to better match the react private apis.
-
-At the time of writing this paragraph (5-7-2017) the [react "Fiber" reconciler](https://github.com/acdlite/react-fiber-architecture) is close on the horizon. To stay current this project may need updates.
 
 ## Development
 
