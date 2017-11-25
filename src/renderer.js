@@ -2,6 +2,7 @@ import ReactFiberReconciler from 'react-reconciler';
 import emptyObject from 'fbjs/lib/emptyObject';
 
 import DrawNode from './nodes/DrawNode.js'
+import Node from './nodes/Node.js';
 
 /**
  * Lifecyle of the renderer
@@ -23,6 +24,7 @@ const ReglRenderer = ReactFiberReconciler({
       return new DrawNode(props, hostContext.regl);
     }else{
       debugger;
+      return new Node(props, hostContext.regl);
     }
   },
 

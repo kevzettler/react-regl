@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 const Draw = "Draw";
 
-
 export default Draw;
 
 /* if you export a class react will immediatly try to mount it as a traditional component
