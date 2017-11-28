@@ -19,10 +19,10 @@ const drawNode = (node) => {
 };
 
 export default class ReglRootNode extends Node {
-  constructor(reglRef, store){
+  constructor(reglRef, context){
     super(reglRef);
     this.regl = reglRef
-    if(store){
+    if(context.store){
       this.store = store;
     }
   }

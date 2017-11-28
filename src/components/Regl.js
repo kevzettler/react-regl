@@ -41,7 +41,7 @@ export default class Regl extends React.Component {
       this.props.onReglInit(regl);
     }
 
-    this.rootNode = ReglRenderer.createContainer(new ReglRootNode(regl, this.context.store));
+    this.rootNode = ReglRenderer.createContainer(new ReglRootNode(regl, this.context));
 
     this.regl.clear({
       color: this.props.color || [0, 0, 0, 1],
