@@ -35,7 +35,7 @@
     "test:coverage": "jest --coverage",
     "prebuild": "rm -rf ./dist",
     "storybook": "./node_modules/.bin/start-storybook -p 6006",
-    "build-storybook": "./node_modules/.bin/build-storybook"
+    "build-storybook": "./node_modules/.bin/build-storybook --output-dir ./docs"
   },
   "jest": {
     "testEnvironment": "node"
