@@ -14,7 +14,9 @@ npm install --save react-regl
 
 Define a `react-regl` component `Triangle.js`:
 
-There is a [React Storybook](https://storybook.js.org/) included in the `/docs` directory with usage examples. The source for the Storybook is in [`./stories`](./stories/index.js) and demonstrates how to create the examples This library is a React wrapper for the [Regl](http://regl.party/) library. Visit the [Regl gallery page](http://regl.party/examples) for more ideas on usage.
+There is a [React Storybook](https://storybook.js.org/) included in the `/docs` directory with usage examples. The source for the Storybook is in [`/stories`](./stories/index.js) directory and demonstrates how to create the examples.
+
+This library is a React wrapper for the [Regl](http://regl.party/) library. Visit the [Regl gallery page](http://regl.party/examples) for more ideas on usage.
 
 ### Standalone ReglComponents
 ```javascript
