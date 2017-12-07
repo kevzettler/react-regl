@@ -1,5 +1,8 @@
-import Regl from './Regl.js';
-import Component from './Component.js';
+import Regl from './components/Regl.js';
+import Draw from './components/Draw.js';
 
-export { Component };
+
 export default Regl;
+export {
+  Draw
+};
