@@ -12,8 +12,6 @@ npm install --save react-regl
 
 ## Usage
 
-There is a full example with animations and batch rendering in the example directory. You can launch the [Example app](example/src/index.js) with `npm start`
-
 Define a `react-regl` component `Triangle.js`:
 
 ### Standalone ReglComponents
