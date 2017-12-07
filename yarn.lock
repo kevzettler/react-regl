@@ -5625,9 +5625,9 @@ react-onclickoutside@^6.5.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.7.0.tgz#997a4d533114c9a0a104913638aa26afc084f75c"
 
-react-reconciler@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.6.0.tgz#68ff32da2bc43f0b49bcaa645eaa9a06a53fd74f"
+react-reconciler@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.7.0.tgz#9614894103e5f138deeeb5eabaf3ee80eb1d026d"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
