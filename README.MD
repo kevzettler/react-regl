@@ -45,6 +45,7 @@ class Triangle extends Component {
 
 ```javascript
     import Regl from 'react-regl';
+    import Triangle from './triangle';
 
     // Import the Regl component and add it into JSX content
     // Add the triangle component as a child of Regl pass it props
