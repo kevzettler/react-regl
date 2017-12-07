@@ -10,7 +10,7 @@
 npm install --save react-regl
 ```
 
-There is a [React Storybook](https://storybook.js.org/) included in the [~/docs~](./docs) directory with usage examples
+There is a [React Storybook](https://storybook.js.org/) included in the [~/docs~](./docs) directory with usage examples. This library is a React wrapper for the [Regl](http://regl.party/) library. Visit the [Regl gallery page](http://regl.party/examples) for more ideas on usage.
 
 ## Usage
 
