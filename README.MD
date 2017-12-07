@@ -10,6 +10,8 @@
 npm install --save react-regl
 ```
 
+There is a [React Storybook](https://storybook.js.org/) included in the [~/docs~](./docs) directory with usage examples
+
 ## Usage
 
 Define a `react-regl` component `Triangle.js`:
