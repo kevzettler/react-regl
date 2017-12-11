@@ -1,9 +1,16 @@
 import Node from '../nodes/Node.js';
 
+let x = 0;
+let y = 0;
+
 const drawNode = (node) => {
   if(node.drawCommand && node.children.length){
-    return node.drawCommand(node.packedProps, () => {
-      return node.children.forEach(drawNode);
+    return node.drawCommand(node.packedProps, function drawCommandContext() {
+      x=node.children.length;
+      while(x--){
+        drawNode(node.children[x]);
+      }
+      return;
     })
   }
 
@@ -12,7 +19,10 @@ const drawNode = (node) => {
   }
 
   if(!node.drawCommand && node.children.length){
-    return node.children.forEach(drawNode);
+    y=node.children.length;
+    while(y--){
+      drawNode(node.children[y]);
+    }
   }
 
   return null;
