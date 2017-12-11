@@ -30,6 +30,7 @@
   "homepage": "https://github.com/kevzettler/react-regl#readme",
   "scripts": {
     "build": "NODE_ENV=production babel src -d dist",
+    "watch": "NODE_ENV=production babel src --watch -d dist",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
