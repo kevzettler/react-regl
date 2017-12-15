@@ -4,13 +4,13 @@ const getReglDrawDefinitionFromProps = (props, regl) =>{
   const reglDefinition = {};
 
   const reglWhitelist = [
-    'vert', 'frag', 'attributes', 'uniforms', 'count', 'primitive',
-    'count', 'offset', 'instances', 'elements', 'profile', 'depth',
-    'blend', 'stencil', 'cull', 'polygonOffset', 'cull', 'scissor'
+    'vert', 'frag', 'primitive',
+    'offset', 'instances', 'elements', 'profile', 'depth',
+    'blend', 'stencil', 'cull', 'polygonOffset', 'scissor'
   ];
 
   Object.keys(props).forEach((definitionKey) => {
-    if(['vert', 'frag'].indexOf(definitionKey) !== -1){
+    if(reglWhitelist.indexOf(definitionKey) !== -1){
       reglDefinition[definitionKey] = props[definitionKey];
       return;
     }
@@ -51,9 +51,6 @@ const getReglDrawDefinitionFromProps = (props, regl) =>{
 
     if(reglWhitelist.indexOf(definitionKey) !== -1){
       reglDefinition[definitionKey] = regl.prop(definitionKey);
-      /* reglDefinition[definitionKey] = (context, props, batchId) => {
-       *   return props[definitionKey];
-       * };*/
     }
   });
 
