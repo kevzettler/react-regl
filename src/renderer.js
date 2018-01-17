@@ -22,10 +22,9 @@ const ReglRenderer = ReactFiberReconciler({
   ) {
     if(type === 'Draw'){
       return new DrawNode(props, hostContext.regl);
-    }else{
-      debugger;
-      return new Node(props, hostContext.regl);
     }
+
+    return new Node(props, hostContext.regl);
   },
 
   mutation: {

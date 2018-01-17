@@ -10,6 +10,7 @@ const drawNode = (node) => {
       while(x--){
         drawNode(node.children[x]);
       }
+      x=0;
       return;
     })
   }
@@ -23,6 +24,7 @@ const drawNode = (node) => {
     while(y--){
       drawNode(node.children[y]);
     }
+    y=0;
   }
 
   return null;

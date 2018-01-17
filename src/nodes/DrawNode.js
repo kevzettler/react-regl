@@ -34,6 +34,7 @@ const getReglDrawDefinitionFromProps = (props, regl) =>{
           Object.assign(reglDefinition[definitionKey], unrolled);
         }
 
+        //TODO need guard for undefined props[definitionKey][reglProp]
         if(props[definitionKey][reglProp].buffer){
           reglDefinition[definitionKey][reglProp] = { ...props[definitionKey][reglProp] };
           return reglDefinition[definitionKey][reglProp].buffer = regl.prop(`${definitionKey}.${reglProp}.buffer`);
