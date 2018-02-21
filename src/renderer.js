@@ -53,6 +53,7 @@ const ReglRenderer = ReactFiberReconciler({
       instance.packedProps = newProps;
     },
 
+
     resetTextContent(domElement) {
       domElement.textContent = '';
     },
@@ -104,7 +105,6 @@ const ReglRenderer = ReactFiberReconciler({
       parentInstance,
       child,
     ){
-      debugger;
       parentInstance.removeChild(child);
     },
 
@@ -141,7 +141,6 @@ const ReglRenderer = ReactFiberReconciler({
   },
 
   removeChild(parentInstance, child) {
-    debugger;
     parentInstance.removeChild(child);
   },
 

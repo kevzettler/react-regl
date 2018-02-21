@@ -7,6 +7,7 @@ import ReglRootNode from '../nodes/ReglRootNode';
 
 export default class Regl extends React.Component {
   regl = null
+  tick = null;
 
   componentWillUnmount(){
     this.regl.destroy();
@@ -36,6 +37,11 @@ export default class Regl extends React.Component {
     regl.cache = {};
     this.regl = regl;
 
+
+    if(this.props.onFrame){
+      this.tick = regl.frame(this.props.onFrame);
+    }
+
     if(this.props.onReglInit &&
        typeof this.props.onReglInit === 'function'){
       this.props.onReglInit(regl);
@@ -62,6 +68,10 @@ export default class Regl extends React.Component {
     });
     ReglRenderer.updateContainer(this.props.children, this.rootNode, this);
     this.rootNode.containerInfo.render();
+  }
+
+  componentWillUnmount(){
+    tick.cancel();
   }
 
   render(){
