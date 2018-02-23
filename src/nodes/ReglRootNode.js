@@ -5,7 +5,7 @@ let y = 0;
 
 const drawNode = (node) => {
   if(node.drawCommand && node.children.length){
-    return node.drawCommand(node.packedProps, function drawCommandContext() {
+    return node.drawCommand(node.executionProps, function drawCommandContext() {
       x=node.children.length;
       while(x--){
         drawNode(node.children[x]);
@@ -16,7 +16,7 @@ const drawNode = (node) => {
   }
 
   if(node.drawCommand && !node.children.length){
-    return node.drawCommand(node.packedProps);
+    return node.drawCommand(node.executionProps);
   }
 
   if(!node.drawCommand && node.children.length){
