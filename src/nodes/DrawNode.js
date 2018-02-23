@@ -1,6 +1,7 @@
 import Node from '../nodes/Node.js';
 import {
   reduce as _reduce,
+  isEqual as _isEqual
 } from 'lodash';
 
 const reglWhitelist = [
@@ -78,32 +79,6 @@ function topLevelKeyReducer(reactProps, regl, reglDefinition, topLevelDefinition
   return reglDefinition;
 };
 
-/* Returns a regl 'definition' object based on the props passed to the react component node
- * that is traditionally used when defining a regl draw command
- * example
- *
- * regl({
- *
- *   // In a draw call, we can pass the shader source code to regl
- *   frag: `....`,
- *
- *   vert: `...}`,
- *
- *   attributes: {
- *     position: [
- *       [-1, 0],
- *       [0, -1],
- *       [1, 1]
- *     ]
- *   },
- *
- *   uniforms: {
- *     color: [1, 0, 0, 1]
- *   },
- *
- *   count: 3
- * })
- * */
 
 export default class DrawNode extends Node {
   constructor(props, regl){
@@ -112,6 +87,34 @@ export default class DrawNode extends Node {
     this.setDrawState(props,regl);
   }
 
+
+  /* Returns a regl 'definition' object based on the props passed to the react component node
+   * that is traditionally used when defining a regl draw command
+   * example
+   *
+   * regl({
+   *
+   *   // In a draw call, we can pass the shader source code to regl
+   *   frag: `....`,
+   *
+   *   vert: `...}`,
+   *
+   *   attributes: {
+   *     position: [
+   *       [-1, 0],
+   *       [0, -1],
+   *       [1, 1]
+   *     ]
+   *   },
+   *
+   *   uniforms: {
+   *     color: [1, 0, 0, 1]
+   *   },
+   *
+   *   count: 3
+   * })
+   *
+   */
   getReglDrawDefinitionFromProps(reactProps, regl){
     return Object.keys(reactProps).reduce(topLevelKeyReducer.bind(this, reactProps, regl), {});
   }
@@ -122,6 +125,21 @@ export default class DrawNode extends Node {
     // If the executionProps change update any attribute buffers
     // if the definitionProps change need to re init the drawCall
     this.executionProps.uniforms = newProps.uniforms;
+    this.executionProps.count = newProps.count;
+
+    if(newProps.attributes){
+      Object.keys(newProps.attributes).forEach((newAttributeKey) => {
+        if(!oldProps.attributes[newAttributeKey]){
+          //TODO theres a new attribute passed to props. This needs to regenerate draw call?
+        }
+
+        //the new attribute dosen't match the old, update the buffer
+        if(!_.isEqual(oldProps.attributes[newAttributeKey], newProps.attributes[newAttributeKey])){
+          this.executionProps.attributes[newAttributeKey](newProps.attributes[newAttributeKey]);
+        }
+      })
+
+    }
   }
 
   setDrawState(props, regl){
