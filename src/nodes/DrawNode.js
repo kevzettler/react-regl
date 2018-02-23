@@ -1,7 +1,6 @@
 import Node from '../nodes/Node.js';
 import {
   reduce as _reduce,
-  isArrayLike as _isArrayLike
 } from 'lodash';
 
 const reglWhitelist = [
@@ -24,32 +23,6 @@ function attributesReducer(props, regl, definitionKey, acc, reglProp){
     };
     return acc;
   }
-
-  /*
-   * if an array is being passed as a react prop
-   * convert and cache it to a regl buffer
-   */
-  /* if(!props[definitionKey][reglProp].buffer &&
-   *    _isArrayLike(props[definitionKey][reglProp])){
-
-   *   //update the definition to be a buffer definition
-   *   acc[reglProp] = {
-   *     buffer : regl.prop(`${definitionKey}.${reglProp}`)
-   *   };
-
-   *   //update the execution prop to be a regl.buffer
-   *   const buff = regl.buffer({
-   *     data: this.executionProps[reglProp],
-   *     usage: 'static',
-   *     type: 'float32',
-   *   })
-   *   buff._buffer.id = reglProp;
-
-   *   this.executionProps[reglProp] = buff;
-
-   *   return acc;
-   * }*/
-
 
   acc[reglProp] = regl.prop(`${definitionKey}.${reglProp}`);
   return acc;
@@ -80,7 +53,6 @@ function topLevelKeyReducer(reactProps, regl, reglDefinition, topLevelDefinition
 
 
   if(['attributes'].indexOf(topLevelDefinitionKey) !== -1){
-//    this.bufferAttributes(reactProps[topLevelDefinitionKey], regl);
     reglDefinition[topLevelDefinitionKey] = Object.keys(reactProps[topLevelDefinitionKey])
                                                   .reduce(attributesReducer.bind(this, reactProps, regl, topLevelDefinitionKey), {});
     return reglDefinition;
@@ -145,10 +117,15 @@ export default class DrawNode extends Node {
   }
 
   updateProps(oldProps, newProps){
-//    debugger;
+    //TODO update the drawNodes props
+    // regenerate the instances draw command if the shaders have changed
+    // If the executionProps change update any attribute buffers
+    // if the definitionProps change need to re init the drawCall
+    this.executionProps.uniforms = newProps.uniforms;
   }
 
   setDrawState(props, regl){
+    this.lastProps = props;
     this.executionProps = {...props};
 
     //cache the 'execution time' attributes as regl buffers otherwise regl will attempt to bufferize on every draw call
@@ -174,43 +151,5 @@ export default class DrawNode extends Node {
       regl.cache[this.drawKey] = this.drawCommand;
     }
   }
-
-  /* bufferAttributes(attributes, regl){
-   *   const attributeNames = Object.keys(attributes);
-
-   *   const funcBody = attributeNames.map((attributeName) => {
-   *     return `attributes.${attributeName}[index],`;
-   *   }).join('\n');
-
-
-   *   const output = eval(`
-   *    attributes[attributeNames[0]].reduce((acc, value, index) => {
-   *      acc = acc.concat(${funcBody});
-   *      return acc;
-   *    }, []);
-   *  `);
-
-
-   *   const offsets = {};
-   *   let flatComponents = [];
-   *   for(var x = 0; x<attributeNames.length; x++){
-   *     offsets[attributeNames[x]] = {
-   *       size: attributes[attributeNames[x]][0].length * 4 || 4,
-   *       offset: flatComponents.length * 4,
-   *     }
-   *     flatComponents = flatComponents.concat(attributes[attributeNames[x]][0])
-   *   }
-
-   *   for(var x =0; x<attributeNames.length; x++){
-   *     offsets[attributeNames[x]].stride = flatComponents.length * 4
-   *   }
-
-
-   *   regl.buffer({
-   *     data: combinedModelBuffs,
-   *     usage: 'dynamic',
-   *     type: 'float32',
-   *   })
-   * }*/
 
 }

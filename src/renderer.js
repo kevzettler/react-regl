@@ -50,8 +50,10 @@ const ReglRenderer = ReactFiberReconciler({
       // regenerate the instances draw command if the shaders have changed
       // If the executionProps change just redraw
       // if the definitionProps change need to re init the drawCall
-      instance.executionProps = newProps;
-      //instance.updateProps(oldProps, newProps);
+      //instance.executionProps = newProps;
+      if(instance.updateProps){
+        instance.updateProps(oldProps, newProps);
+      }
     },
 
 
