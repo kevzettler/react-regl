@@ -71,7 +71,9 @@ export default class Regl extends React.Component {
   }
 
   componentWillUnmount(){
-    tick.cancel();
+    if(this.tick){
+      this.tick.cancel();
+    }
   }
 
   render(){
