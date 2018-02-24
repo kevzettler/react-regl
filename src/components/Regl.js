@@ -74,6 +74,10 @@ export default class Regl extends React.Component {
     if(this.tick){
       this.tick.cancel();
     }
+
+    if(this.regl){
+      this.regl.destroy();
+    }
   }
 
   render(){
