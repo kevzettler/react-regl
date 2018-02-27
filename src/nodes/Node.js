@@ -10,7 +10,7 @@ export default class Node {
   removeChild(child){
     const index = this.children.indexOf(child);
     child.parent = null;
-    this.children.slice(index, 1);
+    this.children.splice(index, 1);
   }
 
   insertBefore(child, beforeChild){

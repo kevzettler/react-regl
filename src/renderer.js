@@ -50,20 +50,24 @@ const ReglRenderer = ReactFiberReconciler({
       // regenerate the instances draw command if the shaders have changed
       // If the executionProps change just redraw
       // if the definitionProps change need to re init the drawCall
-      instance.packedProps = newProps;
+      //instance.executionProps = newProps;
+      if(instance.updateProps){
+        instance.updateProps(oldProps, newProps);
+      }
     },
 
-    resetTextContent(domElement) {
-      domElement.textContent = '';
-    },
 
-    commitTextUpdate(
-      textInstance,
-      oldText,
-      newText,
-    ){
-      textInstance.nodeValue = newText;
-    },
+    /* resetTextContent(domElement) {
+     *   domElement.textContent = '';
+     * },
+
+     * commitTextUpdate(
+     *   textInstance,
+     *   oldText,
+     *   newText,
+     * ){
+     *   textInstance.nodeValue = newText;
+     * },*/
 
     appendChild(
       parentInstance,
@@ -104,7 +108,6 @@ const ReglRenderer = ReactFiberReconciler({
       parentInstance,
       child,
     ){
-      debugger;
       parentInstance.removeChild(child);
     },
 
@@ -141,7 +144,6 @@ const ReglRenderer = ReactFiberReconciler({
   },
 
   removeChild(parentInstance, child) {
-    debugger;
     parentInstance.removeChild(child);
   },
 
