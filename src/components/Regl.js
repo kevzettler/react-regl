@@ -66,6 +66,12 @@ export default class Regl extends React.Component {
       color: this.props.color || [0, 0, 0, 1],
       depth: this.props.depth || 1
     });
+
+    if(prevProps.width !== this.props.width ||
+       prevProps.height !== this.props.height){
+      this.regl.poll();
+    }
+
     ReglRenderer.updateContainer(this.props.children, this.rootNode, this);
     this.rootNode.containerInfo.render();
   }
