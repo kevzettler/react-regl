@@ -134,7 +134,7 @@ export default class DrawNode extends Node {
         }
 
         //the new attribute dosen't match the old, update the buffer
-        if(!_.isEqual(oldProps.attributes[newAttributeKey], newProps.attributes[newAttributeKey])){
+        if(JSON.stringify(oldProps.attributes[newAttributeKey] !== JSON.stringify(newProps.attributes[newAttributeKey]))){
           this.executionProps.attributes[newAttributeKey](newProps.attributes[newAttributeKey]);
         }
       })
