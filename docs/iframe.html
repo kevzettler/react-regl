@@ -1,23 +1,27 @@
+<!DOCTYPE html>
+<html>
 
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <base target="_parent">
-        <script>
-          if (window.parent !== window) {
-            window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
-          }
-        </script>
-        <title>Storybook</title>
-        
-        
-      </head>
-      <body>
-        <div id="root"></div>
-        <div id="error-display"></div>
-        <script src="static/preview.2d212ff2d9abb21e56db.bundle.js"></script>
-      </body>
-    </html>
-  
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <base target="_parent">
+    <script>
+        if (window.parent !== window) {
+            try {
+                window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+            } catch (error) {
+                // The above line can throw if we do not have access to the parent frame -- i.e. cross origin
+            }
+        }
+    </script>
+    <title>Storybook</title>
+    
+</head>
+
+<body>
+    <div id="root"></div>
+    <div id="error-display"></div>
+<script type="text/javascript" src="static/preview.eb479a1f7125c3de9700.bundle.js"></script></body>
+
+</html>
