@@ -2109,6 +2109,10 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
+bunny@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/bunny/-/bunny-1.0.1.tgz#86383da45ab7a99571a5a572b7be0e3564815f9e"
+
 bytes@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
@@ -3869,6 +3873,10 @@ gl-context@^0.1.1:
   resolved "https://registry.yarnpkg.com/gl-context/-/gl-context-0.1.1.tgz#1134ff513223f3f6b3e2168cc88bcdc8b74e05f3"
   dependencies:
     raf-component "^1.1.2"
+
+gl-matrix@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/gl-matrix/-/gl-matrix-2.7.1.tgz#0874a6f641bf4ad12e125b3f4ad8e5a70775fbea"
 
 gl@^4.0.4:
   version "4.0.4"

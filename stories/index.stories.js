@@ -1,10 +1,6 @@
 import React from 'react';
-
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
 import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
-
 import Regl, { Draw } from '../src/';
 
 const colorRange = {
@@ -15,9 +11,9 @@ const colorRange = {
 };
 
 
-storiesOf('Regl', module)
+storiesOf('Infrastructure', module)
   .addDecorator(withKnobs)
-  .add('basic canvas', () => {
+  .add('Regl Component', () => {
     return (
       <Regl width={number('Width', 400)}
             height={number('Height', 200)}
@@ -28,11 +24,8 @@ storiesOf('Regl', module)
               1]}
       />
     );
-  });
-
-
-storiesOf('Draw', module)
-  .add('2D triangle', () => {
+  })
+  .add('Draw Component', () => {
     return (
       <Regl
         width={window.innerWidth}
@@ -67,5 +60,5 @@ storiesOf('Draw', module)
           count={3}
           />
       </Regl>
-    );
+    )
   });

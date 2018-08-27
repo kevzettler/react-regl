@@ -41,6 +41,11 @@ function uniformsReducer(props, regl, definitionKey, acc, reglProp){
     return {...acc, ...unrolled};
   }
 
+  if(typeof props[definitionKey][reglProp] === 'function'){
+    acc[reglProp] = props[definitionKey][reglProp];
+    return acc;
+  }
+
   acc[reglProp] = regl.prop(`${definitionKey}.${reglProp}`);
   return acc;
 }
