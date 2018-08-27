@@ -41,10 +41,11 @@ storiesOf('Geometry', module)
           }
 
           frag={`
-          precision mediump float;
-  void main() {
-    gl_FragColor = vec4(1, 1, 1, 1);
-          }`}
+              precision mediump float;
+              void main() {
+                  gl_FragColor = vec4(1, 1, 1, 1);
+              }
+          `}
 
           elements={bunny.cells}
 
