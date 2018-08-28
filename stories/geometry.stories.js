@@ -29,6 +29,7 @@ storiesOf('Geometry', module)
         width={window.innerWidth}
         height={window.innerHeight}
         color={[0,0,0,1]}
+        forceRedrawOnTick={true}
         >
         <Draw
           vert={`

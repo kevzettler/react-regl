@@ -37,11 +37,6 @@ export default class Regl extends React.Component {
     regl.cache = {};
     this.regl = regl;
 
-
-    if(this.props.onFrame){
-      this.tick = regl.frame(this.props.onFrame);
-    }
-
     if(this.props.onReglInit &&
        typeof this.props.onReglInit === 'function'){
       this.props.onReglInit(regl);
@@ -58,7 +53,21 @@ export default class Regl extends React.Component {
       ReglRenderer.updateContainer(this.props.children, this.rootNode, this);
     });
 
-    this.rootNode.containerInfo.render()
+    this.rootNode.containerInfo.render();
+
+    if(this.props.forceRedrawOnTick === true){
+      this.tick = regl.frame(() => {
+        this.regl.clear({
+          color: this.props.color || [0, 0, 0, 1],
+          depth: this.props.depth || 1
+        });
+        this.rootNode.containerInfo.render();
+      });
+    }
+
+    if(this.props.onFrame && typeof this.props.onFrame === 'function'){
+      this.tick = regl.frame(this.props.onFrame);
+    }
   }
 
   componentDidUpdate(prevProps, prevState){
