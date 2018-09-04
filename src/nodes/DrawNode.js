@@ -29,6 +29,35 @@ function attributesReducer(props, regl, definitionKey, acc, reglProp){
   return acc;
 }
 
+function inferResourceType(regl, resourcePayload){
+  const payloadKeys = Object.keys(resourcePayload);
+  const textureKeys = [
+    "width",
+    "height",
+    "mag",
+    "min",
+    "wrapS",
+    "wrapT",
+    "aniso",
+    "format",
+    "size",
+    "type",
+    "data",
+    "mipmap",
+    "flipY",
+    "alignment",
+    "premultiplyAlpha",
+    "colorSpace",
+    "copy",
+    "channels"
+  ];
+
+
+  if(payloadKeys.filter(x => textureKeys.includes(x)).length){
+    return regl.texture;
+  }
+}
+
 function uniformsReducer(props, regl, definitionKey, acc, reglProp){
   //Need to unroll array uniforms
   // https://github.com/regl-project/regl/issues/258
@@ -45,6 +74,15 @@ function uniformsReducer(props, regl, definitionKey, acc, reglProp){
     acc[reglProp] = props[definitionKey][reglProp];
     return acc;
   }
+
+  //if data prop is passed assume its a complex regl resource type buffer,elements,textures
+  if(props[definitionKey][reglProp].data){
+    const resourceConstructor = inferResourceType(regl, props[definitionKey][reglProp]);
+    acc[reglProp] = resourceConstructor(props[definitionKey][reglProp]);
+    return acc;
+  }
+
+
 
   acc[reglProp] = regl.prop(`${definitionKey}.${reglProp}`);
   return acc;
