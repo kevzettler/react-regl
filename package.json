@@ -72,7 +72,7 @@
     "gl-context": "^0.1.1",
     "gl-matrix": "^2.7.1",
     "jest": "^22.4.3",
-    "pngparse-sync": "^1.0.2",
+    "pngjs": "^3.3.3",
     "react": "^16.1.1",
     "react-dom": "^16.1.1"
   }

@@ -1,17 +1,15 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
-
 import Regl, { Draw } from '../src/';
 import bunny from 'bunny';
 import { mat4 } from 'gl-matrix';
-import parsePNG from 'pngparse-sync';
-
 import { Buffer } from 'buffer/';
+import { PNG } from "pngjs";
 import pepperArrayBuffer from './static/peppers.png';
-const pepperPng = parsePNG(Buffer.from(pepperArrayBuffer));
 
-debugger;
+const pepperPNG =  PNG.sync.read(Buffer.from(pepperArrayBuffer));
+
 
 storiesOf('Geometry', module)
   .add('Bunny', () => {
@@ -147,9 +145,9 @@ storiesOf('Geometry', module)
             },
 
             tex: {
-              width: 512,
-              height: 512,
-              data: pepperPng.data,
+              width: pepperPNG.width,
+              height: pepperPNG.height,
+              data: pepperPNG.data,
               mag: 'linear',
               min: 'linear'
             }
