@@ -6,15 +6,11 @@ module.exports = {
         loaders: [require.resolve('@storybook/addon-storysource/loader')],
         enforce: 'pre',
       },
-      {
-        test: /\.(png|jpg|gif)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {}
-          }
-        ]
-      }
+    {
+      test: /\.png$/,
+      loaders: ['arraybuffer-loader'],
+      enforce: 'pre',
+    },
     ],
   },
 };

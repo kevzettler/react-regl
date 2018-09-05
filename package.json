@@ -58,6 +58,7 @@
     "@storybook/addons": "^3.4.10",
     "@storybook/cli": "^3.4.10",
     "@storybook/react": "^3.4.10",
+    "arraybuffer-loader": "^1.0.6",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-eslint": "^8.0.3",
@@ -65,11 +66,13 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-runtime": "^6.26.0",
+    "buffer": "^5.2.1",
     "bunny": "^1.0.1",
     "gl": "^4.0.4",
     "gl-context": "^0.1.1",
     "gl-matrix": "^2.7.1",
     "jest": "^22.4.3",
+    "pngparse-sync": "^1.0.2",
     "react": "^16.1.1",
     "react-dom": "^16.1.1"
   }

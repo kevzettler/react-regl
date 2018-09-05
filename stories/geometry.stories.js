@@ -5,34 +5,13 @@ import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
 import Regl, { Draw } from '../src/';
 import bunny from 'bunny';
 import { mat4 } from 'gl-matrix';
+import parsePNG from 'pngparse-sync';
 
+import { Buffer } from 'buffer/';
+import pepperArrayBuffer from './static/peppers.png';
+const pepperPng = parsePNG(Buffer.from(pepperArrayBuffer));
 
-import pepperImageUrl from './static/peppers.png';
-
-
-class ImageLoader extends React.Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      img: null
-    };
-  }
-
-  componentDidMount(){
-    var img = new Image();
-    img.src = pepperImageUrl;
-    img.onload = () => {
-      this.setState({ img });
-    }
-  }
-
-  render(){
-    if(!this.state.img) return null;
-    return this.props.children(this.state.img);
-  }
-
-}
-
+debugger;
 
 storiesOf('Geometry', module)
   .add('Bunny', () => {
@@ -116,16 +95,14 @@ storiesOf('Geometry', module)
     ]
 
     return (
-      <ImageLoader>
-        {textureImg =>
-        <Regl
-          width={window.innerWidth}
-          height={window.innerHeight}
-          color={[1,1,1,1]}
-          forceRedrawOnTick={true}
-          >
-          <Draw
-            vert={`
+      <Regl
+        width={window.innerWidth}
+        height={window.innerHeight}
+        color={[1,1,1,1]}
+        forceRedrawOnTick={true}
+        >
+        <Draw
+          vert={`
              precision mediump float;
              attribute vec3 position;
              attribute vec2 uv;
@@ -135,49 +112,49 @@ storiesOf('Geometry', module)
                vUv = uv;
                gl_Position = projection * view * vec4(position, 1);
            }
-            `}
+          `}
 
-            frag={`
+          frag={`
            precision mediump float;
            varying vec2 vUv;
            uniform sampler2D tex;
            void main () {
              gl_FragColor = texture2D(tex,vUv);
            }
-            `}
+          `}
 
-            elements={cubeElements}
+          elements={cubeElements}
 
-            attributes={{
-              position: cubePosition,
-              uv: cubeUv
-            }}
+          attributes={{
+            position: cubePosition,
+            uv: cubeUv
+          }}
 
-            uniforms={{
-              projection: ({viewportWidth, viewportHeight}) => {
-                return mat4.perspective([],
-                                        Math.PI / 4,
-                                        viewportWidth / viewportHeight,
-                                        0.01,
-                                        10)
-              },
-              view: ({tick}) => {
-                const t = 0.01 * tick
-                return mat4.lookAt([],
-                                   [5 * Math.cos(t), 2.5 * Math.sin(t), 5 * Math.sin(t)],
-                                   [0, 0.0, 0],
-                                   [0, 1, 0])
-              },
+          uniforms={{
+            projection: ({viewportWidth, viewportHeight}) => {
+              return mat4.perspective([],
+                                      Math.PI / 4,
+                                      viewportWidth / viewportHeight,
+                                      0.01,
+                                      10)
+            },
+            view: ({tick}) => {
+              const t = 0.01 * tick
+              return mat4.lookAt([],
+                                 [5 * Math.cos(t), 2.5 * Math.sin(t), 5 * Math.sin(t)],
+                                 [0, 0.0, 0],
+                                 [0, 1, 0])
+            },
 
-              tex: {
-                data: textureImg,
-                mag: 'linear',
-                min: 'linear'
-              }
-            }}
-            />
-          </Regl>
-        }
-      </ImageLoader>
+            tex: {
+              width: 512,
+              height: 512,
+              data: pepperPng.data,
+              mag: 'linear',
+              min: 'linear'
+            }
+          }}
+          />
+      </Regl>
     );
   });
