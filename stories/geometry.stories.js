@@ -145,6 +145,7 @@ storiesOf('Geometry', module)
             },
 
             tex: {
+              reglResourceType: 'texture',
               width: pepperPNG.width,
               height: pepperPNG.height,
               data: pepperPNG.data,

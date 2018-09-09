@@ -30,31 +30,8 @@ function attributesReducer(props, regl, definitionKey, acc, reglProp){
 }
 
 function inferResourceType(regl, resourcePayload){
-  const payloadKeys = Object.keys(resourcePayload);
-  const textureKeys = [
-    "width",
-    "height",
-    "mag",
-    "min",
-    "wrapS",
-    "wrapT",
-    "aniso",
-    "format",
-    "size",
-    "type",
-    "data",
-    "mipmap",
-    "flipY",
-    "alignment",
-    "premultiplyAlpha",
-    "colorSpace",
-    "copy",
-    "channels"
-  ];
-
-
-  if(payloadKeys.filter(x => textureKeys.includes(x)).length){
-    return regl.texture;
+  if(resourcePayload.reglResourceType && typeof regl[resourcePayload.reglResourceType] === 'function'){
+    return regl[resourcePayload.reglResourceType];
   }
 }
 
@@ -76,12 +53,11 @@ function uniformsReducer(props, regl, definitionKey, acc, reglProp){
   }
 
   //if data prop is passed assume its a complex regl resource type buffer,elements,textures
-  if(props[definitionKey][reglProp].data){
+  if(props[definitionKey][reglProp].reglResourceType || props[definitionKey][reglProp].data){
     const resourceConstructor = inferResourceType(regl, props[definitionKey][reglProp]);
     acc[reglProp] = resourceConstructor(props[definitionKey][reglProp]);
     return acc;
   }
-
 
 
   acc[reglProp] = regl.prop(`${definitionKey}.${reglProp}`);
