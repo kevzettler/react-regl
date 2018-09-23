@@ -7,7 +7,7 @@ module.exports = {
         enforce: 'pre',
       },
     {
-      test: /\.png$/,
+      test: [/\.png$/, /\.aomesh$/],
       loaders: ['arraybuffer-loader'],
       enforce: 'pre',
     },

@@ -4,7 +4,6 @@ import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
 import Regl, { Draw } from '../src/';
 
 
-
 storiesOf('2D', module)
   .addDecorator(withKnobs)
   // https://thebookofshaders.com/08/

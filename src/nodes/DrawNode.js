@@ -18,9 +18,9 @@ function uniformArrayUnrollReducer(regl, definitionKey, reglProp, accum, value, 
 
 function attributesReducer(props, regl, definitionKey, acc, reglProp){
   if(props[definitionKey][reglProp].buffer){
-    acc[reglProp] = { ...props[definitionKey][reglProp] };
     acc[reglProp] = {
-      buffer : regl.prop(`${definitionKey}.${reglProp}.buffer`)
+      ...props[definitionKey][reglProp],
+      buffer: regl.buffer(props[definitionKey][reglProp].buffer)
     };
     return acc;
   }
@@ -167,14 +167,17 @@ export default class DrawNode extends Node {
 
     //cache the 'execution time' attributes as regl buffers otherwise regl will attempt to bufferize on every draw call
     this.executionProps.attributes = _reduce(props.attributes, (acc, value, key) => {
-      const buff = regl.buffer({
-        data: value,
-        usage: 'static',
-        type: 'float32',
-      });
-      buff._buffer.id = key
+      if(!value.buffer){
+        debugger;
+        const buff = regl.buffer({
+          data: value,
+          usage: 'static',
+          type: 'float32',
+        });
+        buff._buffer.id = key
 
-      acc[key] = buff;
+        acc[key] = buff;
+      }
       return acc;
     }, {});
 
