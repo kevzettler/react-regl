@@ -168,7 +168,6 @@ export default class DrawNode extends Node {
     //cache the 'execution time' attributes as regl buffers otherwise regl will attempt to bufferize on every draw call
     this.executionProps.attributes = _reduce(props.attributes, (acc, value, key) => {
       if(!value.buffer){
-        debugger;
         const buff = regl.buffer({
           data: value,
           usage: 'static',
