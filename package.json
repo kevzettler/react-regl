@@ -42,6 +42,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
+    "babel-plugin-transform-remove-debugger": "^6.9.4",
     "prop-types": "^15.6.0",
     "react-reconciler": "0.9.0",
     "regl": "^1.3.0"
