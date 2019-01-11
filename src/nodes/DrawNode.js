@@ -20,7 +20,7 @@ function attributesReducer(props, regl, definitionKey, acc, reglProp){
   if(props[definitionKey][reglProp].buffer){
     acc[reglProp] = {
       ...props[definitionKey][reglProp],
-      buffer: regl.buffer(props[definitionKey][reglProp].buffer)
+      buffer: regl.prop(`${definitionKey}.${reglProp}`)
     };
     return acc;
   }
@@ -112,7 +112,6 @@ export default class DrawNode extends Node {
    * example
    *
    * regl({
-   *
    *   // In a draw call, we can pass the shader source code to regl
    *   frag: `....`,
    *
@@ -152,12 +151,28 @@ export default class DrawNode extends Node {
           //TODO theres a new attribute passed to props. This needs to regenerate draw call?
         }
 
-        //the new attribute dosen't match the old, update the buffer
-        if(!_.isEqual(oldProps.attributes[newAttributeKey], newProps.attributes[newAttributeKey])){
-          this.executionProps.attributes[newAttributeKey](newProps.attributes[newAttributeKey]);
+        //the new attribute dosen't match the old
+        // If its a buffer, update the buffer
+        if(
+          !_.isEqual(
+            oldProps.attributes[newAttributeKey],
+            newProps.attributes[newAttributeKey]
+          )
+        ){
+          //If the executionProp is a pre allocated regl buffer we want to update inplace
+          if(typeof this.executionProps.attributes[newAttributeKey] === 'function'){
+            //If the incoming executionProp is a buffer definition we select the buffer data to update
+            if(newProps.attributes[newAttributeKey].buffer && newProps.attributes[newAttributeKey].buffer.data){
+              this.executionProps.attributes[newAttributeKey](newProps.attributes[newAttributeKey].buffer.data);
+            }else{
+              //The attribute is not a buffer definition but an array-like
+              this.executionProps.attributes[newAttributeKey](newProps.attributes[newAttributeKey]);
+            }
+          }else{
+            this.executionProps.attributes[newAttributeKey] = newProps.attributes[newAttributeKey];
+          }
         }
       })
-
     }
   }
 
@@ -166,17 +181,25 @@ export default class DrawNode extends Node {
     this.executionProps = {...props};
 
     //cache the 'execution time' attributes as regl buffers otherwise regl will attempt to bufferize on every draw call
-    this.executionProps.attributes = _reduce(props.attributes, (acc, value, key) => {
-      if(!value.buffer){
+    this.executionProps.attributes = _reduce(props.attributes, (acc, attribute, key) => {
+      if(!attribute.buffer){
         const buff = regl.buffer({
-          data: value,
-          usage: 'static',
-          type: 'float32',
+          data: attribute,
         });
         buff._buffer.id = key
 
         acc[key] = buff;
+        return acc;
       }
+
+      if(attribute.buffer && attribute.buffer.data){
+        const buff = regl.buffer(attribute.buffer);
+        buff._buffer.id = key;
+        acc[key] = buff;
+        return acc;
+      }
+
+      acc[key] = attribute;
       return acc;
     }, {});
 
@@ -189,6 +212,7 @@ export default class DrawNode extends Node {
       this.drawCommand = regl(this.reglDef);
       regl.cache[this.drawKey] = this.drawCommand;
     }
+
   }
 
 }
