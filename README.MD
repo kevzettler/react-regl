@@ -36,7 +36,7 @@ class Triangle extends Component {
               positions: this.props.positions
             }}
             uniforms={{
-              color: color this.props.color
+              color: this.props.color
             }}
             count={3}
       />
