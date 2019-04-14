@@ -8,24 +8,27 @@ import ReglRootNode from '../nodes/ReglRootNode';
 export default class Regl extends React.Component {
   regl = null
   tick = null;
+  canvasRef = null;
+  rootNode = null;
 
   componentWillUnmount(){
+    ReglRenderer.updateContainer(null, this.mountNode, this);
     this.regl.destroy();
   }
 
   constructor(props, context){
     super(props, context);
-    this.rootNode = null;
   }
 
   getChildContext(){
-    if(this.context.store){
+    if(this.context && this.context.store){
       return {store: this.context.store};
     }
+    return this.context;
   }
 
   componentDidMount(){
-    const canvasRef = this.props.canvas || this.refs.canvas;
+    const canvasRef = this.props.canvas || this.canvasRef;
     const gl = canvasRef.getContext("webgl", {
       alpha: false,
       antialias: false,
@@ -49,10 +52,7 @@ export default class Regl extends React.Component {
       depth: this.props.depth || 1
     });
 
-    ReglRenderer.unbatchedUpdates(() => {
-      ReglRenderer.updateContainer(this.props.children, this.rootNode, this);
-    });
-
+    ReglRenderer.updateContainer(this.props.children, this.rootNode, this);
     this.rootNode.containerInfo.render();
 
     if(this.props.forceRedrawOnTick === true){
@@ -101,7 +101,7 @@ export default class Regl extends React.Component {
     }
 
     return (
-      <canvas ref="canvas"
+      <canvas ref={inst => {this.canvasRef = inst}}
               width={this.props.width}
               height={this.props.height} />
     )

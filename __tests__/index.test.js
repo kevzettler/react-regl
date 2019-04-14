@@ -1,3 +1,4 @@
+global.window = { requestIdleCallback: function(){} };
 const ReactRegl = require('../src/index.js');
 
 test('exports a default component', () => {

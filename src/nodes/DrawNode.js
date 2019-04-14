@@ -152,33 +152,24 @@ export default class DrawNode extends Node {
           //TODO theres a new attribute passed to props. This needs to regenerate draw call?
         }
 
-        //the new attribute dosen't match the old, update the buffer
-        if(!_.isEqual(oldProps.attributes[newAttributeKey], newProps.attributes[newAttributeKey])){
-          this.executionProps.attributes[newAttributeKey](newProps.attributes[newAttributeKey]);
+        // the new attribute dosen't match the
+        // if there is a buffer cached update it
+        if(!_.isEqual(
+          oldProps.attributes[newAttributeKey],
+          newProps.attributes[newAttributeKey]) &&
+          this.reglDef.attributes[newAttributeKey].buffer
+        ){
+          this.reglDef.attributes[newAttributeKey].buffer(
+            newProps.attributes[newAttributeKey].buffer
+          );
         }
       })
-
     }
   }
 
   setDrawState(props, regl){
     this.lastProps = props;
     this.executionProps = {...props};
-
-    //cache the 'execution time' attributes as regl buffers otherwise regl will attempt to bufferize on every draw call
-    this.executionProps.attributes = _reduce(props.attributes, (acc, value, key) => {
-      if(!value.buffer){
-        const buff = regl.buffer({
-          data: value,
-          usage: 'static',
-          type: 'float32',
-        });
-        buff._buffer.id = key
-
-        acc[key] = buff;
-      }
-      return acc;
-    }, {});
 
     this.reglDef = this.getReglDrawDefinitionFromProps(props, regl)
     this.drawKey = JSON.stringify(this.reglDef);
