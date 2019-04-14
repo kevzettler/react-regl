@@ -1,14 +1,17 @@
 import ReactFiberReconciler from 'react-reconciler';
-import emptyObject from 'fbjs/lib/emptyObject';
+import invariant from 'fbjs/lib/invariant';
+import { unstable_now as now, unstable_scheduleCallback as scheduleCallback, unstable_cancelCallback as cancelCallback } from 'scheduler';
 
 import DrawNode from './nodes/DrawNode.js'
 import Node from './nodes/Node.js';
 
-/**
- * Lifecyle of the renderer
- */
-const ReglRenderer = ReactFiberReconciler({
-  now: () => { return Date.now() },
+
+export default ReactFiberReconciler({
+  now,
+  schedulePassiveEffects: scheduleCallback,
+  cancelPassiveEffects: cancelCallback,
+  supportsMutation: true,
+  scheduleDeferredCallback: window.requestIdleCallback,
 
   /**
    * Create component instance
@@ -27,97 +30,82 @@ const ReglRenderer = ReactFiberReconciler({
     return new Node(props, hostContext.regl);
   },
 
-  mutation: {
-    commitMount(
-      domElement,
-      type,
-      newProps,
-      internalInstanceHandle,
-    ){
-      //noop
-      debugger;
-    },
+  commitMount(domElement, type, newProps, internalInstanceHandle,){
+    //noop
+  },
 
-    commitUpdate(
-      instance,
-      updatePayload,
-      type,
-      oldProps,
-      newProps,
-      internalInstanceHandle,
-    ){
-      //TODO update the drawNodes props
-      // regenerate the instances draw command if the shaders have changed
-      // If the executionProps change just redraw
-      // if the definitionProps change need to re init the drawCall
-      //instance.executionProps = newProps;
-      if(instance.updateProps){
-        instance.updateProps(oldProps, newProps);
-      }
-    },
+  commitUpdate(
+    instance,
+    updatePayload,
+    type,
+    oldProps,
+    newProps,
+    internalInstanceHandle,
+  ){
+    //TODO update the drawNodes props
+    // regenerate the instances draw command if the shaders have changed
+    // If the executionProps change just redraw
+    // if the definitionProps change need to re init the drawCall
+    //instance.executionProps = newProps;
+    if(instance.updateProps){
+      instance.updateProps(oldProps, newProps);
+    }
+  },
 
 
-    /* resetTextContent(domElement) {
-     *   domElement.textContent = '';
-     * },
+  resetTextContent(domElement) {
+    domElement.textContent = '';
+  },
 
-     * commitTextUpdate(
-     *   textInstance,
-     *   oldText,
-     *   newText,
-     * ){
-     *   textInstance.nodeValue = newText;
-     * },*/
+  commitTextUpdate(
+    textInstance,
+    oldText,
+    newText,
+  ){
+    textInstance.nodeValue = newText;
+  },
 
-    appendChild(
-      parentInstance,
-      child,
-    ){
-      parentInstance.appendChild(child);
-    },
+  appendChild(
+    parentInstance,
+    child,
+  ){
+    parentInstance.appendChild(child);
+  },
 
-    appendChildToContainer(
-      container,
-      child,
-    ){
-      container.appendChild(child);
-    },
+  appendChildToContainer(
+    container,
+    child,
+  ){
+    container.appendChild(child);
+  },
 
-    insertBefore(
-      parentInstance,
-      child,
-      beforeChild,
-    ){
-      parentInstance.insertBefore(child, beforeChild);
-    },
+  insertBefore(
+    parentInstance,
+    child,
+    beforeChild,
+  ){
+    parentInstance.insertBefore(child, beforeChild);
+  },
 
-    insertInContainerBefore(
-      container,
-      child,
-      beforeChild,
-    ){
-      debugger;
-      /* if (container.nodeType === COMMENT_NODE) {
-       *   (container.parentNode: any).insertBefore(child, beforeChild);
-       * } else {
-       *   container.insertBefore(child, beforeChild);
-       * }*/
-    },
+  insertInContainerBefore(
+    container,
+    child,
+    beforeChild,
+  ){
+  },
 
-    removeChild(
-      parentInstance,
-      child,
-    ){
-      parentInstance.removeChild(child);
-    },
+  removeChild(
+    parentInstance,
+    child,
+  ){
+    parentInstance.removeChild(child);
+  },
 
-    removeChildFromContainer(
-      container,
-      child,
-    ){
-      debugger;
-      container.removeChild(child);
-    },
+  removeChildFromContainer(
+    container,
+    child,
+  ){
+    container.removeChild(child);
   },
 
   /**
@@ -135,12 +123,7 @@ const ReglRenderer = ReactFiberReconciler({
   },
 
   appendChild(parentInstance, child) {
-    debugger;
-    /* if (parentInstance.appendChild) {
-     *   parentInstance.appendChild(child);
-     * } else {
-     *   parentInstance.document = child;
-     * }*/
+    parentInstance.appendChild(child);
   },
 
   removeChild(parentInstance, child) {
@@ -180,17 +163,23 @@ const ReglRenderer = ReactFiberReconciler({
   /**
    * Keeps track of the current location in tree
    */
-  getRootHostContext(root) {
-    return root;
-    //return emptyObject;
+  getRootHostContext(rootHostContext) {
+    return rootHostContext;
   },
 
-  getChildHostContext(root) {
-    return root
+  getChildHostContext(parentHostContext) {
+    return parentHostContext;
+  },
+
+  getChildHostContextForEventComponent(context){
+    return context;
+  },
+
+  getChildHostContextForEventTarget(context){
+    return context;
   },
 
   getPublicInstance(inst) {
-    debugger;
     return inst;
   },
 
@@ -209,6 +198,10 @@ const ReglRenderer = ReactFiberReconciler({
     return false;
   },
 
+  shouldDeprioritizeubtree(){
+    return false;
+  },
+
   resetTextContent(testElement) {
     // noop
   },
@@ -222,16 +215,13 @@ const ReglRenderer = ReactFiberReconciler({
     return text;
   },
 
+  scheduleTimeout(){
+
+  },
+
   commitTextUpdate(textInstance, oldText, newText) {
-    debugger;
-    textInstance.chidren = newText;
   },
 
   mountIndeterminateComponent(){
-    debugger;
   },
-
-  useSyncScheduling: true,
 });
-
-export default ReglRenderer;

@@ -1,6 +1,6 @@
 {
   "name": "react-regl",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "description": "A custom React Fiber reconciler renderer for regl webGL",
   "main": "dist/index.js",
   "files": [
@@ -45,11 +45,11 @@
     "babel-plugin-transform-remove-debugger": "^6.9.4",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.0",
-    "react-reconciler": "0.9.0",
-    "regl": "^1.3.0"
+    "react-reconciler": "^0.20.4",
+    "regl": "^1.3.11"
   },
   "peerDependencies": {
-    "react": "^16.1.1"
+    "react": "^16.8.6"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.10",
@@ -75,7 +75,7 @@
     "gl-matrix": "^2.7.1",
     "jest": "^22.4.3",
     "pngjs": "^3.3.3",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1"
+    "react-dom": "^16.8.6",
+    "react": "^16.8.6"
   }
 }
