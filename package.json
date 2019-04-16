@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "babel-plugin-transform-remove-debugger": "^6.9.4",
+    "fbjs": "^1.0.0",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.0",
     "react-reconciler": "^0.20.4",
