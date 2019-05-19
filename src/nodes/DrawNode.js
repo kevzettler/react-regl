@@ -150,18 +150,22 @@ export default class DrawNode extends Node {
       Object.keys(newProps.attributes).forEach((newAttributeKey) => {
         if(!oldProps.attributes[newAttributeKey]){
           //TODO theres a new attribute passed to props. This needs to regenerate draw call?
-        }
+        } else { // attribute already exists on the definition can update
+          // the new attribute dosen't match the
+          if(!_.isEqual(
+            oldProps.attributes[newAttributeKey],
+            newProps.attributes[newAttributeKey])
+            ){
 
-        // the new attribute dosen't match the
-        // if there is a buffer cached update it
-        if(!_.isEqual(
-          oldProps.attributes[newAttributeKey],
-          newProps.attributes[newAttributeKey]) &&
-          this.reglDef.attributes[newAttributeKey].buffer
-        ){
-          this.reglDef.attributes[newAttributeKey].buffer(
-            newProps.attributes[newAttributeKey].buffer
-          );
+            // if there is a buffer cached update it
+            if(this.reglDef.attributes[newAttributeKey].buffer){
+              this.reglDef.attributes[newAttributeKey].buffer(
+                newProps.attributes[newAttributeKey].buffer
+              );
+            }else{
+              this.executionProps.attributes[newAttributeKey] = newProps.attributes[newAttributeKey];
+            }
+          }
         }
       })
     }
