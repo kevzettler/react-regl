@@ -50,7 +50,8 @@
     "regl": "^1.3.11"
   },
   "peerDependencies": {
-    "react": "^16.8.6"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.10",
@@ -75,8 +76,6 @@
     "gl-context": "^0.1.1",
     "gl-matrix": "^2.7.1",
     "jest": "^22.4.3",
-    "pngjs": "^3.3.3",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "pngjs": "^3.3.3"
   }
 }
