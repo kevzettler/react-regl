@@ -152,7 +152,7 @@ export default class DrawNode extends Node {
           //TODO theres a new attribute passed to props. This needs to regenerate draw call?
         } else { // attribute already exists on the definition can update
           // the new attribute dosen't match the
-          if(!_.isEqual(
+          if(!_isEqual(
             oldProps.attributes[newAttributeKey],
             newProps.attributes[newAttributeKey])
             ){
