@@ -2,8 +2,9 @@ import ReactFiberReconciler from 'react-reconciler';
 import invariant from 'fbjs/lib/invariant';
 import { unstable_now as now, unstable_scheduleCallback as scheduleCallback, unstable_cancelCallback as cancelCallback } from 'scheduler';
 
-import DrawNode from './nodes/DrawNode.js'
-import Node from './nodes/Node.js';
+import DrawNode from './nodes/DrawNode'
+import FrameNode from './nodes/FrameNode'
+import Node from './nodes/Node';
 
 
 export default ReactFiberReconciler({
@@ -23,11 +24,19 @@ export default ReactFiberReconciler({
     hostContext,
     internalInstanceHandle,
   ) {
-    if(type === 'Draw'){
-      return new DrawNode(props, hostContext.regl);
+    if(type === 'ReglDraw'){
+      return new DrawNode(props);
+    }
+
+    if(type === 'Frame'){
+      return new FrameNode(props);
     }
 
     return new Node(props, hostContext.regl);
+  },
+
+  clearContainer(){
+    return false;
   },
 
   commitMount(domElement, type, newProps, internalInstanceHandle,){
@@ -115,11 +124,6 @@ export default ReactFiberReconciler({
    */
   appendInitialChild(parentInstance, child) {
     parentInstance.appendChild(child);
-    /* if (parentInstance.appendChild) {
-     *   parentInstance.appendChild(child);
-     * } else {
-     *   parentInstance.document = child;
-     * }*/
   },
 
   appendChild(parentInstance, child) {
@@ -131,8 +135,7 @@ export default ReactFiberReconciler({
   },
 
   insertBefore(parentInstance, child, beforeChild) {
-    debugger;
-    // noob
+    // noop
   },
 
   /**
@@ -156,7 +159,6 @@ export default ReactFiberReconciler({
     rootContainerInstance,
     internalInstanceHandle,
   ) {
-    debugger;
     // noop
   },
 
@@ -188,6 +190,7 @@ export default ReactFiberReconciler({
    */
   prepareForCommit() {
     // noop
+    return null;
   },
 
   resetAfterCommit() {

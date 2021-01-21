@@ -7,7 +7,7 @@
 ## Demos
 [View demos in the Storybook](https://kevzettler.com/react-regl)
 
-There is a [React Storybook](https://storybook.js.org/) included in the `/docs` directory with usage examples. The source for the Storybook is in [`/stories`](./stories/index.js) directory and demonstrates how to create the examples.
+There is a [React Storybook](https://storybook.js.org/) included in the `/docs` directory with usage examples. The source for the Storybook is in the [`/stories`](./stories) directory and demonstrates how to create the examples.
 
 ## Install
 
@@ -16,51 +16,57 @@ npm install --save react-regl
 ```
 
 ## Usage
-This library is a React wrapper for the [Regl](http://regl.party/) library. Visit the [Regl gallery page](http://regl.party/examples) for more ideas on usage.
+This library enables [Regl](http://regl.party/) components to be rendered as React components. Visit the [Regl gallery page](http://regl.party/examples) for more ideas on usage.
 
 Define a `react-regl` component `Triangle.js`:
 
 ### Standalone ReglComponents
 ```javascript
-import React, { Component } from 'react';
-import { Draw } from 'react-regl';
+//
+// Triangle.js
+//
+import regl from 'react-regl';
+export const Triangle = regl({
+  vert: `
+          precision mediump float;
+          attribute vec2 position;
+          void main () {
+            gl_Position = vec4(position, 0, 1);
+          }`,
 
-class Triangle extends Component {
-  render(){
-    const {positions, color} = this.props;
-
-    return (
-      <Draw vert={triVert}
-            frag={triFrag}
-            attributes={{
-              positions: this.props.positions
-            }}
-            uniforms={{
-              color: this.props.color
-            }}
-            count={3}
-      />
-    );
-  }
-}
+  frag:`
+          precision mediump float;
+          uniform vec4 color;
+          void main () {
+            gl_FragColor = color;
+          }`,
+  attributes:{
+    position: [
+      [-1, 0],
+      [0, -1],
+      [1, 1]
+    ]
+  },
+  uniforms:{
+    color: [1, 0, 0, 1]
+  },
+  count: 3
+});
 ```
 
 ```javascript
-    import Regl from 'react-regl';
-    import Triangle from './triangle';
+import { ReglView } from 'react-regl'
+import { Triangle } from './Triangle.js'
 
-    // Import the Regl component and add it into JSX content
-    // Add the triangle component as a child of Regl pass it props
-
-    <div>
-        <h1>React Regl Example</h1>
-        <Regl width={window.innerWidth}
-              height={window.innerHeight}
-              onFrame={this.onFrameHandler.bind(this)}>
-              <Triangle color={[1,1,0.5,1]}
-                        positions={[[-0.5, 0],[0, -0.5],[0.25, 1]]} />
-        </Regl >
-    </div>
+const Template = ({children}) => {
+  return (
+    <ReglView width={600}
+              height={500}
+              color={[0.40625, 0.94921, 0.996, 1]}>
+       <Triangle />
+    </ReglView>
+  )
+}
 ```
 
 ### Motivation and Goals

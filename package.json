@@ -1,11 +1,14 @@
 {
   "name": "react-regl",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "A custom React Fiber reconciler renderer for regl webGL",
   "main": "dist/index.js",
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=12.18.1"
+  },
   "directories": {
     "example": "example"
   },
@@ -20,6 +23,7 @@
     "GLSL",
     "glslify",
     "scene",
+    "shaders",
     "graph"
   ],
   "author": "kevzettler",
@@ -31,18 +35,15 @@
   "scripts": {
     "build": "NODE_ENV=production babel src -d dist",
     "watch": "NODE_ENV=production babel src --watch -d dist",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
     "prebuild": "rm -rf ./dist",
-    "storybook": "./node_modules/.bin/start-storybook -p 6006",
-    "build-storybook": "./node_modules/.bin/build-storybook --output-dir ./docs"
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook --output-dir ./docs"
   },
   "jest": {
     "testEnvironment": "node"
   },
   "dependencies": {
-    "babel-plugin-transform-remove-debugger": "^6.9.4",
+    "deferred-regl": "git://github.com/kevzettler/deferred-regl#expose_queue",
     "fbjs": "^3.0.0",
     "lodash": "^4.17.20",
     "prop-types": "^15.7.2",
@@ -53,7 +54,15 @@
     "react": "^17.0.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-export-default-from": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "@babel/runtime": "^7.12.5",
     "@storybook/addon-actions": "^6.1.14",
+    "@storybook/addon-essentials": "^6.1.14",
     "@storybook/addon-knobs": "^6.1.14",
     "@storybook/addon-links": "^6.1.14",
     "@storybook/addon-options": "^5.3.21",
@@ -62,13 +71,7 @@
     "@storybook/cli": "^6.1.14",
     "@storybook/react": "^6.1.14",
     "arraybuffer-loader": "^1.0.8",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^10.1.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "babel-runtime": "^6.26.0",
+    "babel-loader": "^8.2.2",
     "buffer": "^6.0.3",
     "bunny": "^1.0.1",
     "gl": "^4.9.0",
@@ -77,6 +80,7 @@
     "jest": "^26.6.3",
     "pngjs": "^6.0.0",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "uninstall": "0.0.0"
   }
 }

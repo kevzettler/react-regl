@@ -1,4 +1,7 @@
 {
-  "presets": ["env", "stage-0", "react"],
-  "plugins": ["transform-remove-debugger"]
+  "presets": ["@babel/env", "@babel/react"],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-export-default-from"
+  ]
 }
