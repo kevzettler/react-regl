@@ -1,6 +1,9 @@
 export default class Node {
   parent = null;
   children = [];
+  constructor(id){
+    this.id = id;
+  }
 
   appendChild(child){
     child.parent = this;
@@ -17,5 +20,17 @@ export default class Node {
     const index = this.children.indexOf(beforeChild);
     child.parent = this;
     this.children.splice(index, 0, child);
+  }
+
+  render(){
+    this.children.forEach((child) => child.render());
+  }
+
+  destroy(){
+    this.children.forEach((child) => {
+      child.destroy();
+    })
+
+    this.parent = null;
   }
 }
