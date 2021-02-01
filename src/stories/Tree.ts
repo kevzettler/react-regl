@@ -1,4 +1,5 @@
-import regl from '../src';
+import regl from '../';
+import { DefaultContext } from 'regl';
 import { mat4 } from 'gl-matrix';
 
 import TreeBuffer from './static/tree1.aomesh';
@@ -110,7 +111,7 @@ void main() {
 
 
   uniforms:{
-    projection: ({viewportWidth, viewportHeight}) => {
+    projection: ({viewportWidth, viewportHeight}: DefaultContext) => {
       return mat4.perspective(
         mat4.create(),
         Math.PI / 4,
@@ -119,8 +120,7 @@ void main() {
         1000
       );
     },
-    view:  ({tick}) => {
-      const t = 0.01 * tick
+    view:  () => {
       return mat4.lookAt(
         mat4.create(),
         [40, 50, 40],

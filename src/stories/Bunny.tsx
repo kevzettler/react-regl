@@ -1,4 +1,4 @@
-import regl from '../src/'
+import regl from '../'
 import bunny from 'bunny';
 import { mat4 } from 'gl-matrix';
 
@@ -24,6 +24,6 @@ export const Bunny = regl({
   },
 
   uniforms:{
-    model: mat4.identity([])
+    model: mat4.identity(mat4.create())
   }
 });

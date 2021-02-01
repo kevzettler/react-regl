@@ -1,22 +1,27 @@
+export interface IBaseNodeProps{
+  id?: string
+}
+
 export default class Node {
-  parent = null;
-  children = [];
-  constructor(id){
+  id?: string | null = null;
+  parent?: Node | null = null;
+  children: Node[] = [];
+  constructor({ id }: IBaseNodeProps){
     this.id = id;
   }
 
-  appendChild(child){
+  appendChild(child: Node){
     child.parent = this;
     this.children.push(child);
   }
 
-  removeChild(child){
+  removeChild(child: Node){
     const index = this.children.indexOf(child);
     child.parent = null;
     this.children.splice(index, 1);
   }
 
-  insertBefore(child, beforeChild){
+  insertBefore(child: Node, beforeChild: Node){
     const index = this.children.indexOf(beforeChild);
     child.parent = this;
     this.children.splice(index, 0, child);
@@ -31,6 +36,8 @@ export default class Node {
       child.destroy();
     })
 
-    this.parent = null;
+    if(this.parent){
+      this.parent = null;
+    }
   }
 }

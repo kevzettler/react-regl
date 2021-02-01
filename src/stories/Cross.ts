@@ -1,4 +1,4 @@
-import regl from '../src';
+import regl from '../';
 
 export const Cross = regl({
   vert:`
