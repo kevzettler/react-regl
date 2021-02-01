@@ -1,30 +1,26 @@
-import regl, { ReglView, Frame } from '../src'
+import regl, { ReglFrame } from '../'
 import { Cube } from './Cube'
-import { mat4 } from 'gl-matrix';
+import { mat4, vec4} from 'gl-matrix';
 import bunny from 'bunny';
-
-const Template = ({children}) => {
-  return (
-    <ReglView width={600}
-              height={500}
-              color={[0.40625, 0.94921, 0.996, 1]}>
-      <Frame onFrame={() => regl.clear({color: backgroundColor})}>
-        {children}
-      </Frame>
-    </ReglView>
-  )
-}
 
 export default {
   title: "Regl/geometry",
 }
 
-const backgroundColor = [0.40625, 0.94921, 0.996, 1];
+const backgroundColor: vec4 = [0.40625, 0.94921, 0.996, 1];
 
-export const TexturedCube = () => <Template ><Cube/></Template>;
-
-
-
+export const TexturedCube = () => {
+  return (
+    <ReglFrame
+      width={600}
+      height={500}
+      color={[0.40625, 0.94921, 0.996, 1]}
+      onFrame={() => regl.clear({color: backgroundColor, depth: 1})}
+    >
+      <Cube/>
+    </ReglFrame>
+  );
+}
 
 
 export const CameraBunny = () => {
@@ -73,22 +69,20 @@ export const CameraBunny = () => {
     },
 
     uniforms:{
-      model: mat4.identity([])
+      model: mat4.identity(mat4.create())
     }
   });
 
-
   return (
-    <ReglView width={600}
-              height={500}
-              color={[0.40625, 0.94921, 0.996, 1]}>
-      <Frame onFrame={() => regl.clear({color: backgroundColor})}>
-        <Camera>
-          <Bunny/>
-        </Camera>
-      </Frame>
-    </ReglView>
+    <ReglFrame
+      width={600}
+      height={500}
+      color={backgroundColor}
+      onFrame={() => regl.clear({color: backgroundColor})}
+    >
+      <Camera>
+        <Bunny/>
+      </Camera>
+    </ReglFrame>
   );
-
-
 }

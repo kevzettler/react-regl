@@ -1,5 +1,5 @@
-import regl from '../src';
-import { Buffer } from 'buffer/';
+import regl from '../';
+import { Buffer } from 'buffer';
 import { PNG } from "pngjs";
 import { mat4 } from 'gl-matrix';
 import pepperArrayBuffer from './static/peppers.png';
@@ -65,19 +65,22 @@ export const Cube = regl({
 
   uniforms:{
     projection: ({viewportWidth, viewportHeight}) => {
-      return mat4.perspective([],
-                              Math.PI / 4,
-                              viewportWidth / viewportHeight,
-                              0.01,
-                              10)
+      return mat4.perspective(
+        mat4.create(),
+        Math.PI / 4,
+        viewportWidth / viewportHeight,
+        0.01,
+        10)
     },
 
     view: ({tick}) => {
       const t = 0.01 * tick
-      return mat4.lookAt([],
-                         [5 * Math.cos(t), 2.5 * Math.sin(t), 5 * Math.sin(t)],
-                         [0, 0.0, 0],
-                         [0, 1, 0])
+      return mat4.lookAt(
+        mat4.create(),
+        [5 * Math.cos(t), 2.5 * Math.sin(t), 5 * Math.sin(t)],
+        [0, 0.0, 0],
+        [0, 1, 0]
+      )
     },
 
     tex: regl.texture({
