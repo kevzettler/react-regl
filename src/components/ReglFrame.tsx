@@ -11,8 +11,8 @@ import reglDefer from '../reglDefer';
 import Node from '../nodes/Node';
 
 interface ReglFrameProps{
-  canvas?: HTMLCanvasElement
-  color?: Vec4,
+  canvasRef?: HTMLCanvasElement
+  color?: vec4,
   width?: number
   height?: number
   onLost?: () => void
@@ -41,20 +41,23 @@ export default class ReglFrame extends React.Component<ReglFrameProps, {}> {
   }
 
   componentDidMount(){
-    const canvasRef = this.props.canvas || this.canvasRef;
-    if(!canvasRef) throw new Error('ReglFrame requires a canvas ref prop');
+    const canvasRef = this.props.canvasRef || this.canvasRef;
+    let reglHandle = null
+    if(canvasRef){
+      const gl = canvasRef.getContext("webgl", {
+        alpha: false,
+        antialias: false,
+        stencil: false,
+        preserveDrawingBuffer: false
+      });
+      if(!gl) throw new Error('failed to aquire a gl context for regl');
+      reglHandle = reglInit({ gl });
+    }else{
+      reglHandle = reglInit();
+    }
 
-    const gl = canvasRef.getContext("webgl", {
-      alpha: false,
-      antialias: false,
-      stencil: false,
-      preserveDrawingBuffer: false
-    });
-
-    if(!gl) throw new Error("Failed to aquire webgl rendering context");
-    const regl = reglInit({ gl });
     this.initQueue = reglDefer.queue.slice(0);
-    reglDefer.setRegl(regl);
+    reglDefer.setRegl(reglHandle);
     this.regl = reglDefer;
 
     const rootNode = ReglRenderer.createContainer(new Node({id: 'root'}), false, false);
@@ -70,7 +73,7 @@ export default class ReglFrame extends React.Component<ReglFrameProps, {}> {
       if(this.props.onRestore) this.props.onRestore();
     })
 
-    const color: vec4 = this.props.color ? this.props.color : [0,0,0,1]
+    const color: vec4 = this.props.color ? this.props.color as Vec4 : [0,0,0,1]
     this.regl.clear({
       color,
       depth: this.props.depth || 1
@@ -80,10 +83,8 @@ export default class ReglFrame extends React.Component<ReglFrameProps, {}> {
       rootNode.containerInfo.render();
     });
 
-    // TODO wtf something is erasing the draw buffer after this mount render
-
     if(this.props.onFrame && typeof this.props.onFrame === 'function'){
-      this.tick = regl.frame((...args) => {
+      this.tick = this.regl.frame((...args) => {
         if(this.props.onFrame) this.props.onFrame(...args);
         if(this.rootNode) this.rootNode.containerInfo.render();
       });
@@ -106,20 +107,24 @@ export default class ReglFrame extends React.Component<ReglFrameProps, {}> {
     if(!this.rootNode) throw new Error("regl rootNode was undefined...");
     ReglRenderer.updateContainer(this.props.children, this.rootNode, this, () => {
       if(!this.rootNode) throw new Error("regl rootNode was undefined on update...");
-      debugger;
       this.rootNode.containerInfo.render();
     });
   }
 
   render(){
-    if(this.props.canvas){
+    if(
+      this.props.canvasRef ||
+      (!this.props.width && !this.props.height)
+    ){
       return null;
     }
 
     return (
-      <canvas ref={(canvasRef) => { if(canvasRef) this.canvasRef = canvasRef}}
-              width={this.props.width}
-              height={this.props.height} />
+      <canvas
+        ref={(canvasRef) => { if(canvasRef) this.canvasRef = canvasRef}}
+        width={this.props.width}
+        height={this.props.height}
+      />
     )
   }
 }

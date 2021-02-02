@@ -1,4 +1,4 @@
-import regl from '../';
+import regl, { ReglFrame } from '../../';
 export const Triangle = regl({
   vert: `
           precision mediump float;
@@ -25,3 +25,14 @@ export const Triangle = regl({
   },
   count: 3
 });
+
+
+export const BasicTriangle = () => {
+  return (
+    <ReglFrame
+      color={[0.40625, 0.94921, 0.996, 1]}
+    >
+      <Triangle />
+    </ReglFrame>
+  );
+};

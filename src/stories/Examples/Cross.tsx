@@ -1,4 +1,5 @@
-import regl from '../';
+import regl, { ReglFrame } from '../../';
+import { vec4 } from 'gl-matrix';
 
 export const Cross = regl({
   vert:`
@@ -61,3 +62,16 @@ color += vec3(cross(st,0.25));
 
   count: 3
 });
+
+
+export const AnimatedCross = () => {
+  const backgroundColor: vec4 = [0.40625, 0.94921, 0.996, 1];
+  return (
+    <ReglFrame
+      color={backgroundColor}
+      onFrame={() => regl.clear({color: backgroundColor})}
+    >
+      <Cross />
+    </ReglFrame>
+  )
+};
