@@ -1,8 +1,8 @@
-import regl from '../';
+import regl, { ReglFrame } from '../../';
 import { DefaultContext } from 'regl';
 import { mat4 } from 'gl-matrix';
 
-import TreeBuffer from './static/tree1.aomesh';
+import TreeBuffer from '../static/tree1.aomesh';
 const treeBuff = new Float32Array(TreeBuffer)
 
 export const Tree = regl({
@@ -133,3 +133,13 @@ void main() {
     model: mat4.identity(mat4.create()),
   }
  });
+
+export function VoxelTree(){
+  return (
+    <ReglFrame width={600}
+               height={500}
+               color={[0.40625, 0.94921, 0.996, 1]}>
+      <Tree />
+    </ReglFrame>
+  )
+}

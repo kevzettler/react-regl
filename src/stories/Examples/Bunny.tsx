@@ -1,29 +1,9 @@
-import regl, { ReglFrame } from '../'
-import { Cube } from './Cube'
-import { mat4, vec4} from 'gl-matrix';
+import regl, { ReglFrame } from '../../'
 import bunny from 'bunny';
+import { mat4, vec4 } from 'gl-matrix';
 
-export default {
-  title: "Regl/geometry",
-}
-
-const backgroundColor: vec4 = [0.40625, 0.94921, 0.996, 1];
-
-export const TexturedCube = () => {
-  return (
-    <ReglFrame
-      width={600}
-      height={500}
-      color={[0.40625, 0.94921, 0.996, 1]}
-      onFrame={() => regl.clear({color: backgroundColor, depth: 1})}
-    >
-      <Cube/>
-    </ReglFrame>
-  );
-}
-
-
-export const CameraBunny = () => {
+export const Bunny = () => {
+  const backgroundColor: vec4 = [0.40625, 0.94921, 0.996, 1];
   const Camera = regl({
     uniforms: {
       view: ({ tick }) => {
@@ -75,8 +55,6 @@ export const CameraBunny = () => {
 
   return (
     <ReglFrame
-      width={600}
-      height={500}
       color={backgroundColor}
       onFrame={() => regl.clear({color: backgroundColor})}
     >

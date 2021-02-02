@@ -1,8 +1,9 @@
-import regl from '../';
+import regl, { ReglFrame } from '../../';
+import { vec4 } from 'gl-matrix'
 import { Buffer } from 'buffer';
 import { PNG } from "pngjs";
 import { mat4 } from 'gl-matrix';
-import pepperArrayBuffer from './static/peppers.png';
+import pepperArrayBuffer from '../static/peppers.png';
 
 const pepperPNG =  PNG.sync.read(Buffer.from(pepperArrayBuffer));
 
@@ -92,3 +93,15 @@ export const Cube = regl({
     })
   }
 });
+
+export const TexturedCube = () => {
+  const backgroundColor: vec4 = [0.40625, 0.94921, 0.996, 1];
+  return (
+    <ReglFrame
+      color={[0.40625, 0.94921, 0.996, 1]}
+      onFrame={() => regl.clear({color: backgroundColor, depth: 1})}
+    >
+      <Cube/>
+    </ReglFrame>
+  );
+}
