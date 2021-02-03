@@ -5,7 +5,7 @@ import { mat4 } from 'gl-matrix';
 import TreeBuffer from '../static/tree1.aomesh';
 const treeBuff = new Float32Array(TreeBuffer)
 
-export const Tree = regl({
+const Tree = regl({
   vert:`
 precision highp float;
 attribute vec4 position;

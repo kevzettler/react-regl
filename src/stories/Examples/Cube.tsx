@@ -35,7 +35,7 @@ const cubeElements = [
   [20, 21, 22], [23, 20, 22]  // bottom face
 ];
 
-export const Cube = regl({
+const Cube = regl({
   vert:`
              precision mediump float;
              attribute vec3 position;

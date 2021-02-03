@@ -1,5 +1,5 @@
 import regl, { ReglFrame } from '../../';
-export const Triangle = regl({
+const Triangle = regl({
   vert: `
           precision mediump float;
           attribute vec2 position;
