@@ -1,7 +1,6 @@
 import ReactFiberReconciler from 'react-reconciler';
 import { unstable_now as now, unstable_scheduleCallback as scheduleCallback, unstable_cancelCallback as cancelCallback } from 'scheduler';
 import DrawNode, { IDrawNodeProps } from './nodes/DrawNode'
-import FrameNode, { IFrameNodeProps } from './nodes/FrameNode'
 import Node from './nodes/Node';
 
 
@@ -28,31 +27,27 @@ declare global {
 export default ReactFiberReconciler({
   supportsMutation: true,
   isPrimaryRenderer: false,
-  supportsPersistence: true,
+  supportsPersistence: false,
   supportsHydration: false,
   now,
   scheduleDeferredCallback: window.requestIdleCallback,
-  setTimeout: function(){},
-  clearTimeout: function(){},
-  noTimeout: function(){},
+
+  //this is not implmented in the type def but required
   //@ts-ignore
   clearContainer: function(rootNode: Node){
     rootNode.destroy();
   },
-  commitMount: function(){},
+
+  commitMount: function(instance, type, newProps, internalInstanceHandle){
+  },
 
   /**
    * Create component instance
    */
   createInstance(
     type: string,
-    props: IDrawNodeProps | IFrameNodeProps
+    props: IDrawNodeProps
   ) {
-
-    if(type === 'Frame'){
-      return new FrameNode(props as IFrameNodeProps);
-    }
-
     if(type === 'ReglDraw'){
       return new DrawNode(props as IDrawNodeProps);
     }
@@ -145,10 +140,9 @@ export default ReactFiberReconciler({
   },
 
   createTextInstance(
-    text,
   ) {
     // Not sure what to do with text nodes it expects a node return
-    return new Node({id: `text-${text}`});
+    throw new Error("Text nodes not supported as ReactRegl children");
   },
 
   shouldSetTextContent(){

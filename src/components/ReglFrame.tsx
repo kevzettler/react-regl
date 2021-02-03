@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import { FiberRoot } from 'react-reconciler'
 import reglInit, { FrameCallback, Cancellable, Vec4 } from 'regl';
 import {vec4} from 'gl-matrix'
@@ -27,6 +28,16 @@ export default class ReglFrame extends React.Component<ReglFrameProps, {}> {
   canvasRef: HTMLCanvasElement | null = null
   rootNode?: FiberRoot
   initQueue: any[] = []
+
+  static childContextTypes = {
+    reactify: PropTypes.bool
+  }
+
+  getChildContext(){
+    return {
+      reactify: true
+    }
+  }
 
   componentWillUnmount(){
     if(!this.rootNode) throw new Error('regl root node missing on component unmount');
@@ -60,7 +71,7 @@ export default class ReglFrame extends React.Component<ReglFrameProps, {}> {
     reglDefer.setRegl(reglHandle);
     this.regl = reglDefer;
 
-    const rootNode = ReglRenderer.createContainer(new Node({id: 'root'}), false, false);
+    const rootNode = ReglRenderer.createContainer(new Node({id: 'react-regl-root'}), false, false);
     this.rootNode = rootNode
 
     this.regl.on('lost', () => {
@@ -112,19 +123,15 @@ export default class ReglFrame extends React.Component<ReglFrameProps, {}> {
   }
 
   render(){
-    if(
-      this.props.canvasRef ||
-      (!this.props.width && !this.props.height)
-    ){
-      return null;
-    }
-
     return (
-      <canvas
-        ref={(canvasRef) => { if(canvasRef) this.canvasRef = canvasRef}}
-        width={this.props.width}
-        height={this.props.height}
-      />
+        (this.props.canvasRef || (!this.props.width && !this.props.height)) ?
+         null
+        :
+         <canvas
+           ref={(canvasRef) => { if(canvasRef) this.canvasRef = canvasRef}}
+           width={this.props.width}
+           height={this.props.height}
+         />
     )
   }
 }

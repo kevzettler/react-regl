@@ -1,7 +1,7 @@
 import regl, { ReglFrame } from '../../';
 import { vec4 } from 'gl-matrix';
 
-export const Cross = regl({
+const Cross = regl({
   vert:`
              attribute vec2 position;
              void main() {
