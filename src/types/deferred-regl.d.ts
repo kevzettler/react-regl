@@ -7,5 +7,5 @@ declare module "deferred-regl" {
     setQueue: (queuInput: any[]) => void
   }
 
-  export default () => Dregl
+  export default () => IDregl
 }

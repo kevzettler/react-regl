@@ -90,3 +90,17 @@ npm link ../react-regl
 cd ../react-regl
 npm link ../my-app/node_modules/react
 ```
+
+
+#### publishing
+
+publish to npm with the version command and `patch` `minor` `major`
+```
+npm version
+```
+
+`npm version` will create a git tag that needs to be pushed..
+```
+git push --tags
+
+```

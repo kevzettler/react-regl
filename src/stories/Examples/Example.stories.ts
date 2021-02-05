@@ -5,8 +5,13 @@ export default {
   }
 }
 
-export {VoxelTree} from './VoxelTree'
-export { Bunny } from './Bunny'
+
 export { BasicTriangle } from './Triangle'
-export { AnimatedCross } from './Cross'
+export { Batch } from './Batch'
+export { Bunny } from './Bunny'
 export { TexturedCube } from './Cube'
+export { Elements } from './Elements'
+
+export { AnimatedCross } from './Cross'
+
+export {VoxelTree} from './VoxelTree'

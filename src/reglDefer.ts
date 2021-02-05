@@ -3,18 +3,18 @@ import PropTypes from 'prop-types'
 import defregl, { IDregl } from 'deferred-regl';
 import { DrawConfig, DrawCommand, DefaultContext } from 'regl'
 
-const dregl = defregl();
+const dregl: IDregl = defregl();
 
 
-interface ReactReglComponent<DefinitionProps> {
+export interface ReactReglComponent<DefinitionProps> {
   <
    ExecutionProps extends {} = {}
   >(
-    executionProps: ExecutionProps, contextOrRef?: {reactify?: boolean}
-  ): React.ReactElement<DefinitionProps & ExecutionProps, 'ReglDraw'>,
+    executionProps?: ExecutionProps, contextOrRef?: {reactify?: boolean}
+  ): React.ReactElement<DefinitionProps & ExecutionProps & IDregl, 'ReglDraw'>,
 }
 
-interface IReactRegl extends IDregl{
+interface ReactRegl extends IDregl{
   <
   Uniforms extends {} = {},
   Attributes extends {} = {},
@@ -24,15 +24,12 @@ interface IReactRegl extends IDregl{
   >(
     drawConfig: DrawConfig<Uniforms, Attributes, Props, OwnContext, ParentContext>,
   ): ReactReglComponent<Props>
-  contextTypes: {
-    reactify?: boolean
-  }
 }
 
 // Wrap the deferred-regl wrapper
 // so that it returns a react element when called
 // within a react context
-const reactRegl = function(definitionProps: DrawConfig){
+const reactRegl: unknown = function(definitionProps: DrawConfig){
   let drawCommand: DrawCommand | null = null;
   const ReactReglComponent = (executionProps: any, contextOrRef: any) => {
     if(contextOrRef?.reactify === true){
@@ -58,8 +55,4 @@ const reactRegl = function(definitionProps: DrawConfig){
 // and also has prototype with extended regl resource generators
 Object.setPrototypeOf(reactRegl, dregl);
 
-// TSC is not picking up the prototype properties
-// TODO  need to do a declaration merged
-// https://stackoverflow.com/questions/12766528/build-a-function-object-with-properties-in-typescript
-//@ts-ignore
-export default reactRegl as IReactRegl;
+export default reactRegl as ReactRegl

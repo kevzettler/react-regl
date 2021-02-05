@@ -22,7 +22,7 @@ interface ReglFrameProps{
   onFrame?: FrameCallback
 }
 
-export default class ReglFrame extends React.Component<ReglFrameProps, {}> {
+export class ReglFrame extends React.Component<ReglFrameProps, {}> {
   regl?: IDregl
   tick?: Cancellable
   canvasRef: HTMLCanvasElement | null = null

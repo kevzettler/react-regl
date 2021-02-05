@@ -18,7 +18,7 @@ export default class DrawNode extends Node {
     super(props);
     this.dregl = props.dregl;
     this.drawCommand = props.dregl(props.definitionProps)
-    this.executionProps = props.executionProps;
+    this.executionProps = props.executionProps.batch ? props.executionProps.batch : props.executionProps;
   }
   render(){
     if(this.children.length){
