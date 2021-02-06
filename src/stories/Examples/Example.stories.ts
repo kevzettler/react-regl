@@ -11,6 +11,9 @@ export { Batch } from './Batch'
 export { Bunny } from './Bunny'
 export { TexturedCube } from './Cube'
 export { Elements } from './Elements'
+export { Feedback } from './Feedback'
+export { InstanceMesh } from './InstanceMesh'
+export { InstancedTriangle} from './InstanceTriangle'
 
 export { AnimatedCross } from './Cross'
 
