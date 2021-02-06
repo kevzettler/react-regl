@@ -36,9 +36,7 @@ export const Camera = () => {
       <ReglFrame
         onFrame={() => regl.clear({color: [0,0,0,1]})}
       >
-        <CameraController>
           <Bunny/>
-        </CameraController>
       </ReglFrame>
     );
 }

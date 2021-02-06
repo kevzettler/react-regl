@@ -82,6 +82,8 @@
     "babel-loader": "^8.2.2",
     "buffer": "^6.0.3",
     "bunny": "^1.0.1",
+    "canvas-fit": "^1.5.0",
+    "canvas-orbit-camera": "^1.0.2",
     "gl": "^4.9.0",
     "gl-context": "^0.1.1",
     "gl-matrix": "^3.3.0",

@@ -13,6 +13,8 @@ import Node from '../nodes/Node';
 
 interface ReglFrameProps{
   canvasRef?: HTMLCanvasElement
+  extensions?: string[]
+  optionalExtensions?: string[]
   color?: vec4,
   width?: number
   height?: number
@@ -53,7 +55,7 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
 
   componentDidMount(){
     const canvasRef = this.props.canvasRef || this.canvasRef;
-    let reglHandle = null
+    let initProps: reglInit.InitializationOptions = {}
     if(canvasRef){
       const gl = canvasRef.getContext("webgl", {
         alpha: false,
@@ -62,10 +64,13 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
         preserveDrawingBuffer: false
       });
       if(!gl) throw new Error('failed to aquire a gl context for regl');
-      reglHandle = reglInit({ gl });
-    }else{
-      reglHandle = reglInit();
+      initProps.gl = gl;
     }
+
+    if(this.props.extensions) initProps.extensions = this.props.extensions
+    if(this.props.optionalExtensions) initProps.optionalExtensions = this.props.optionalExtensions
+
+    let reglHandle = reglInit(initProps)
 
     this.initQueue = reglDefer.queue.slice(0);
     reglDefer.setRegl(reglHandle);

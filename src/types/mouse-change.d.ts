@@ -19,7 +19,7 @@ declare module 'mouse-change'{
     (buttons:MouseEvent.buttons, x:number, y:number, mods:mods): void
   }
 
-  function mouseChange (handle: mouseCallback): listener;
+  function mouseChange (handle?: mouseCallback): listener;
   function mouseChange (element: HTMLElement, handle: mouseCallback ): listener;
 
   export default mouseChange

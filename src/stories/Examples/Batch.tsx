@@ -35,6 +35,7 @@ const RotatingTriangle = regl({
       1
     ],
     angle: ({tick}) => 0.01 * tick,
+    //@ts-ignore
     offset: regl.prop('offset')
   },
 
