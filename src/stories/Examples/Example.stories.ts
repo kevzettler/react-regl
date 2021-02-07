@@ -14,7 +14,9 @@ export { Elements } from './Elements'
 export { Feedback } from './Feedback'
 export { InstanceMesh } from './InstanceMesh'
 export { InstancedTriangle} from './InstanceTriangle'
-
 export { AnimatedCross } from './Cross'
+export { Lighting } from './Lighting'
+
+export { LinePrimitives } from './LinePrimitives'
 
 export {VoxelTree} from './VoxelTree'
