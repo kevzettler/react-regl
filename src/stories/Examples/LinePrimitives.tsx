@@ -1,3 +1,4 @@
+import React from 'react'
 import regl, { ReglFrame } from '../../'
 import { mat4 } from 'gl-matrix'
 import createRng from 'seedrandom'
@@ -54,11 +55,10 @@ const Global = regl({
   }`
 })
 
-// make sure to respect system limitations.
-var lineWidth = 3
-if (lineWidth > regl.limits.lineWidthDims[1]) {
-  lineWidth = regl.limits.lineWidthDims[1]
-}
+// TODO
+// The lineWidth fns are ineffciant and should be set as a constant.
+// there is a discrpency on regl.limits between regl and deferred-regl
+// regl.limits is not set untill the regl inst has been initalized
 
 //
 // square
@@ -77,7 +77,14 @@ const Square = regl({
     position: squareVerts
   },
 
-  lineWidth,
+  lineWidth: () => {
+    var lineWidth = 3
+    if (lineWidth > regl.limits.lineWidthDims[1]) {
+      lineWidth = regl.limits.lineWidthDims[1]
+    }
+
+    return lineWidth
+  },
   count: squareVerts.length,
   primitive: 'line loop'
 })
@@ -106,7 +113,14 @@ const Triangle = regl({
     position: triVerts
   },
 
-  lineWidth,
+  lineWidth: () => {
+    var lineWidth = 3
+    if (lineWidth > regl.limits.lineWidthDims[1]) {
+      lineWidth = regl.limits.lineWidthDims[1]
+    }
+
+    return lineWidth
+  },
   count: triVerts.length,
   primitive: 'line loop',
 })
@@ -128,7 +142,14 @@ const Hexagon = regl({
     position: makeCircle(6)
   },
 
-  lineWidth,
+  lineWidth: () => {
+    var lineWidth = 3
+    if (lineWidth > regl.limits.lineWidthDims[1]) {
+      lineWidth = regl.limits.lineWidthDims[1]
+    }
+
+    return lineWidth
+  },
   count: hexVerts.length,
   primitive: 'line loop',
 })
@@ -155,7 +176,14 @@ const Star = regl({
     position: starVerts,
   },
 
-  lineWidth,
+  lineWidth: () => {
+    var lineWidth = 3
+    if (lineWidth > regl.limits.lineWidthDims[1]) {
+      lineWidth = regl.limits.lineWidthDims[1]
+    }
+
+    return lineWidth
+  },
   count: starVerts.length,
   primitive: 'line loop'
 });
@@ -182,7 +210,14 @@ const Rock = regl({
     position: rockVerts
   },
 
-  lineWidth,
+  lineWidth: () => {
+    var lineWidth = 3
+    if (lineWidth > regl.limits.lineWidthDims[1]) {
+      lineWidth = regl.limits.lineWidthDims[1]
+    }
+
+    return lineWidth
+  },
   count: rockVerts.length,
   primitive: 'line loop',
 })
@@ -209,7 +244,14 @@ const Spiral = regl({
     position: spiralVerts
   },
 
-  lineWidth,
+  lineWidth: () => {
+    var lineWidth = 3
+    if (lineWidth > regl.limits.lineWidthDims[1]) {
+      lineWidth = regl.limits.lineWidthDims[1]
+    }
+
+    return lineWidth
+  },
   primitive: 'line strip',
   count: spiralVerts.length,
 });
@@ -241,7 +283,14 @@ const Rose = regl({
     position: roseVert
   },
 
-  lineWidth,
+  lineWidth: () => {
+    var lineWidth = 3
+    if (lineWidth > regl.limits.lineWidthDims[1]) {
+      lineWidth = regl.limits.lineWidthDims[1]
+    }
+
+    return lineWidth
+  },
   primitive: 'line strip',
   count: roseVert.length
 })
@@ -266,7 +315,14 @@ const Sine = regl({
     position: sineVert
   },
 
-  lineWidth,
+  lineWidth: () => {
+    var lineWidth = 3
+    if (lineWidth > regl.limits.lineWidthDims[1]) {
+      lineWidth = regl.limits.lineWidthDims[1]
+    }
+
+    return lineWidth
+  },
   primitive: 'line strip',
   count: sineVert.length
 })
@@ -293,7 +349,14 @@ const Fade = regl({
     position: fadeVerts
   },
 
-  lineWidth,
+  lineWidth: () => {
+    var lineWidth = 3
+    if (lineWidth > regl.limits.lineWidthDims[1]) {
+      lineWidth = regl.limits.lineWidthDims[1]
+    }
+
+    return lineWidth
+  },
   primitive: 'line strip',
   count: fadeVerts.length,
 });

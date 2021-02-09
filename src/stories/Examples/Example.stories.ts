@@ -16,7 +16,6 @@ export { InstanceMesh } from './InstanceMesh'
 export { InstancedTriangle} from './InstanceTriangle'
 export { AnimatedCross } from './Cross'
 export { Lighting } from './Lighting'
+export {VoxelTree} from './VoxelTree'
 
 export { LinePrimitives } from './LinePrimitives'
-
-export {VoxelTree} from './VoxelTree'
