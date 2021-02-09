@@ -1,3 +1,4 @@
+import React from 'react'
 import regl, { ReglFrame } from '../../';
 import { DefaultContext } from 'regl';
 import { mat4 } from 'gl-matrix';
@@ -136,9 +137,8 @@ void main() {
 
 export function VoxelTree(){
   return (
-    <ReglFrame width={600}
-               height={500}
-               color={[0.40625, 0.94921, 0.996, 1]}>
+    <ReglFrame
+      color={[0.40625, 0.94921, 0.996, 1]}>
       <Tree />
     </ReglFrame>
   )

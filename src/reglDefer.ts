@@ -5,7 +5,6 @@ import { DrawConfig, DrawCommand, DefaultContext } from 'regl'
 
 const dregl: IDregl = defregl();
 
-
 export interface ReactReglComponent<DefinitionProps> {
   <
    ExecutionProps extends {} = {}
@@ -52,7 +51,7 @@ const reactRegl: unknown = function(definitionProps: DrawConfig){
   }
   return ReactReglComponent
 }
-// and also has prototype with extended regl resource generators
+// set prototype with extended regl resource generators
 Object.setPrototypeOf(reactRegl, dregl);
 
 export default reactRegl as ReactRegl

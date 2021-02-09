@@ -1,3 +1,4 @@
+import React from 'react'
 import regl, { ReglFrame } from '../../'
 import bunny from 'bunny';
 import normals from 'angle-normals';

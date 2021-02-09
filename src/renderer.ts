@@ -30,7 +30,7 @@ export default ReactFiberReconciler({
   supportsPersistence: false,
   supportsHydration: false,
   now,
-  scheduleDeferredCallback: window.requestIdleCallback,
+//  scheduleDeferredCallback: window.requestIdleCallback,
 
   //this is not implmented in the type def but required
   //@ts-ignore

@@ -1,3 +1,4 @@
+import React from 'react'
 import regl, { ReglFrame } from '../../'
 import normals from 'angle-normals';
 import { mat4 } from 'gl-matrix';

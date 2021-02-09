@@ -1,3 +1,4 @@
+import React from 'react'
 import regl, { ReglFrame } from '../../'
 import bunny from 'bunny';
 import { mat4, vec4 } from 'gl-matrix';
