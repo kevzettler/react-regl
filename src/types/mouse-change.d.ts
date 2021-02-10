@@ -1,5 +1,4 @@
 declare module 'mouse-change'{
-
   interface mods{
     shift: any
     alt: any
@@ -11,12 +10,12 @@ declare module 'mouse-change'{
     enabled: boolean
     x: number
     y: number
-    buttons: MouseEvent.buttons
+    buttons: MouseEvent["buttons"]
     mods: mods
   }
 
   interface mouseCallback{
-    (buttons:MouseEvent.buttons, x:number, y:number, mods:mods): void
+    (buttons:MouseEvent["buttons"], x:number, y:number, mods:mods): void
   }
 
   function mouseChange (handle?: mouseCallback): listener;

@@ -1,15 +1,17 @@
+/// <reference path="./types/deferred-regl.d.ts" />
+/// <reference types="./types/deferred-regl" />
 import React from 'react';
 import PropTypes from 'prop-types'
 import defregl, { IDregl } from 'deferred-regl';
-import { DrawConfig, DrawCommand, DefaultContext } from 'regl'
+import { DrawConfig, DrawCommand, DefaultContext, DynamicVariable } from 'regl'
 
 const dregl: IDregl = defregl();
 
-export interface ReactReglComponent<DefinitionProps> {
+export interface ReactReglComponent<DefinitionProps> extends DrawCommand {
   <
    ExecutionProps extends {} = {}
   >(
-    executionProps?: ExecutionProps, contextOrRef?: {reactify?: boolean}
+    executionProps: ExecutionProps, contextOrRef: {reactify?: boolean}
   ): React.ReactElement<DefinitionProps & ExecutionProps & IDregl, 'ReglDraw'>,
 }
 
@@ -23,6 +25,12 @@ interface ReactRegl extends IDregl{
   >(
     drawConfig: DrawConfig<Uniforms, Attributes, Props, OwnContext, ParentContext>,
   ): ReactReglComponent<Props>
+
+  //FIXME
+  // this is an override for the regl.prop method
+  // theres some magic with the base regl.prop declaration that is failing
+  // https://github.com/regl-project/regl/issues/602
+  prop<Key>(name: Key): DynamicVariable<Key>;
 }
 
 // Wrap the deferred-regl wrapper
@@ -43,7 +51,7 @@ const reactRegl: unknown = function(definitionProps: DrawConfig){
     if(drawCommand === null){
       throw new Error('failed to initalize regl drawCommand')
     }
-    return drawCommand(executionProps)
+    return drawCommand(executionProps, contextOrRef)
   }
 
   ReactReglComponent.contextTypes = {
