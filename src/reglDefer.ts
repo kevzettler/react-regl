@@ -1,4 +1,5 @@
 /// <reference path="./types/deferred-regl.d.ts" />
+/// <reference types="./types/deferred-regl" />
 import React from 'react';
 import PropTypes from 'prop-types'
 import defregl, { IDregl } from 'deferred-regl';
