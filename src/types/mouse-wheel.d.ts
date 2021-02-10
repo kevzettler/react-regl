@@ -5,7 +5,7 @@ declare module 'mouse-wheel'{
       dy:number,
       dz:number,
       ev:number
-    )
+    ): void
   }
 
   interface listener{
