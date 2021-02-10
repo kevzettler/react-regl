@@ -1,6 +1,6 @@
 {
   "name": "react-regl",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "description": "A custom React Fiber reconciler renderer for regl webGL",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
