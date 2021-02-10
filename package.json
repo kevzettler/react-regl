@@ -34,8 +34,8 @@
   },
   "homepage": "https://github.com/kevzettler/react-regl#readme",
   "scripts": {
-    "prepublish": "tsc",
-    "build": "npm run clean && NODE_ENV=production tsc",
+    "prepublish": "build",
+    "build": "npm run clean && NODE_ENV=production tsc && mkdir ./dist/types && cp ./src/types/deferred-regl.d.ts ./dist/types/",
     "clean": "rimraf ./dist",
     "watch": "NODE_ENV=production babel src --watch -d dist",
     "prebuild": "rm -rf ./dist",
