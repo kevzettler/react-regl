@@ -25,6 +25,9 @@ import regl, { ReglFrame } from 'react-regl';
 
 // Define a draw call for rendering a 2D triangle
 const Triangle = regl({
+  // Shaders in regl are just strings.  You can use glslify or whatever you want
+  // to define them.  No need to manually create shader objects.
+
   vert: `
           precision mediump float;
           attribute vec2 position;
@@ -38,27 +41,32 @@ const Triangle = regl({
           void main () {
             gl_FragColor = color;
           }`,
+
+  // Here we define the vertex attributes for the above shader
   attributes:{
     position: [
       [-1, 0],
       [0, -1],
       [1, 1]
     ]
+    // regl automatically infers sane defaults for the vertex attribute pointers
   },
+
   uniforms:{
-    color: [1, 0, 0, 1]
+    // This defines a dynamic regl value that can bethat can be passed as a react prop
+    color: regl.prop('color')
   },
+
+  // This tells regl the number of vertices to draw in this command
   count: 3
 });
 
-// Create an 'App' component that renders a frame and
+// Create an 'App' component that renders a regl frame and
 // renders the triangle draw call
 const App = () => {
   return (
-    <ReglFrame
-      color={[0.40625, 0.94921, 0.996, 1]}
-    >
-      <Triangle />
+    <ReglFrame>
+      <Triangle color={[1, 0, 0, 1]} />
     </ReglFrame>
   );
 };
