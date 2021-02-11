@@ -9,12 +9,12 @@ import defregl, { IDregl } from 'deferred-regl';
 const dregl: IDregl = defregl();
 
 
-export interface ReactReglComponent<DefinitionProps> {
+export interface ReactReglComponent<DefinitionProps> extends Regl.DrawCommand {
   <
    ExecutionProps extends {} = {}
   >(
     executionProps: ExecutionProps, contextOrRef: {reactify?: boolean}
-  ): React.ReactElement<DefinitionProps & ExecutionProps & IDregl, 'ReglDraw'> | void
+  ): React.ReactElement<DefinitionProps & ExecutionProps & IDregl, 'ReglDraw'> | null
 }
 
 interface ReactRegl extends IDregl{
@@ -58,7 +58,8 @@ const reactRegl: unknown = function(definitionProps: Regl.DrawConfig){
     if(drawCommand === null){
       throw new Error('failed to initalize regl drawCommand')
     }
-    return drawCommand(executionProps, contextOrRef)
+    drawCommand(executionProps, contextOrRef)
+    return null;
   }
 
   ReactReglComponent.contextTypes = {
