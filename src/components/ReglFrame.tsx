@@ -6,7 +6,7 @@ import {vec4} from 'gl-matrix'
 import { IDregl } from 'deferred-regl';
 import ReglRenderer from '../renderer';
 
-import reglDefer from '../reglDefer';
+import reactRegl from '../reactRegl';
 
 
 import Node from '../nodes/Node';
@@ -44,12 +44,12 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
   componentWillUnmount(){
     if(!this.rootNode) throw new Error('regl root node missing on component unmount');
     ReglRenderer.updateContainer(null, this.rootNode, this, () => {
-      reglDefer.setQueue(this.initQueue.slice(0));
+      reactRegl.setQueue(this.initQueue.slice(0));
       if(this.tick) this.tick.cancel();
       if(this.regl){
         this.regl.destroy();
       }
-      reglDefer.setRegl();
+      reactRegl.setRegl();
     });
   }
 
@@ -72,9 +72,9 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
 
     let reglHandle = reglInit(initProps)
 
-    this.initQueue = reglDefer.queue.slice(0);
-    reglDefer.setRegl(reglHandle);
-    this.regl = reglDefer;
+    this.initQueue = reactRegl.queue.slice(0);
+    reactRegl.setRegl(reglHandle);
+    this.regl = reactRegl;
 
     const rootNode = ReglRenderer.createContainer(new Node({id: 'react-regl-root'}), false, false);
     this.rootNode = rootNode
