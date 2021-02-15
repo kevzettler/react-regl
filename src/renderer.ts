@@ -95,6 +95,29 @@ export default ReactFiberReconciler({
     return true
   },
 
+  prepareUpdate(
+    instance: any,
+    type,
+    oldProps: any,
+    newProps: any,
+  ){
+    if(
+      instance.executionProps !== newProps.executionProps
+    ){
+      return newProps.executionProps;
+    }
+
+    return null;
+  },
+
+  commitUpdate(
+    instance: any,
+    updatePayload,
+    type,
+  ){
+    instance.executionProps = updatePayload;
+  },
+
   /**
    * Append the children. If children are wrapped inside a parent container, then push all the children
    * inside it else we create a property called `document` on a parent node and append all the childrens
@@ -117,10 +140,6 @@ export default ReactFiberReconciler({
 
   getPublicInstance(inst) {
     return inst;
-  },
-
-  prepareUpdate(){
-    return null
   },
 
   cancelDeferredCallback(callbackID){
