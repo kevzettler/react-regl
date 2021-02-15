@@ -92,7 +92,11 @@ Regl follows the unix philosophy of "small sharp tools" or "do one thing and do 
 `npm link` and local installs `npm i -S react-regl@file:../react-regl`
 should link to consuming project. `npm run build` should be run in the `react-regl` module directory
 
-### Link the component
+
+### React peer dependency error
+
+If default `npm link` or local install fails with od errors about duplicate react versions you need to ensure the module is loading react from the consuming host project
+
 ```
 cd my-app
 npm link ../react-regl
