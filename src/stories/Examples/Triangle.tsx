@@ -31,8 +31,7 @@ const Triangle = regl({
 export const BasicTriangle = () => {
   return (
     <ReglFrame
-      color={[0.40625, 0.94921, 0.996, 1]}
-    >
+      color={[0.40625, 0.94921, 0.996, 1]}>
       <Triangle />
     </ReglFrame>
   );

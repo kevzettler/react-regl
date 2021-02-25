@@ -42,10 +42,10 @@ const reactRegl: unknown = function(definitionProps: Regl.DrawConfig){
   let drawCommand: Regl.DrawCommand | null = null;
   // TODO execution props should enforce type safety of DynamicVariables for user defined `regl.prop`
   const ReactReglComponent = (
-    executionProps: Partial<typeof definitionProps & {children?: ReactChildren}>,
-    contextOrRef: any
+    executionProps?: Partial<typeof definitionProps & {children?: ReactChildren}>,
+    contextOrRef?: any
   ) => {
-    if(contextOrRef?.reactify === true){
+    if(executionProps && contextOrRef?.reactify === true){
       const merged = {definitionProps, executionProps, dregl};
       const children = executionProps.children ? executionProps.children : null
       return React.createElement('ReglDraw', merged, children);
@@ -58,7 +58,9 @@ const reactRegl: unknown = function(definitionProps: Regl.DrawConfig){
     if(drawCommand === null){
       throw new Error('failed to initalize regl drawCommand')
     }
-    return drawCommand(executionProps, contextOrRef)
+
+    let drawCommandProps = executionProps ? executionProps : {}
+    return drawCommand(drawCommandProps, contextOrRef)
   }
 
   ReactReglComponent.contextTypes = {

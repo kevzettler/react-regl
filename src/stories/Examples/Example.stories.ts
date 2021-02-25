@@ -8,6 +8,7 @@ export default {
 
 export { BasicTriangle } from './Triangle'
 export { Batch } from './Batch'
+export { Texture } from './Texture'
 export { Bunny } from './Bunny'
 export { TexturedCube } from './Cube'
 export { Elements } from './Elements'
@@ -23,3 +24,5 @@ export { LinePrimitives } from './LinePrimitives'
 // export { Minecraft } from './Minecraft'
 export { MipMap } from './MipMap'
 export { Particles } from './Particles'
+// export { Text } from './Text'
+export { Scopes } from './Scopes'
