@@ -46,8 +46,10 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "deferred-regl": "git://github.com/kevzettler/deferred-regl#expose_queue",
+    "deferred-regl": "git://github.com/kevzettler/deferred-regl#eb3a4f3e0b6d2e8748d02a1e40a7cce98b95df02",
     "fbjs": "^3.0.0",
+    "getusermedia": "^2.0.1",
+    "hsv2rgb": "^1.1.0",
     "lodash": "^4.17.20",
     "prop-types": "^15.7.2",
     "react-reconciler": "^0.26.1",
