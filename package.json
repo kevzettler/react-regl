@@ -46,6 +46,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
+    "baboon-image": "^2.1.0",
     "deferred-regl": "git://github.com/kevzettler/deferred-regl#eb3a4f3e0b6d2e8748d02a1e40a7cce98b95df02",
     "fbjs": "^3.0.0",
     "getusermedia": "^2.0.1",
@@ -54,7 +55,8 @@
     "prop-types": "^15.7.2",
     "react-reconciler": "^0.26.1",
     "regl": "^2.0.1",
-    "requestidlecallback": "^0.3.0"
+    "requestidlecallback": "^0.3.0",
+    "vectorize-text": "^3.2.1"
   },
   "peerDependencies": {
     "react": "^17.0.1"

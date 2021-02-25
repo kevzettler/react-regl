@@ -109,43 +109,44 @@ const backgroundColor: [number,number,number,number] = [0,0,0, 1];
 
 export const InstanceMesh = () => {
   const [camera, setCamera] = React.useState(null);
-  const [canvas, setCanvas] = React.useState(null);
-  React.useEffect(() => {
-    const canvas = document.body.appendChild(document.createElement('canvas'))
-    setCanvas(canvas);
-    return () => { document.body.removeChild(canvas)}
-  }, [])
+  const [view, setView] = React.useState(mat4.create());
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+
 
   React.useEffect(() => {
-    const fitHandler = fit(canvas);
+    const fitHandler = fit(canvasRef.current);
+    const camera = createCamera(canvasRef.current)
     window.addEventListener('resize', fitHandler, false)
-    const camera = createCamera(canvas)
-    setCamera(camera);
 
     // configure initial camera view.
     camera.rotate([0.0, 0.0], [0.0, -0.4])
     camera.zoom(70.0)
-    return () => { window.removeEventListener('resize', fitHandler) }
-  }, [canvas]);
+    setCamera(camera);
+    return () => {
+      window.removeEventListener('resize', fitHandler)
+    }
+  }, [])
 
   function frameTick(){
+    if(!camera) return null;
     regl.clear({color: backgroundColor})
     for (var i = 0; i < N * N; i++) {
       angle[i] += 0.01
     }
     angleBuffer.subdata(angle)
     camera.tick()
+    setView(camera.view())
   }
 
-  if(!canvas || !camera) return null;
   return (
     <ReglFrame
-      canvasRef={canvas}
+      forwardedRef={canvasRef}
       extensions={['angle_instanced_arrays']}
       color={backgroundColor}
-      onFrame={frameTick}
-    >
-      <Bunnies view={camera.view()} />
+      onFrame={frameTick}>
+      {camera ?
+       <Bunnies id="Bunnies" view={view} />
+      : null }
     </ReglFrame>
   );
 }

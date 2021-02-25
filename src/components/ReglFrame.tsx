@@ -13,6 +13,7 @@ import Node from '../nodes/Node';
 
 interface ReglFrameProps{
   canvasRef?: HTMLCanvasElement
+  forwardedRef?: (ref:HTMLCanvasElement) => void
   extensions?: string[]
   optionalExtensions?: string[]
   color?: vec4,
@@ -22,6 +23,7 @@ interface ReglFrameProps{
   onRestore?: () => void
   depth?: 1 | 0
   onFrame?: FrameCallback
+
 }
 
 export class ReglFrame extends React.Component<ReglFrameProps, {}> {
@@ -81,6 +83,11 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     if(this.props.optionalExtensions) initProps.optionalExtensions = this.props.optionalExtensions
 
     let reglHandle = reglInit(initProps)
+
+    if(this.props.forwardedRef) {
+      //@ts-ignore
+      this.props.forwardedRef.current = reglHandle._gl.canvas
+    }
     this.initQueue = reactRegl.queue.slice(0);
 
     reactRegl.setRegl(reglHandle);
@@ -138,6 +145,7 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     });
   }
 
+
   render(){
     // if user has passed an explicit canvas ref
     // or width && height have been omitted
@@ -149,9 +157,17 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
       return null
     }
 
+    // otherwise render a canvas node
     return (
       <canvas
-        ref={(canvasRef) => { if(canvasRef) this.canvasRef = canvasRef}}
+        ref={(canvasRef) => {
+          if(canvasRef){
+            this.canvasRef = canvasRef;
+            if(this.props.forwardedRef){
+              this.props.forwardedRef(canvasRef);
+            }
+          }
+        }}
         width={this.props.width}
         height={this.props.height}
       />

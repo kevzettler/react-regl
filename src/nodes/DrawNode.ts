@@ -16,12 +16,12 @@ export default class DrawNode extends Node {
 
   constructor(props: IDrawNodeProps){
     super(props);
-    if(props.executionProps.id) {
+    if(props.executionProps?.id) {
       this.id = props.executionProps.id;
     }
     this.dregl = props.dregl;
     this.drawCommand = props.dregl(props.definitionProps)
-    this.executionProps = props.executionProps.batch ? props.executionProps.batch : props.executionProps;
+    this.executionProps = props.executionProps?.batch ? props.executionProps.batch : props.executionProps;
   }
   render(){
     if(this.children.length){
@@ -31,6 +31,7 @@ export default class DrawNode extends Node {
         })
       });
     }else{
+      if(this.id === 'Bunnies') console.log(this.executionProps.view);
       this.drawCommand(this.executionProps);
     }
   }
