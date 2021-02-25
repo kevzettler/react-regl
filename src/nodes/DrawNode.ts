@@ -8,14 +8,17 @@ export interface IDrawNodeProps extends IBaseNodeProps {
   executionProps: any
 };
 
-
 export default class DrawNode extends Node {
   dregl: Regl
   drawCommand: DrawCommand
   executionProps: any
+  id?: string
 
   constructor(props: IDrawNodeProps){
     super(props);
+    if(props.executionProps.id) {
+      this.id = props.executionProps.id;
+    }
     this.dregl = props.dregl;
     this.drawCommand = props.dregl(props.definitionProps)
     this.executionProps = props.executionProps.batch ? props.executionProps.batch : props.executionProps;

@@ -25,6 +25,7 @@ interface ReglFrameProps{
 }
 
 export class ReglFrame extends React.Component<ReglFrameProps, {}> {
+  reglHandle?: any
   regl?: IDregl
   tick?: Cancellable
   canvasRef: HTMLCanvasElement | null = null
@@ -42,15 +43,24 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
   }
 
   componentWillUnmount(){
-    if(!this.rootNode) throw new Error('regl root node missing on component unmount');
-    ReglRenderer.updateContainer(null, this.rootNode, this, () => {
+    if(!this.rootNode) {
+      console.error('regl root node missing on component unmount?')
       reactRegl.setQueue(this.initQueue.slice(0));
       if(this.tick) this.tick.cancel();
       if(this.regl){
         this.regl.destroy();
       }
       reactRegl.setRegl();
-    });
+    }else{
+      ReglRenderer.updateContainer(null, this.rootNode, this, () => {
+        reactRegl.setQueue(this.initQueue.slice(0));
+        if(this.tick) this.tick.cancel();
+        if(this.regl){
+          this.regl.destroy();
+        }
+        reactRegl.setRegl();
+      });
+    }
   }
 
   componentDidMount(){
@@ -71,8 +81,8 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     if(this.props.optionalExtensions) initProps.optionalExtensions = this.props.optionalExtensions
 
     let reglHandle = reglInit(initProps)
-
     this.initQueue = reactRegl.queue.slice(0);
+
     reactRegl.setRegl(reglHandle);
     this.regl = reactRegl;
 
@@ -123,20 +133,28 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     if(!this.rootNode) throw new Error("regl rootNode was undefined...");
     ReglRenderer.updateContainer(this.props.children, this.rootNode, this, () => {
       if(!this.rootNode) throw new Error("regl rootNode was undefined on update...");
+      console.log('Reglframe update!!!!!');
       this.rootNode.containerInfo.render();
     });
   }
 
   render(){
+    // if user has passed an explicit canvas ref
+    // or width && height have been omitted
+    // return null and let regls default full canvas handle it.
+    if(
+      this.props.canvasRef ||
+      (!this.props.width && !this.props.height)
+    ){
+      return null
+    }
+
     return (
-        (this.props.canvasRef || (!this.props.width && !this.props.height)) ?
-         null
-        :
-         <canvas
-           ref={(canvasRef) => { if(canvasRef) this.canvasRef = canvasRef}}
-           width={this.props.width}
-           height={this.props.height}
-         />
+      <canvas
+        ref={(canvasRef) => { if(canvasRef) this.canvasRef = canvasRef}}
+        width={this.props.width}
+        height={this.props.height}
+      />
     )
   }
 }

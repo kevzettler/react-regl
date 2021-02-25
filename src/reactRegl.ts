@@ -58,8 +58,7 @@ const reactRegl: unknown = function(definitionProps: Regl.DrawConfig){
     if(drawCommand === null){
       throw new Error('failed to initalize regl drawCommand')
     }
-    drawCommand(executionProps, contextOrRef)
-    return null;
+    return drawCommand(executionProps, contextOrRef)
   }
 
   ReactReglComponent.contextTypes = {

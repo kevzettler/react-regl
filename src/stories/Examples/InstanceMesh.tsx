@@ -6,15 +6,6 @@ import normals from 'angle-normals'
 import createCamera from 'canvas-orbit-camera';
 import fit from 'canvas-fit'
 
-const canvas = document.body.appendChild(document.createElement('canvas'))
-window.addEventListener('resize', fit(canvas), false)
-
-const camera = createCamera(canvas)
-
-// configure initial camera view.
-camera.rotate([0.0, 0.0], [0.0, -0.4])
-camera.zoom(70.0)
-
 var N = 15 // N bunnies on the width, N bunnies on the height.
 
 const angle: number[] = [];
@@ -110,24 +101,43 @@ const Bunnies = regl({
         1000
       ),
     model: mat4.identity(mat4.create()),
-    view: () => camera.view()
+    view: regl.prop('view')
   }
 })
 
 const backgroundColor: [number,number,number,number] = [0,0,0, 1];
 
-function frameTick(){
-  regl.clear({color: backgroundColor})
-  for (var i = 0; i < N * N; i++) {
-    angle[i] += 0.01
+export const InstanceMesh = () => {
+  const [camera, setCamera] = React.useState(null);
+  const [canvas, setCanvas] = React.useState(null);
+  React.useEffect(() => {
+    const canvas = document.body.appendChild(document.createElement('canvas'))
+    setCanvas(canvas);
+    return () => { document.body.removeChild(canvas)}
+  }, [])
+
+  React.useEffect(() => {
+    const fitHandler = fit(canvas);
+    window.addEventListener('resize', fitHandler, false)
+    const camera = createCamera(canvas)
+    setCamera(camera);
+
+    // configure initial camera view.
+    camera.rotate([0.0, 0.0], [0.0, -0.4])
+    camera.zoom(70.0)
+    return () => { window.removeEventListener('resize', fitHandler) }
+  }, [canvas]);
+
+  function frameTick(){
+    regl.clear({color: backgroundColor})
+    for (var i = 0; i < N * N; i++) {
+      angle[i] += 0.01
+    }
+    angleBuffer.subdata(angle)
+    camera.tick()
   }
 
-  angleBuffer.subdata(angle)
-
-  camera.tick()
-}
-
-export const InstanceMesh = () => {
+  if(!canvas || !camera) return null;
   return (
     <ReglFrame
       canvasRef={canvas}
@@ -135,7 +145,7 @@ export const InstanceMesh = () => {
       color={backgroundColor}
       onFrame={frameTick}
     >
-      <Bunnies />
+      <Bunnies view={camera.view()} />
     </ReglFrame>
   );
 }
