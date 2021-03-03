@@ -29,3 +29,4 @@ export { Scopes } from './Scopes'
 export { Tile } from './Tile'
 
 export { Graph } from './Graph'
+export { Line } from './Line'
