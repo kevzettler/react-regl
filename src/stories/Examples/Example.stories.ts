@@ -27,3 +27,5 @@ export { Particles } from './Particles'
 // export { Text } from './Text'
 export { Scopes } from './Scopes'
 export { Tile } from './Tile'
+
+export { Graph } from './Graph'
