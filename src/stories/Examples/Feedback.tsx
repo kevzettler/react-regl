@@ -54,12 +54,11 @@ const DrawFeedback = regl({
 export const Feedback = () => {
   return (
     <ReglFrame
-    onFrame={() => {
-      regl.clear({color: [0,0,0,1]})
-      pixels({copy: true})
-    }}
-    >
-    <DrawFeedback />
+      onFrame={() => {
+        regl.clear({color: [0,0,0,1]})
+        DrawFeedback()
+        pixels()({copy: true})
+      }}>
     </ReglFrame>
   );
 }
