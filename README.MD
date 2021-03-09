@@ -1,6 +1,7 @@
 # react-regl
 This library enables [Regl](http://regl.party/) shader WebGL draw commands to be rendered directly as React components.
 
+[![Stability](https://img.shields.io/badge/Stability-Experimental-orange.svg)](https://nodejs.org/api/documentation.html#documentation_stability_index)
 [![npm version](https://badge.fury.io/js/react-regl.svg)](https://badge.fury.io/js/react-regl)
 [![Dependency Status](https://david-dm.org/kevzettler/react-regl.svg)](https://david-dm.org/kevzettler/react-regl)
 [![Build Status](https://travis-ci.org/kevzettler/react-regl.svg?branch=master)](https://travis-ci.org/kevzettler/react-regl)
