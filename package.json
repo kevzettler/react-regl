@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "baboon-image": "^2.1.0",
-    "deferred-regl": "https://github.com/kevzettler/deferred-regl.git#2354fd89fa9bacd670ab74bf5fd51ef570458b5e",
+    "deferred-regl": "git://github.com/kevzettler/deferred-regl.git#2354fd89fa9bacd670ab74bf5fd51ef570458b5e",
     "fbjs": "^3.0.0",
     "getusermedia": "^2.0.1",
     "hsv2rgb": "^1.1.0",
