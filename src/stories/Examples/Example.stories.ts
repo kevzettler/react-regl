@@ -30,3 +30,5 @@ export { Tile } from './Tile'
 
 //export { Graph } from './Graph'
 export { Line } from './Line'
+
+export { Loader } from './Loader'

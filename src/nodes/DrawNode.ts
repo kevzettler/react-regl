@@ -8,6 +8,17 @@ export interface IDrawNodeProps extends IBaseNodeProps {
   executionProps: any
 };
 
+function expandDeferredProps(executionProps: any){
+  return Object.entries(executionProps).reduce((expanded: any, [key, val]: [string, any]) => {
+    if(val.deferred_regl_resource){
+      expanded[key] = val()
+    }else{
+      expanded[key] = val
+    }
+    return expanded;
+  }, {})
+}
+
 export default class DrawNode extends Node {
   dregl: Regl
   drawCommand: DrawCommand
@@ -21,9 +32,12 @@ export default class DrawNode extends Node {
     }
     this.dregl = props.dregl;
     this.drawCommand = props.dregl(props.definitionProps)
-    this.executionProps = props.executionProps?.batch ? props.executionProps.batch : props.executionProps;
+    this.executionProps = props.executionProps?.batch ?
+                          props.executionProps.batch.map(expandDeferredProps) :
+                          expandDeferredProps(props.executionProps);
   }
   render(){
+    // Expand any deferred regal functions
     if(this.children.length){
       this.drawCommand(this.executionProps, () => {
         this.children.forEach((child) => {

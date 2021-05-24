@@ -45,16 +45,17 @@ const reactRegl: unknown = function(definitionProps: Regl.DrawConfig){
     executionProps?: Partial<typeof definitionProps & {children?: ReactChildren}>,
     contextOrRef?: any
   ) => {
+    // intalized as a react context return react element
     if(executionProps && contextOrRef?.reactify === true){
       const merged = {definitionProps, executionProps, dregl};
       const children = executionProps.children ? executionProps.children : null
       return React.createElement('ReglDraw', merged, children);
     }
 
+    // intalized as regular regl command
     if(drawCommand === null){
       drawCommand = dregl(definitionProps);
     }
-
     if(drawCommand === null){
       throw new Error('failed to initalize regl drawCommand')
     }
