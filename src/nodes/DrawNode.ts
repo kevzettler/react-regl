@@ -10,7 +10,7 @@ export interface IDrawNodeProps extends IBaseNodeProps {
 
 function expandDeferredProps(executionProps: any){
   return Object.entries(executionProps).reduce((expanded: any, [key, val]: [string, any]) => {
-    if(val.deferred_regl_resource){
+    if(typeof val === 'function' && val.deferred_regl_resource){
       expanded[key] = val()
     }else{
       expanded[key] = val
