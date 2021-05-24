@@ -1,14 +1,19 @@
 import React from 'react'
 import regl, { ReglFrame } from '../../';
 
+function normalized(value, min, max){
+  return (value - min) / (max - min);
+}
+
 const BigTriangle = regl({
   vert: `
   precision mediump float;
   attribute vec2 position;
+  attribute vec2 texCoord;
   varying vec2 uv;
   void main () {
-    uv = position;
-    gl_Position = vec4(1.0 - 2.0 * position, 0, 1);
+    uv = texCoord;
+    gl_Position = vec4(position, 0, 1);
   }`,
 
   frag: `
@@ -21,16 +26,27 @@ const BigTriangle = regl({
 
   attributes: {
     position: [
-      -2, 0,
-      0, -2,
-      2, 2]
+      -1, 1,
+      -1, -1,
+      1, -1,
+      1, 1
+    ],
+    texCoord: [
+      0, 1,
+      0, 0,
+      1, 0,
+      1, 1
+    ]
   },
 
   uniforms: {
     texture: regl.prop('texture')
   },
 
-  count: 3
+  elements: [
+    [0,1,2],
+    [0,2,3]
+  ]
 })
 
 export const Loader = () => {
@@ -50,9 +66,10 @@ export const Loader = () => {
         onLoad={handleImage} />
       {loaded ?
        <ReglFrame
-         width={600}
-         height={600}>
-         <BigTriangle  texture={regl.texture(image.current)}/>
+         width={512}
+         height={512}
+       >
+         <BigTriangle  texture={regl.texture({data: image.current, flipY: true})}/>
        </ReglFrame>
       : null }
     </>
