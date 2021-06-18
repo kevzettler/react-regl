@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { FiberRoot } from 'react-reconciler'
-import reglInit, { FrameCallback, Cancellable, Vec4 } from 'regl';
+import reglInit, { FrameCallback, Cancellable, Vec4, Regl } from 'regl';
 import {vec4} from 'gl-matrix'
-import { IDregl } from 'deferred-regl';
 import ReglRenderer from '../renderer';
+import defregl, { IDregl } from 'deferred-regl';
 
-import reactRegl from '../reactRegl';
-
-
+import globalDeferredRegl from '../reactRegl';
 import Node from '../nodes/Node';
 
 interface ReglFrameProps{
@@ -28,39 +26,47 @@ interface ReglFrameProps{
 
 export class ReglFrame extends React.Component<ReglFrameProps, {}> {
   reglHandle?: any
-  regl?: IDregl
   tick?: Cancellable
   canvasRef: HTMLCanvasElement | null = null
-  rootNode?: FiberRoot
+  fiberRoot?: FiberRoot
   initQueue: any[] = []
+  legitRegl?: Regl
+  deferredRegl?: IDregl
 
   static childContextTypes = {
-    reactify: PropTypes.bool
+    reactify: PropTypes.bool,
+  }
+
+  constructor(props: any){
+    super(props);
+    this.deferredRegl = defregl()
   }
 
   getChildContext(){
     return {
-      reactify: true
+      reactify: true,
     }
   }
 
   componentWillUnmount(){
-    if(!this.rootNode) {
+    if(!this.fiberRoot) {
+      if(!this.deferredRegl) throw Error('failed to deferre regl')
       console.error('regl root node missing on component unmount?')
-      reactRegl.setQueue(this.initQueue.slice(0));
+      this.deferredRegl.setQueue(this.initQueue.slice(0));
       if(this.tick) this.tick.cancel();
-      if(this.regl){
-        this.regl.destroy();
+      if(this.legitRegl){
+        this.legitRegl.destroy();
       }
-      reactRegl.setRegl();
+      this.deferredRegl.setRegl();
     }else{
-      ReglRenderer.updateContainer(null, this.rootNode, this, () => {
-        reactRegl.setQueue(this.initQueue.slice(0));
+      ReglRenderer.updateContainer(null, this.fiberRoot, this, () => {
+        if(!this.deferredRegl) throw Error('failed to deferre regl')
+        this.deferredRegl.setQueue(this.initQueue.slice(0));
         if(this.tick) this.tick.cancel();
-        if(this.regl){
-          this.regl.destroy();
+        if(this.legitRegl){
+          this.legitRegl.destroy();
         }
-        reactRegl.setRegl();
+        this.deferredRegl.setRegl();
       });
     }
   }
@@ -82,44 +88,50 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     if(this.props.extensions) initProps.extensions = this.props.extensions
     if(this.props.optionalExtensions) initProps.optionalExtensions = this.props.optionalExtensions
 
-    let reglHandle = reglInit(initProps)
+    this.legitRegl = reglInit(initProps)
 
     if(this.props.forwardedRef) {
       //@ts-ignore
-      this.props.forwardedRef.current = reglHandle._gl.canvas
+      this.props.forwardedRef.current = legitReglRef._gl.canvas
     }
-    this.initQueue = reactRegl.queue.slice(0);
 
-    reactRegl.setRegl(reglHandle);
-    this.regl = reactRegl;
+    if(!this.deferredRegl) throw Error('failed to deferre regl')
+    this.initQueue = this.deferredRegl.queue.slice(0);
 
-    const rootNode = ReglRenderer.createContainer(new Node({id: 'react-regl-root'}), false, false);
-    this.rootNode = rootNode
+    const node0 = new Node({id: 'react-regl-root', regl: this.legitRegl});
+    const fiberRoot = ReglRenderer.createContainer(node0, false, false);
 
-    this.regl.on('lost', () => {
+    if(!this.deferredRegl) throw Error('failed to deferre regl')
+    this.deferredRegl.setRegl(this.legitRegl);
+    this.fiberRoot = fiberRoot
+
+    this.legitRegl.on('lost', () => {
       console.error('Regl WebGL context lost');
       if(this.props.onLost) this.props.onLost();
     })
 
-    this.regl.on('restore', () => {
+    this.legitRegl.on('restore', () => {
       console.log('Regl WebGL context restored');
       if(this.props.onRestore) this.props.onRestore();
     })
 
     const color: vec4 = this.props.color ? this.props.color as Vec4 : [0,0,0,1]
-    this.regl.clear({
+    this.legitRegl.clear({
       color,
       depth: this.props.depth || 1
     });
 
-    ReglRenderer.updateContainer(this.props.children, this.rootNode, this, () => {
-      rootNode.containerInfo.render();
+    // This is where children get mounted to root node
+    // and DrawNode constructors called
+    ReglRenderer.updateContainer(this.props.children, this.fiberRoot, this, () => {
+      fiberRoot.containerInfo.render();
     });
+    globalDeferredRegl.setRegl(this.legitRegl);
 
     if(this.props.onFrame && typeof this.props.onFrame === 'function'){
-      this.tick = this.regl.frame((...args) => {
-        if(this.props.onFrame) this.props.onFrame(...args);
-        if(this.rootNode) this.rootNode.containerInfo.render();
+      this.tick = this.legitRegl.frame((context: any) => {
+        if(this.props.onFrame) this.props.onFrame(context);
+        if(this.fiberRoot) this.fiberRoot.containerInfo.render();
       });
     }
   }
@@ -132,16 +144,16 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
       prevProps.width !== this.props.width ||
       prevProps.height !== this.props.height
     ){
-      if(this.regl) {
-        this.regl.poll();
+      if(this.legitRegl) {
+        this.legitRegl.poll();
       }
     }
 
-    if(!this.rootNode) throw new Error("regl rootNode was undefined...");
-    ReglRenderer.updateContainer(this.props.children, this.rootNode, this, () => {
-      if(!this.rootNode) throw new Error("regl rootNode was undefined on update...");
+    if(!this.fiberRoot) throw new Error("regl fiberRoot was undefined...");
+    ReglRenderer.updateContainer(this.props.children, this.fiberRoot, this, () => {
+      if(!this.fiberRoot) throw new Error("regl fiberRoot was undefined on update...");
       console.log('Reglframe update!!!!!');
-      this.rootNode.containerInfo.render();
+      this.fiberRoot.containerInfo.render();
     });
   }
 

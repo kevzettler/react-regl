@@ -46,10 +46,12 @@ export default ReactFiberReconciler({
    */
   createInstance(
     type: string,
-    props: IDrawNodeProps
+    props: IDrawNodeProps,
+    rootContainerInstance: any,
+    hostContext: any
   ) {
     if(type === 'ReglDraw'){
-      return new DrawNode(props as IDrawNodeProps);
+      return new DrawNode(props as IDrawNodeProps, rootContainerInstance.regl);
     }
 
     return new Node(props);

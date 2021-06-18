@@ -1,17 +1,23 @@
 import { DrawConfig, DrawCommand, Regl } from 'regl';
 import Node, {IBaseNodeProps} from '../nodes/Node';
+import globalDeferredRegl from '../reactRegl';
 
 export interface IDrawNodeProps extends IBaseNodeProps {
   dregl: Regl;
   drawCommand: DrawCommand,
-  definitionProps: DrawConfig
+  definitionProps: DrawConfig & {id?: string}
   executionProps: any
 };
 
-function expandDeferredProps(executionProps: any){
+function expandDeferredProps(executionProps: any, regl: Regl){
   return Object.entries(executionProps).reduce((expanded: any, [key, val]: [string, any]) => {
     if(typeof val === 'function' && val.deferred_regl_resource){
-      expanded[key] = val()
+      //@ts-ignore regl not indexed but we need to dynamically access method
+      expanded[key] = regl[val.key](val.opts)
+      // TODO remove the deffered item from the global queue
+      globalDeferredRegl.queue.splice(val.queueIndex, 1);
+    }else if(Object.prototype.toString.call(val) === '[object Object]' && key !== 'children'){
+      expanded[key] = expandDeferredProps(val, regl)
     }else{
       expanded[key] = val
     }
@@ -20,24 +26,29 @@ function expandDeferredProps(executionProps: any){
 }
 
 export default class DrawNode extends Node {
-  dregl: Regl
   drawCommand: DrawCommand
   executionProps: any
   id?: string
 
-  constructor(props: IDrawNodeProps){
+  constructor(props: IDrawNodeProps, regl:Regl){
     super(props);
-    if(props.executionProps?.id) {
-      this.id = props.executionProps.id;
+    if(props.definitionProps?.id) this.id = props.definitionProps.id; delete props.definitionProps.id;
+    if(props.executionProps?.id) this.id = props.executionProps.id;
+
+    this.drawCommand = regl({
+      ...props.definitionProps,
+      attributes: props.definitionProps.attributes,
+      // Expand any deferred regal functions
+      uniforms: expandDeferredProps(props.definitionProps.uniforms, regl)
+    })
+
+    if(props.executionProps){
+      this.executionProps = props.executionProps.batch ?
+                            props.executionProps.batch.map((batchProp: any) => expandDeferredProps(batchProp, regl)) :
+                            expandDeferredProps(props.executionProps, regl);
     }
-    this.dregl = props.dregl;
-    this.drawCommand = props.dregl(props.definitionProps)
-    this.executionProps = props.executionProps?.batch ?
-                          props.executionProps.batch.map(expandDeferredProps) :
-                          expandDeferredProps(props.executionProps);
   }
   render(){
-    // Expand any deferred regal functions
     if(this.children.length){
       this.drawCommand(this.executionProps, () => {
         this.children.forEach((child) => {
@@ -45,7 +56,6 @@ export default class DrawNode extends Node {
         })
       });
     }else{
-      if(this.id === 'Bunnies') console.log(this.executionProps.view);
       this.drawCommand(this.executionProps);
     }
   }

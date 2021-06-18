@@ -1,13 +1,17 @@
+import { Regl } from 'regl';
 export interface IBaseNodeProps{
   id?: string
+  regl: Regl
 }
 
 export default class Node {
   id?: string | null = null;
   parent?: Node | null = null;
   children: Node[] = [];
-  constructor({ id }: IBaseNodeProps){
+  regl?: Regl
+  constructor({ id, regl }: IBaseNodeProps){
     this.id = id;
+    this.regl = regl;
   }
 
   appendChild(child: Node){

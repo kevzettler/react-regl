@@ -65,12 +65,19 @@ export const Loader = () => {
         ref={image}
         onLoad={handleImage} />
       {loaded ?
-       <ReglFrame
-         width={512}
-         height={512}
-       >
-         <BigTriangle  texture={regl.texture({data: image.current, flipY: true})}/>
-       </ReglFrame>
+       <>
+         <ReglFrame
+           width={200}
+           height={200}>
+           <BigTriangle  texture={regl.texture({data: image.current, flipY: true})}/>
+         </ReglFrame>
+
+         <ReglFrame
+           width={200}
+           height={200}>
+           <BigTriangle  texture={regl.texture({data: image.current})}/>
+         </ReglFrame>
+      </>
       : null }
     </>
   );

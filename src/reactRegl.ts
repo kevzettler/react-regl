@@ -6,7 +6,7 @@ import Regl from 'regl'
 import defregl, { IDregl } from 'deferred-regl';
 
 
-const dregl: IDregl = defregl();
+const globalDeferredRegl: IDregl = defregl();
 
 
 export interface ReactReglComponent<DefinitionProps> extends Regl.DrawCommand {
@@ -47,14 +47,14 @@ const reactRegl: unknown = function(definitionProps: Regl.DrawConfig){
   ) => {
     // intalized as a react context return react element
     if(executionProps && contextOrRef?.reactify === true){
-      const merged = {definitionProps, executionProps, dregl};
+      const merged = {definitionProps, executionProps};
       const children = executionProps.children ? executionProps.children : null
       return React.createElement('ReglDraw', merged, children);
     }
 
     // intalized as regular regl command
     if(drawCommand === null){
-      drawCommand = dregl(definitionProps);
+      drawCommand = globalDeferredRegl(definitionProps);
     }
     if(drawCommand === null){
       throw new Error('failed to initalize regl drawCommand')
@@ -70,7 +70,7 @@ const reactRegl: unknown = function(definitionProps: Regl.DrawConfig){
 
   return ReactReglComponent
 }
-Object.setPrototypeOf(reactRegl, dregl)
+Object.setPrototypeOf(reactRegl, globalDeferredRegl)
 
 
 export default reactRegl as ReactRegl;

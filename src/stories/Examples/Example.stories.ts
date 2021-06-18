@@ -32,3 +32,5 @@ export { Tile } from './Tile'
 export { Line } from './Line'
 
 export { Loader } from './Loader'
+
+export { Multi } from './Multi'

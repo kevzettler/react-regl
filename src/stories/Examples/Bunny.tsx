@@ -6,6 +6,7 @@ import { mat4, vec4 } from 'gl-matrix';
 export const Bunny = () => {
   const backgroundColor: vec4 = [0.40625, 0.94921, 0.996, 1];
   const Camera = regl({
+    id: "Camera",
     uniforms: {
       view: ({ tick }) => {
         const t = 0.01 * tick
@@ -29,6 +30,7 @@ export const Bunny = () => {
 
 
   const Bunny = regl({
+    id: "Bunny",
     vert:`
              precision mediump float;
              attribute vec3 position;
@@ -57,8 +59,7 @@ export const Bunny = () => {
   return (
     <ReglFrame
       color={backgroundColor}
-      onFrame={() => regl.clear({color: backgroundColor})}
-    >
+      onFrame={() => regl.clear({color: backgroundColor, depth: 1})}>
       <Camera>
         <Bunny/>
       </Camera>

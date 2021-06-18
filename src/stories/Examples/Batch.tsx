@@ -50,8 +50,7 @@ const RotatingTriangle = regl({
 export const Batch = () => {
   return (
     <ReglFrame
-      onFrame={() => regl.clear({color: [0,0,0,1]})}
-    >
+      onFrame={() => regl.clear({color: [0,0,0,1]})}>
       <RotatingTriangle batch={[
         { offset: [-1, -1] },
         { offset: [-1, 0] },
