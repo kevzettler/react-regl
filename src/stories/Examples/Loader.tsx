@@ -5,7 +5,8 @@ function normalized(value, min, max){
   return (value - min) / (max - min);
 }
 
-const BigTriangle = regl({
+const Quad = regl({
+  id: "Quad",
   vert: `
   precision mediump float;
   attribute vec2 position;
@@ -69,15 +70,15 @@ export const Loader = () => {
          <ReglFrame
            width={200}
            height={200}>
-           <BigTriangle  texture={regl.texture({data: image.current, flipY: true})}/>
+           <Quad texture={regl.texture({data: image.current})}/>
          </ReglFrame>
 
          <ReglFrame
            width={200}
            height={200}>
-           <BigTriangle  texture={regl.texture({data: image.current})}/>
+           <Quad texture={regl.texture({data: image.current, flipY: true})}/>
          </ReglFrame>
-      </>
+       </>
       : null }
     </>
   );

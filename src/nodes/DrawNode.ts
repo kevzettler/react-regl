@@ -9,8 +9,8 @@ export interface IDrawNodeProps extends IBaseNodeProps {
   executionProps: any
 };
 
-function expandDeferredProps(executionProps: any, regl: Regl){
-  return Object.entries(executionProps).reduce((expanded: any, [key, val]: [string, any]) => {
+function expandDeferredProps(deferredProps: any, regl: Regl){
+  return Object.entries(deferredProps).reduce((expanded: any, [key, val]: [string, any]) => {
     if(typeof val === 'function' && val.deferred_regl_resource){
       //@ts-ignore regl not indexed but we need to dynamically access method
       expanded[key] = regl[val.key](val.opts)
@@ -28,6 +28,7 @@ function expandDeferredProps(executionProps: any, regl: Regl){
 export default class DrawNode extends Node {
   drawCommand: DrawCommand
   executionProps: any
+  definitionProps: any
   id?: string
 
   constructor(props: IDrawNodeProps, regl:Regl){
@@ -35,12 +36,15 @@ export default class DrawNode extends Node {
     if(props.definitionProps?.id) this.id = props.definitionProps.id; delete props.definitionProps.id;
     if(props.executionProps?.id) this.id = props.executionProps.id;
 
-    this.drawCommand = regl({
+    this.definitionProps = {
       ...props.definitionProps,
-      attributes: props.definitionProps.attributes,
-      // Expand any deferred regal functions
-      uniforms: expandDeferredProps(props.definitionProps.uniforms, regl)
-    })
+    }
+
+    // Expand any deferred regl functions
+    if(props.definitionProps.attributes) this.definitionProps.attributes = expandDeferredProps(props.definitionProps.attributes, regl);
+    if(props.definitionProps.uniforms) this.definitionProps.uniforms = expandDeferredProps(props.definitionProps.uniforms, regl);
+
+    this.drawCommand = regl(this.definitionProps)
 
     if(props.executionProps){
       this.executionProps = props.executionProps.batch ?
@@ -48,6 +52,7 @@ export default class DrawNode extends Node {
                             expandDeferredProps(props.executionProps, regl);
     }
   }
+
   render(){
     if(this.children.length){
       this.drawCommand(this.executionProps, () => {

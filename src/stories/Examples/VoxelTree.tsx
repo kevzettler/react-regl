@@ -7,6 +7,7 @@ import TreeBuffer from '../static/tree1.aomesh';
 const treeBuff = new Float32Array(TreeBuffer)
 
 const Tree = regl({
+  id:"Tree",
   vert:`
 precision highp float;
 attribute vec4 position;

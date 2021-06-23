@@ -3,7 +3,7 @@ declare module "deferred-regl"{
 
   export interface IDregl extends Regl{
     setRegl: (regl?: Regl) => void
-    queue: []
+    queue: any[]
     setQueue: (queuInput: any[]) => void
     (): IDregl
   }

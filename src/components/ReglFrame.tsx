@@ -5,6 +5,7 @@ import reglInit, { FrameCallback, Cancellable, Vec4, Regl } from 'regl';
 import {vec4} from 'gl-matrix'
 import ReglRenderer from '../renderer';
 import defregl, { IDregl } from 'deferred-regl';
+import * as ts from "typescript";
 
 import globalDeferredRegl from '../reactRegl';
 import Node from '../nodes/Node';
@@ -49,26 +50,15 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
   }
 
   componentWillUnmount(){
-    if(!this.fiberRoot) {
-      if(!this.deferredRegl) throw Error('failed to deferre regl')
-      console.error('regl root node missing on component unmount?')
-      this.deferredRegl.setQueue(this.initQueue.slice(0));
+    if(!this.fiberRoot) throw Error('failed to unmount missing fiberRoot')
+    ReglRenderer.updateContainer(null, this.fiberRoot, this, () => {
+//      if(!this.deferredRegl) throw Error('failed to deferr regl')
+      globalDeferredRegl.setQueue(this.initQueue.slice(0));
       if(this.tick) this.tick.cancel();
-      if(this.legitRegl){
-        this.legitRegl.destroy();
-      }
-      this.deferredRegl.setRegl();
-    }else{
-      ReglRenderer.updateContainer(null, this.fiberRoot, this, () => {
-        if(!this.deferredRegl) throw Error('failed to deferre regl')
-        this.deferredRegl.setQueue(this.initQueue.slice(0));
-        if(this.tick) this.tick.cancel();
-        if(this.legitRegl){
-          this.legitRegl.destroy();
-        }
-        this.deferredRegl.setRegl();
-      });
-    }
+//      this.deferredRegl.setRegl();
+      if(this.legitRegl) this.legitRegl.destroy();
+      globalDeferredRegl.setRegl();
+    });
   }
 
   componentDidMount(){
@@ -92,17 +82,19 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
 
     if(this.props.forwardedRef) {
       //@ts-ignore
-      this.props.forwardedRef.current = legitReglRef._gl.canvas
+      this.props.forwardedRef.current = this.legitRegl._gl.canvas
     }
-
-    if(!this.deferredRegl) throw Error('failed to deferre regl')
-    this.initQueue = this.deferredRegl.queue.slice(0);
 
     const node0 = new Node({id: 'react-regl-root', regl: this.legitRegl});
     const fiberRoot = ReglRenderer.createContainer(node0, false, false);
 
-    if(!this.deferredRegl) throw Error('failed to deferre regl')
-    this.deferredRegl.setRegl(this.legitRegl);
+    //    if(!this.deferredRegfl) throw Error('failed to deferre regl')
+
+    // Update all global deferred functions to
+
+    //    this.deferredRegl.setRegl(this.legitRegl);:147
+    this.initQueue = globalDeferredRegl.queue.slice(0);
+    globalDeferredRegl.setRegl(this.legitRegl);
     this.fiberRoot = fiberRoot
 
     this.legitRegl.on('lost', () => {
@@ -126,7 +118,7 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     ReglRenderer.updateContainer(this.props.children, this.fiberRoot, this, () => {
       fiberRoot.containerInfo.render();
     });
-    globalDeferredRegl.setRegl(this.legitRegl);
+
 
     if(this.props.onFrame && typeof this.props.onFrame === 'function'){
       this.tick = this.legitRegl.frame((context: any) => {
@@ -152,7 +144,6 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     if(!this.fiberRoot) throw new Error("regl fiberRoot was undefined...");
     ReglRenderer.updateContainer(this.props.children, this.fiberRoot, this, () => {
       if(!this.fiberRoot) throw new Error("regl fiberRoot was undefined on update...");
-      console.log('Reglframe update!!!!!');
       this.fiberRoot.containerInfo.render();
     });
   }
