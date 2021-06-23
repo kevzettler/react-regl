@@ -14,8 +14,6 @@ function expandDeferredProps(deferredProps: any, regl: Regl){
     if(typeof val === 'function' && val.deferred_regl_resource){
       //@ts-ignore regl not indexed but we need to dynamically access method
       expanded[key] = regl[val.key](val.opts)
-      // TODO remove the deffered item from the global queue
-      globalDeferredRegl.queue.splice(val.queueIndex, 1);
     }else if(Object.prototype.toString.call(val) === '[object Object]' && key !== 'children'){
       expanded[key] = expandDeferredProps(val, regl)
     }else{

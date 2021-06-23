@@ -22,7 +22,6 @@ interface ReglFrameProps{
   onRestore?: () => void
   depth?: 1 | 0
   onFrame?: FrameCallback
-
 }
 
 export class ReglFrame extends React.Component<ReglFrameProps, {}> {
@@ -38,24 +37,17 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     reactify: PropTypes.bool,
   }
 
-  constructor(props: any){
-    super(props);
-    this.deferredRegl = defregl()
-  }
-
   getChildContext(){
     return {
-      reactify: true,
+      reactify: true
     }
   }
 
   componentWillUnmount(){
     if(!this.fiberRoot) throw Error('failed to unmount missing fiberRoot')
     ReglRenderer.updateContainer(null, this.fiberRoot, this, () => {
-//      if(!this.deferredRegl) throw Error('failed to deferr regl')
       globalDeferredRegl.setQueue(this.initQueue.slice(0));
       if(this.tick) this.tick.cancel();
-//      this.deferredRegl.setRegl();
       if(this.legitRegl) this.legitRegl.destroy();
       globalDeferredRegl.setRegl();
     });
@@ -87,15 +79,11 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
 
     const node0 = new Node({id: 'react-regl-root', regl: this.legitRegl});
     const fiberRoot = ReglRenderer.createContainer(node0, false, false);
-
-    //    if(!this.deferredRegfl) throw Error('failed to deferre regl')
+    this.fiberRoot = fiberRoot
 
     // Update all global deferred functions to
-
-    //    this.deferredRegl.setRegl(this.legitRegl);:147
     this.initQueue = globalDeferredRegl.queue.slice(0);
     globalDeferredRegl.setRegl(this.legitRegl);
-    this.fiberRoot = fiberRoot
 
     this.legitRegl.on('lost', () => {
       console.error('Regl WebGL context lost');
