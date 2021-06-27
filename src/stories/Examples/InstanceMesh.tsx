@@ -85,7 +85,13 @@ const Bunnies = regl({
     },
 
     angle: {
-      buffer: angleBuffer,
+      buffer: () => {
+        for (var i = 0; i < N * N; i++) {
+          angle[i] += 0.01
+        }
+        angleBuffer.subdata(angle)
+        return angleBuffer()
+      },
       divisor: 1
     }
   },
@@ -127,13 +133,10 @@ export const InstanceMesh = () => {
     }
   }, [])
 
-  function frameTick(){
+
+  function frameTick(context, regl){
     if(!camera) return null;
     regl.clear({color: backgroundColor})
-    for (var i = 0; i < N * N; i++) {
-      angle[i] += 0.01
-    }
-    angleBuffer.subdata(angle)
     camera.tick()
     setView(camera.view())
   }

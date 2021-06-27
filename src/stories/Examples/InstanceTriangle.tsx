@@ -66,7 +66,15 @@ const Triangle = regl({
     },
 
     angle: {
-      buffer: angleBuffer,
+      buffer: () => {
+        // rotate the triangles every frame.
+        for (var i = 0; i < N * N; i++) {
+          angle[i] += 0.01
+        }
+
+        angleBuffer.subdata(angle)
+        return angleBuffer()
+      },
       divisor: 1 // one separate angle for every triangle
     }
   },
@@ -82,17 +90,10 @@ const Triangle = regl({
   instances: N * N
 })
 
-function onFrame(){
+function onFrame(context, regl){
   regl.clear({
     color: [0, 0, 0, 1]
   })
-
-  // rotate the triangles every frame.
-  for (var i = 0; i < N * N; i++) {
-    angle[i] += 0.01
-  }
-
-  angleBuffer.subdata(angle)
 }
 
 export const InstancedTriangle = () => {

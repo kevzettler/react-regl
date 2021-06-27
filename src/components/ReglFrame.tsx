@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { FiberRoot } from 'react-reconciler'
-import reglInit, { FrameCallback, Cancellable, Vec4, Regl } from 'regl';
+import reglInit, { FrameCallback, Cancellable, Vec4, Regl, DefaultContext } from 'regl';
 import {vec4} from 'gl-matrix'
 import ReglRenderer from '../renderer';
-import defregl, { IDregl } from 'deferred-regl';
-import * as ts from "typescript";
 
 import globalDeferredRegl from '../reactRegl';
 import Node from '../nodes/Node';
@@ -21,7 +19,7 @@ interface ReglFrameProps{
   onLost?: () => void
   onRestore?: () => void
   depth?: 1 | 0
-  onFrame?: FrameCallback
+  onFrame?: (context: DefaultContext, regl: Regl) => void;
 }
 
 export class ReglFrame extends React.Component<ReglFrameProps, {}> {
@@ -31,7 +29,6 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
   fiberRoot?: FiberRoot
   initQueue: any[] = []
   legitRegl?: Regl
-  deferredRegl?: IDregl
 
   static childContextTypes = {
     reactify: PropTypes.bool,
@@ -81,10 +78,6 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     const fiberRoot = ReglRenderer.createContainer(node0, false, false);
     this.fiberRoot = fiberRoot
 
-    // Update all global deferred functions to
-    this.initQueue = globalDeferredRegl.queue.slice(0);
-    globalDeferredRegl.setRegl(this.legitRegl);
-
     this.legitRegl.on('lost', () => {
       console.error('Regl WebGL context lost');
       if(this.props.onLost) this.props.onLost();
@@ -103,14 +96,17 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
 
     // This is where children get mounted to root node
     // and DrawNode constructors called
+    // Update all global deferred functions to
+    this.initQueue = globalDeferredRegl.queue.slice(0);
+    globalDeferredRegl.setRegl(this.legitRegl);
+
     ReglRenderer.updateContainer(this.props.children, this.fiberRoot, this, () => {
       fiberRoot.containerInfo.render();
     });
 
-
     if(this.props.onFrame && typeof this.props.onFrame === 'function'){
-      this.tick = this.legitRegl.frame((context: any) => {
-        if(this.props.onFrame) this.props.onFrame(context);
+      this.tick = this.legitRegl.frame((context: DefaultContext) => {
+        if(this.props.onFrame && this.legitRegl) this.props.onFrame(context, this.legitRegl);
         if(this.fiberRoot) this.fiberRoot.containerInfo.render();
       });
     }

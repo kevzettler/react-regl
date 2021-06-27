@@ -1,12 +1,16 @@
 declare module "deferred-regl"{
-  import { Regl } from 'regl'
+  import { Regl, DrawConfig } from 'regl'
 
-  export interface IDregl extends Regl{
+  type IDregl<T> = {
     setRegl: (regl?: Regl) => void
     queue: any[]
     setQueue: (queuInput: any[]) => void
-    (): IDregl
-  }
+    (drawConfig? : DrawConfig): IDregl<Regl>
+  } & {
+    [K in keyof T]: () => T[K]
+  };
 
-  export default function defRegl(): IDregl
+  export type DeferredRegl = IDregl<Regl>
+
+  export default function defRegl(drawConfig?: DrawConfig): DeferredRegl
 }

@@ -6408,10 +6408,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deferred-regl@git://github.com/kevzettler/deferred-regl#2354fd89fa9bacd670ab74bf5fd51ef570458b5e":
+"deferred-regl@git://github.com/kevzettler/deferred-regl#8cc9c096dec34b1d118c9bd8b4f29d6095080774":
   version: 1.3.1
-  resolution: "deferred-regl@git://github.com/kevzettler/deferred-regl#commit=2354fd89fa9bacd670ab74bf5fd51ef570458b5e"
-  checksum: 4892c2323a04d5404032dbac68cef90b95f51c13f234c5d2e9254f6be3cb1be8404220a81ec44214ed707b1fb5cad7bae7eeab9dc0238d7ac125fd37d448f80c
+  resolution: "deferred-regl@git://github.com/kevzettler/deferred-regl#commit=8cc9c096dec34b1d118c9bd8b4f29d6095080774"
+  checksum: 827ae6a953ac072d1e09cc32fc61c456ee22941f0724b7ce8e1bf0f9213ab8a8fc3bc55ef1928b587d183165c018cd2adc90d651b46d4e28a8d1d10976cbebe2
   languageName: node
   linkType: hard
 
@@ -13265,7 +13265,7 @@ fsevents@^1.2.7:
     bunny: ^1.0.1
     canvas-fit: ^1.5.0
     canvas-orbit-camera: ^1.0.2
-    deferred-regl: "git://github.com/kevzettler/deferred-regl#2354fd89fa9bacd670ab74bf5fd51ef570458b5e"
+    deferred-regl: "git://github.com/kevzettler/deferred-regl#8cc9c096dec34b1d118c9bd8b4f29d6095080774"
     fbjs: ^3.0.0
     getusermedia: ^2.0.1
     gl: ^4.9.0
