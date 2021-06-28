@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { FiberRoot } from 'react-reconciler'
-import reglInit, { FrameCallback, Cancellable, Vec4, Regl, DefaultContext } from 'regl';
+import reglInit, { Cancellable, Vec4, Regl, DefaultContext } from 'regl';
 import {vec4} from 'gl-matrix'
 import ReglRenderer from '../renderer';
 
@@ -94,12 +94,15 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
       depth: this.props.depth || 1
     });
 
-    // This is where children get mounted to root node
-    // and DrawNode constructors called
-    // Update all global deferred functions to
+    // TODO disabling this line fixes the dual loader failure.
+    // for unknown reasons re-invoking the globalDeferredRegl.setRegl causes the already loaded textures to drop
+    // I think this is because setRegl will iterate over the queue. and it will re initalize resources already on the queue?
     this.initQueue = globalDeferredRegl.queue.slice(0);
     globalDeferredRegl.setRegl(this.legitRegl);
 
+    // This is where children get mounted to root node
+    // and DrawNode constructors called
+    // Update all global deferred functions to
     ReglRenderer.updateContainer(this.props.children, this.fiberRoot, this, () => {
       fiberRoot.containerInfo.render();
     });
@@ -110,6 +113,11 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
         if(this.fiberRoot) this.fiberRoot.containerInfo.render();
       });
     }
+
+    // TODO this is a hack for the TODO above. This resets the global regl state
+    // so that if sequential ReglFrame components are rendered after this
+    // they will initalize their own resources
+    globalDeferredRegl.setRegl();
   }
 
   componentDidUpdate(
