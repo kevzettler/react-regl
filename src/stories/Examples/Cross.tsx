@@ -70,7 +70,7 @@ export const AnimatedCross = () => {
   return (
     <ReglFrame
       color={backgroundColor}
-      onFrame={() => regl.clear({color: backgroundColor})}
+      onFrame={(context, regl) => regl.clear({color: backgroundColor})}
     >
       <Cross />
     </ReglFrame>

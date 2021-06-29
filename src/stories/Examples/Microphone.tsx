@@ -74,7 +74,7 @@ export const Microphone = () => {
 
   return (
     <ReglFrame
-      onFrame={() => {
+      onFrame={(context, regl) => {
         regl.clear({
           color: [0,0,0,1],
           depth: 1

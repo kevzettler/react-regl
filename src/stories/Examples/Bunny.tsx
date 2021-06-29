@@ -59,7 +59,7 @@ export const Bunny = () => {
   return (
     <ReglFrame
       color={backgroundColor}
-      onFrame={() => regl.clear({color: backgroundColor, depth: 1})}>
+      onFrame={(context, regl) => regl.clear({color: backgroundColor, depth: 1})}>
       <Camera>
         <Bunny/>
       </Camera>

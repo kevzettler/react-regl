@@ -103,7 +103,7 @@ const DrawText = regl({
 export const Text = () => {
   return (
     <ReglFrame
-      onFrame={() => {
+      onFrame={(context, regl) => {
         Feedback()
         DrawText()
         feedBackTexture({

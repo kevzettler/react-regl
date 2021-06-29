@@ -73,7 +73,7 @@ const setupQuad = regl({
 export const Life = () => {
   let derp: any = regl;
   return (
-    <ReglFrame onFrame={() => {
+    <ReglFrame onFrame={(context, regl) => {
       setupQuad(() => {
         derp.draw()
         updateLife()

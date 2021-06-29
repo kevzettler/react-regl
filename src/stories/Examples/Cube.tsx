@@ -100,7 +100,7 @@ export const TexturedCube = () => {
   return (
     <ReglFrame
       color={[0.40625, 0.94921, 0.996, 1]}
-      onFrame={() => regl.clear({color: backgroundColor, depth: 1})}
+      onFrame={(context, regl) => regl.clear({color: backgroundColor, depth: 1})}
     >
       <Cube/>
     </ReglFrame>

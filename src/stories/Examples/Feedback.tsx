@@ -40,7 +40,10 @@ const DrawFeedback = regl({
   },
 
   uniforms: {
-    texture: pixels,
+    texture: (context) => {
+      pixels()({copy: true})
+      return pixels();
+    },
     mouse: ({pixelRatio, viewportHeight}) => [
       mouse.x * pixelRatio,
       viewportHeight - mouse.y * pixelRatio
@@ -54,9 +57,9 @@ const DrawFeedback = regl({
 export const Feedback = () => {
   return (
     <ReglFrame
-      onFrame={() => {
+      onFrame={(context) => {
         regl.clear({color: [0,0,0,1]})
-        DrawFeedback()
+        DrawFeedback();
         pixels()({copy: true})
       }}>
     </ReglFrame>

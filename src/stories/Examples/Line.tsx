@@ -257,7 +257,7 @@ export const Line = () => {
   }, [])
 
 
-  function frameHandler({tick}){
+  function frameHandler({tick}, regl){
     regl.clear({
       color: [0,0,0,1],
       depth:1

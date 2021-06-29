@@ -96,7 +96,7 @@ const DrawParticles = regl({
 export const Particles = () => {
   return (
     <ReglFrame
-      onFrame={() => regl.clear({
+      onFrame={(context, regl) => regl.clear({
         color: [0,0,0,1],
         depth:1
       })}>

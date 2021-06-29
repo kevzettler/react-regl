@@ -59,7 +59,7 @@ const CheckerBoard = regl({
 export const MipMap = () => {
   return (
     <ReglFrame
-      onFrame={()=>{regl.clear({color: [0,0,0,1]})}}>
+      onFrame={(context, regl)=>{regl.clear({color: [0,0,0,1]})}}>
       <CheckerBoard />
     </ReglFrame>
   );

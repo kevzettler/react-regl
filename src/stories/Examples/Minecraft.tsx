@@ -187,7 +187,7 @@ const drawWorld = regl({
 export const Minecraft = () => {
   return (
     <ReglFrame
-       onFrame={() => {
+       onFrame={(context, regl) => {
         drawWorld({position, elements, uv, normal})
         camera.tick()
       }}

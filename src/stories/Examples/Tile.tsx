@@ -75,7 +75,7 @@ export const Tile = () => {
   }, [])
 
   return (
-    <ReglFrame onFrame={() => {
+    <ReglFrame onFrame={(context, regl) => {
       regl.clear({
         color: [0,1,0,1]
       })
