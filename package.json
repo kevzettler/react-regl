@@ -35,7 +35,7 @@
   "homepage": "https://github.com/kevzettler/react-regl#readme",
   "scripts": {
     "prepublish": "yarn build",
-    "build": "yarn clean && NODE_ENV=production tsc && mkdir ./dist/types && cp ./src/types/deferred-regl.d.ts ./dist/types/ && build-storybook",
+    "build": "yarn clean && NODE_ENV=production tsc && mkdir ./dist/types && cp ./src/types/deferred-regl.d.ts ./dist/types/ && yarn build-storybook",
     "clean": "rimraf ./dist",
     "watch": "NODE_ENV=production babel src --watch -d dist",
     "storybook": "start-storybook -s ./src/stories/static -p 6006",
