@@ -4,6 +4,7 @@ import { FiberRoot } from 'react-reconciler'
 import reglInit, { Cancellable, Vec4, Regl, DefaultContext } from 'regl';
 import {vec4} from 'gl-matrix'
 import ReglRenderer from '../renderer';
+import defregl, { DeferredRegl } from 'deferred-regl';
 
 import globalDeferredRegl from '../reactRegl';
 import Node from '../nodes/Node';
@@ -29,6 +30,7 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
   fiberRoot?: FiberRoot
   initQueue: any[] = []
   legitRegl?: Regl
+  deferredRegl?: DeferredRegl
 
   static childContextTypes = {
     reactify: PropTypes.bool,
@@ -67,7 +69,8 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     if(this.props.extensions) initProps.extensions = this.props.extensions
     if(this.props.optionalExtensions) initProps.optionalExtensions = this.props.optionalExtensions
 
-    this.legitRegl = reglInit(initProps)
+    this.deferredRegl = defregl();
+    this.legitRegl = reglInit(initProps);
 
     if(this.props.forwardedRef) {
       //@ts-ignore
@@ -94,11 +97,19 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
       depth: this.props.depth || 1
     });
 
-    // TODO disabling this line fixes the dual loader failure.
-    // for unknown reasons re-invoking the globalDeferredRegl.setRegl causes the already loaded textures to drop
-    // I think this is because setRegl will iterate over the queue. and it will re initalize resources already on the queue?
-    this.initQueue = globalDeferredRegl.queue.slice(0);
-    globalDeferredRegl.setRegl(this.legitRegl);
+    //
+    // copy all loose global resources to this deferred state
+    //
+    // This replicate method is used so that
+    // one deferred regl can point all its methods
+    // to another deferred instance
+    // This is used in react-regl so that the global instance
+    // can be pointed to componets as they are rendering
+    // This is hack so users can define regl resources regl.texture regl.buffer etc
+    // in the global space and have them magically work in the react chain
+    // this is super brittle and needs a better solution.
+    globalDeferredRegl.replicateTo(this.deferredRegl);
+    this.deferredRegl.setRegl(this.legitRegl);
 
     // This is where children get mounted to root node
     // and DrawNode constructors called
@@ -117,7 +128,6 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     // TODO this is a hack for the TODO above. This resets the global regl state
     // so that if sequential ReglFrame components are rendered after this
     // they will initalize their own resources
-    globalDeferredRegl.setRegl();
   }
 
   componentDidUpdate(
