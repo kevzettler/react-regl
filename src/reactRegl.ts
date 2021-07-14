@@ -1,10 +1,15 @@
 /// <reference path="./types/deferred-regl.d.ts" />
 /// <reference types="./types/deferred-regl" />
-import React, { ReactChildren } from 'react';
+import React, { ReactChildren, ReactElement } from 'react';
 import PropTypes from 'prop-types'
 import { DrawCommand, DrawConfig, DefaultContext, DynamicVariable} from 'regl'
 import defregl, { DeferredRegl } from 'deferred-regl';
 
+// Helper types for merging deferredRegl and ReactRegl
+type MergeLeft<T1, T2 extends Record<any, any>> = {
+    [Prop in keyof T1 as Exclude<Prop, keyof T2>]: T1[Prop]
+}
+type Merge<T1, T2> = MergeLeft<T1, T2> & T2;
 
 const globalDeferredRegl = defregl();
 
@@ -16,21 +21,16 @@ export interface ReactReglComponent<DefinitionProps> extends DrawCommand {
   ): React.ReactElement<DefinitionProps & ExecutionProps & DeferredRegl, 'ReglDraw'> | null
 }
 
-
 type ReactRegl<
-Uniforms extends {} = {},
-Attributes extends {} = {},
-Props extends {} = {},
-OwnContext extends {} = {},
-ParentContext extends DefaultContext = DefaultContext
-> = DeferredRegl & {
-  (drawConfig: DrawConfig<Uniforms, Attributes, Props, OwnContext, ParentContext>): ReactReglComponent<Props>
+  Props extends {} = {},
+> = Merge<DeferredRegl, {
+  (drawConfig?: DrawConfig): ReactReglComponent<Props>
   //FIXME
   // this is an override for the regl.prop method
   // theres some magic with the base regl.prop declaration that is failing
   // https://github.com/regl-project/regl/issues/602
   prop<Key>(name: Key): DynamicVariable<Key>
-}
+}>
 
 // Wrap the deferred-regl wrapper
 // so that it returns a react element when called
