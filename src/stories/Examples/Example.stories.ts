@@ -22,6 +22,7 @@ export { MipMap } from './MipMap'
 export { Particles } from './Particles'
 export { Scopes } from './Scopes'
 export { Tile } from './Tile'
+export { ColorizerStage } from './ColorizerStage'
 
 
 // TODO these broke with the globalState replication hacks
