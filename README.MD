@@ -9,7 +9,7 @@ This library enables [Regl](http://regl.party/) shader WebGL draw commands to be
 ## Demos
 [View demos in the Storybook](https://kevzettler.com/react-regl)
 
-There is a [React Storybook](https://storybook.js.org/) included in the `/docs` directory with usage examples. The source for the Storybook is in the [`/stories`](./stories) directory and demonstrates how to create the examples.
+There is a [React Storybook](https://storybook.js.org/) included in the `/docs` directory with usage examples. The source for the Storybook is in the [`/stories`](./src/stories) directory and demonstrates how to create the examples.
 
 Visit the [Regl gallery page](http://regl.party/examples) for more ideas on usage.
 
