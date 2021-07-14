@@ -21,6 +21,7 @@ interface ReglFrameProps{
   onRestore?: () => void
   depth?: 1 | 0
   onFrame?: (context: DefaultContext, regl: Regl) => void;
+  webGLContext?: WebGLContextAttributes
 }
 
 export class ReglFrame extends React.Component<ReglFrameProps, {}> {
@@ -54,13 +55,15 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
 
   componentDidMount(){
     const canvasRef = this.props.canvasRef || this.canvasRef;
+    const webGLContextProps = this.props.webGLContext || {};
     let initProps: reglInit.InitializationOptions = {}
     if(canvasRef){
       const gl = canvasRef.getContext("webgl", {
         alpha: false,
         antialias: false,
         stencil: false,
-        preserveDrawingBuffer: false
+        preserveDrawingBuffer: false,
+        ...webGLContextProps,
       });
       if(!gl) throw new Error('failed to aquire a gl context for regl');
       initProps.gl = gl;
@@ -124,10 +127,6 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
         if(this.fiberRoot) this.fiberRoot.containerInfo.render();
       });
     }
-
-    // TODO this is a hack for the TODO above. This resets the global regl state
-    // so that if sequential ReglFrame components are rendered after this
-    // they will initalize their own resources
   }
 
   componentDidUpdate(
