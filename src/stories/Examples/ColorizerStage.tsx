@@ -124,10 +124,13 @@ const useAnimationFrame = (callback: any) => {//https://css-tricks.com/using-req
 
 export const ColorizerStage = () => {
     const [idx, setIdx] = React.useState(0)
-    useAnimationFrame((deltaTime: number) => {
-        setIdx(prevCount => (prevCount + 0.03))
-    })
-    const renderColors = [];
+  useAnimationFrame((deltaTime: number) => {
+    regl.clear({
+      color: [0.9, 0.3, 0.1, 0.5]
+    });
+    setIdx(prevCount => (prevCount + 0.03))
+  })
+  const renderColors = [];
     for (let i = 0; i < colors.length; i++) {
         const pos = (Math.floor(idx) + i) % colors.length;
         renderColors.push(colors[pos]);
@@ -136,7 +139,7 @@ export const ColorizerStage = () => {
     return (
         <div>
             <div>{idx}</div>
-            {renderColors.map((color, i) => <div>{color}</div>)}
+            {renderColors.map((color, i) => <div key={i}>{color}</div>)}
             {/*<button onClick={() => animateColors()}>*/}
             {/*    NEXT*/}
             {/*</button>*/}
