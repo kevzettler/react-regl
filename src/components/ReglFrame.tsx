@@ -142,6 +142,16 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
       }
     }
 
+    // This is a fix for #36 but may add unintended side effects
+    // If users didn't intend to clear the drawing buffer on updates
+    //
+    if(typeof this.legitRegl !== 'undefined' && (this.props.color || this.props.depth)){
+      this.legitRegl.clear({
+        color: this.props.color as Vec4,
+        depth: this.props.depth || 1
+      });
+    }
+
     if(!this.fiberRoot) throw new Error("regl fiberRoot was undefined...");
     ReglRenderer.updateContainer(this.props.children, this.fiberRoot, this, () => {
       if(!this.fiberRoot) throw new Error("regl fiberRoot was undefined on update...");
