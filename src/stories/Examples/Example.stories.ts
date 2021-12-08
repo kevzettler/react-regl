@@ -23,6 +23,8 @@ export { Particles } from './Particles'
 export { Scopes } from './Scopes'
 export { Tile } from './Tile'
 
+export { Boy } from './Boy'
+export { FBXLoader } from './FBXLoader';
 
 // TODO these broke with the globalState replication hacks
 //export { Line } from './Line'
