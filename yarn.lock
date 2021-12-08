@@ -1979,6 +1979,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@picode/binary-reader@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@picode/binary-reader@npm:0.0.4"
+  checksum: e1c691956b98817a3f9d6730d0ebbeff93006669595e0be906dc568a371050fe53446235f39b1eb768435498535f629cb8694188d2b0ca1f1b0055798d7643cd
+  languageName: node
+  linkType: hard
+
+"@picode/fbx@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "@picode/fbx@npm:0.0.2"
+  dependencies:
+    fbx-parser: ^2.1.2
+  checksum: 8ff2d0d3f16510040ed38befe3438409dfdf040b079b567c64de3783765f93d39d888ec45f7d4f46fe0e50838cdf326923d0a357c6bda67ffaa348fe961e8951
+  languageName: node
+  linkType: hard
+
 "@pmmmwh/react-refresh-webpack-plugin@npm:^0.4.2":
   version: 0.4.3
   resolution: "@pmmmwh/react-refresh-webpack-plugin@npm:0.4.3"
@@ -5694,6 +5710,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clone@npm:^1.0.2":
+  version: 1.0.4
+  resolution: "clone@npm:1.0.4"
+  checksum: aaaa58f9906002d9c07630682536cb00581ee02d7a76cfa8573ad59784add4d5d6d4afe894c21899b974044f153f8c5c6419ffc8b1cdde61bf104ad52e3a185d
+  languageName: node
+  linkType: hard
+
 "co@npm:^4.6.0":
   version: 4.6.0
   resolution: "co@npm:4.6.0"
@@ -7553,6 +7576,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fbx-parser@npm:^2.1.2, fbx-parser@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "fbx-parser@npm:2.1.3"
+  dependencies:
+    "@picode/binary-reader": ^0.0.4
+    pako: ^2.0.3
+  checksum: 53d46d24d0889a9a63cc042e25b14e7c6ef2748982cb491618e4aafa334aa6a45d8b89fa378a822f1da9ad3ce1148c780cc8c612e8482497d57bfa9550a6496a
+  languageName: node
+  linkType: hard
+
 "fd-slicer@npm:~1.1.0":
   version: 1.1.0
   resolution: "fd-slicer@npm:1.1.0"
@@ -7988,6 +8021,15 @@ fsevents@^1.2.7:
   version: 1.0.0-beta.2
   resolution: "gensync@npm:1.0.0-beta.2"
   checksum: d523437689c97b3aba9c5cdeca4677d5fff9a29d620db693fea40d852bad63563110f16979d0170248439dbcd2ecee0780fb2533d3f0519f019081aa10767c60
+  languageName: node
+  linkType: hard
+
+"geom-triangulate@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "geom-triangulate@npm:1.0.1"
+  dependencies:
+    clone: ^1.0.2
+  checksum: ca2d229187f8360a5393f75085d6f9c510bf5be654c31c526e6a840dbcf6ef6749255c48801d27309949f757a34afd8a2d41cbe10cbe125b7536b53b01fffb4a
   languageName: node
   linkType: hard
 
@@ -12016,6 +12058,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"pako@npm:^2.0.3":
+  version: 2.0.4
+  resolution: "pako@npm:2.0.4"
+  checksum: 40866647f790305c321c678b1197771bfc832ff148a5dee1617a317f9c6b3beec6dacc2e89336bb0219508495a07a627452da07c52b5aede179985dc89a03dc7
+  languageName: node
+  linkType: hard
+
 "pako@npm:~1.0.5":
   version: 1.0.11
   resolution: "pako@npm:1.0.11"
@@ -13244,6 +13293,7 @@ fsevents@^1.2.7:
     "@babel/preset-env": ^7.12.11
     "@babel/preset-react": ^7.12.10
     "@babel/runtime": ^7.12.5
+    "@picode/fbx": ^0.0.2
     "@storybook/addon-actions": ^6.1.14
     "@storybook/addon-essentials": ^6.1.14
     "@storybook/addon-knobs": ^6.1.14
@@ -13267,6 +13317,8 @@ fsevents@^1.2.7:
     canvas-orbit-camera: ^1.0.2
     deferred-regl: "git://github.com/kevzettler/deferred-regl#a6dbc9dd188f433a026e70223f8d2fe945fcb377"
     fbjs: ^3.0.0
+    fbx-parser: ^2.1.3
+    geom-triangulate: ^1.0.1
     getusermedia: ^2.0.1
     gl: ^4.9.0
     gl-context: ^0.1.1

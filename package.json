@@ -45,8 +45,11 @@
     "testEnvironment": "node"
   },
   "dependencies": {
+    "@picode/fbx": "^0.0.2",
     "deferred-regl": "git://github.com/kevzettler/deferred-regl#a6dbc9dd188f433a026e70223f8d2fe945fcb377",
     "fbjs": "^3.0.0",
+    "fbx-parser": "^2.1.3",
+    "geom-triangulate": "^1.0.1",
     "prop-types": "^15.7.2",
     "react-reconciler": "^0.26.1",
     "regl": "^2.0.1"
