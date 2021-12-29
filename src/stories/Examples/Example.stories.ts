@@ -23,10 +23,6 @@ export { Particles } from './Particles'
 export { Scopes } from './Scopes'
 export { Tile } from './Tile'
 
-export { LandonBoy } from './Boy'
-export { LandonCube } from './LandonCube'
-export { FBXLoader } from './FBXLoader';
-export { SimpCube } from './SimpCube';
 export { SimpBoy } from './SimpBoy';
 
 export { Standalone} from './Stanalone'
