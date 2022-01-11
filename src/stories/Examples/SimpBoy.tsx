@@ -3,20 +3,8 @@ import regl, { ReglFrame } from '../../'
 import simpC from '../assets/simp_boy.json';
 import { mat4, vec4, vec3 } from 'gl-matrix';
 import { PNG } from "pngjs";
-import { AnimationTrigger, interpolateJoints } from 'skeletal-animation-system';
 import textureArrayBuff from '../assets/boy-tex.png';
 const boyPNG =  PNG.sync.read(Buffer.from(textureArrayBuff));
-
-console.log("*******simp_Boy********", simpC);
-const joints = interpolateJoints({
-  currentTime: 12,
-  jointNums: Object.values(simpC.Mesh.armature.joint_indices).sort(),
-  currentAnimation: {
-          keyframes: simpC.Mesh.armature.bone_space_actions['PS1-Boy Idel'].bone_keyframes.keyframes,
-          startTime: 0,
-          noLoop: false
-        }
-});
 
 const backgroundColor: vec4 = [0,0,0, 1];
 
