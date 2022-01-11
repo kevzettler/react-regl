@@ -17,9 +17,6 @@ const joints = interpolateJoints({
           noLoop: false
         }
 });
-debugger;
-
-
 
 const backgroundColor: vec4 = [0,0,0, 1];
 
