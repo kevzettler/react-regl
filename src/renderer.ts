@@ -172,5 +172,9 @@ export default ReactFiberReconciler({
 
   shouldDeprioritizeSubtree(){
     return true;
+  },
+  detachDeletedInstance(drawNode: DrawNode) {
+    //clean up resources here?
+    return null;
   }
 });
