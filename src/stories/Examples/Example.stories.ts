@@ -24,6 +24,7 @@ export { Scopes } from './Scopes'
 export { Tile } from './Tile'
 
 export { SimpBoy } from './SimpBoy';
+export { TextureProps } from './TextureProps';
 
 export { Standalone} from './Stanalone'
 // TODO these broke with the globalState replication hacks
