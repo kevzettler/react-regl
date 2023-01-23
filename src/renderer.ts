@@ -4,7 +4,7 @@ import DrawNode, { IDrawNodeProps } from './nodes/DrawNode'
 import Node from './nodes/Node';
 
 
-type RequestIdleCallbackHandle = any;
+type RequestIdleCallbackHandle = number;
 type RequestIdleCallbackOptions = {
   timeout: number;
 };
@@ -16,10 +16,10 @@ type RequestIdleCallbackDeadline = {
 declare global {
   interface Window {
     requestIdleCallback: ((
-      callback: ((deadline: RequestIdleCallbackDeadline) => void),
-      opts?: RequestIdleCallbackOptions,
+      callback: IdleRequestCallback,
+      options?: IdleRequestOptions | undefined,
     ) => RequestIdleCallbackHandle);
-    cancelIdleCallback: ((handle: RequestIdleCallbackHandle) => void);
+    cancelIdleCallback: (handle: number) => void;
   }
 }
 
@@ -30,15 +30,15 @@ export default ReactFiberReconciler({
   supportsPersistence: false,
   supportsHydration: false,
   now,
-//  scheduleDeferredCallback: window.requestIdleCallback,
+  //  scheduleDeferredCallback: window.requestIdleCallback,
 
   //this is not implmented in the type def but required
   //@ts-ignore
-  clearContainer: function(rootNode: Node){
+  clearContainer: function (rootNode: Node) {
     rootNode.destroy();
   },
 
-  commitMount: function(instance, type, newProps, internalInstanceHandle){
+  commitMount: function (instance, type, newProps, internalInstanceHandle) {
   },
 
   /**
@@ -50,7 +50,7 @@ export default ReactFiberReconciler({
     rootContainerInstance: any,
     hostContext: any
   ) {
-    if(type === 'ReglDraw'){
+    if (type === 'ReglDraw') {
       return new DrawNode(props as IDrawNodeProps, rootContainerInstance.regl);
     }
 
@@ -60,14 +60,14 @@ export default ReactFiberReconciler({
   appendChild(
     parentInstance: Node,
     child: Node,
-  ){
+  ) {
     parentInstance.appendChild(child);
   },
 
   appendChildToContainer(
     container: Node,
     child: Node,
-  ){
+  ) {
     container.appendChild(child);
   },
 
@@ -75,25 +75,25 @@ export default ReactFiberReconciler({
     parentInstance: Node,
     child: Node,
     beforeChild: Node,
-  ){
+  ) {
     parentInstance.insertBefore(child, beforeChild);
   },
 
   removeChild(
     parentInstance: Node,
     child: Node,
-  ){
+  ) {
     parentInstance.removeChild(child);
   },
 
   removeChildFromContainer(
     container: Node,
     child: Node,
-  ){
+  ) {
     container.removeChild(child);
   },
 
-  finalizeInitialChildren(){
+  finalizeInitialChildren() {
     return true
   },
 
@@ -102,10 +102,10 @@ export default ReactFiberReconciler({
     type,
     oldProps: any,
     newProps: any,
-  ){
-    if(
+  ) {
+    if (
       instance.executionProps !== newProps.executionProps
-    ){
+    ) {
       return newProps.executionProps;
     }
 
@@ -116,7 +116,7 @@ export default ReactFiberReconciler({
     instance: any,
     updatePayload,
     type,
-  ){
+  ) {
     instance.executionProps = updatePayload;
   },
 
@@ -125,7 +125,7 @@ export default ReactFiberReconciler({
    * inside it else we create a property called `document` on a parent node and append all the childrens
    * to it and render them with `property_name.render()`.
    */
-  appendInitialChild(parentInstance:Node, child:Node) {
+  appendInitialChild(parentInstance: Node, child: Node) {
     parentInstance.appendChild(child);
   },
 
@@ -144,7 +144,7 @@ export default ReactFiberReconciler({
     return inst;
   },
 
-  cancelDeferredCallback(callbackID){
+  cancelDeferredCallback(callbackID) {
     return null;
   },
 
@@ -166,11 +166,11 @@ export default ReactFiberReconciler({
     throw new Error("Text nodes not supported as ReactRegl children");
   },
 
-  shouldSetTextContent(){
+  shouldSetTextContent() {
     return false
   },
 
-  shouldDeprioritizeSubtree(){
+  shouldDeprioritizeSubtree() {
     return true;
   },
   detachDeletedInstance(drawNode: DrawNode) {
