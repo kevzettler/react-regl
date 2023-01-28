@@ -14189,7 +14189,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-reconciler: 0.29.0
-    regl: ^2.0.1
+    regl: 2.1.0
     requestidlecallback: ^0.3.0
     seedrandom: ^3.0.5
     typescript: ^4.1.3
@@ -14527,7 +14527,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regl@npm:^2.0.1":
+"regl@npm:2.1.0":
   version: 2.1.0
   resolution: "regl@npm:2.1.0"
   checksum: dd890b7f50f0cc803f53212870343f910c135343d99b1e3de8cf6167bfde8beaa968aab59a41ea88c6dd58a192be07cbb9ae64989efea329457467f5c491cfbe

@@ -52,7 +52,7 @@
     "geom-triangulate": "^1.0.1",
     "prop-types": "^15.7.2",
     "react-reconciler": "0.29.0",
-    "regl": "^2.0.1"
+    "regl": "2.1.0"
   },
   "peerDependencies": {
     "react": "18.2.0"
