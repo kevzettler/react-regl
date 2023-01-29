@@ -38,7 +38,7 @@
     "build": "yarn clean && NODE_ENV=production tsc && mkdir ./dist/types && cp ./src/types/deferred-regl.d.ts ./dist/types/",
     "clean": "rimraf ./dist",
     "watch": "NODE_ENV=production babel src --watch -d dist",
-    "storybook": "start-storybook -s ./src/stories/static -p 6006",
+    "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook -s ./src/stories/static --output-dir ./docs"
   },
   "dependencies": {

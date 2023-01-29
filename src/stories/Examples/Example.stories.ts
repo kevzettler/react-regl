@@ -13,10 +13,10 @@ export { Bunny } from './Bunny'
 export { TexturedCube } from './Cube'
 export { Elements } from './Elements'
 export { InstanceMesh } from './InstanceMesh'
-export { InstancedTriangle} from './InstanceTriangle'
+export { InstancedTriangle } from './InstanceTriangle'
 export { AnimatedCross } from './Cross'
 export { Lighting } from './Lighting'
-export {VoxelTree} from './VoxelTree'
+export { VoxelTree } from './VoxelTree'
 export { LinePrimitives } from './LinePrimitives'
 export { MipMap } from './MipMap'
 export { Particles } from './Particles'
@@ -24,9 +24,8 @@ export { Scopes } from './Scopes'
 export { Tile } from './Tile'
 
 export { SimpBoy } from './SimpBoy';
-export { TextureProps } from './TextureProps';
 
-export { Standalone} from './Stanalone'
+export { Standalone } from './Stanalone'
 // TODO these broke with the globalState replication hacks
 //export { Line } from './Line'
 //export { Feedback } from './Feedback'

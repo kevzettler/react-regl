@@ -1,10 +1,19 @@
 module.exports = {
-  "stories": [
+  features: {
+    postcss: false,
+  },
+
+  stories: [
     "../src/stories/**/*.stories.@(js|jsx|ts|tsx)"
   ],
-  "addons": [
-    /* "@storybook/addon-links",
-     * "@storybook/addon-essentials" */
+
+  staticDirs: [
+    '../src/stories/static'
+  ],
+
+  addons: [
+    "@storybook/addon-links",
+    "@storybook/addon-essentials"
   ],
 
   webpackFinal: async (config, { configType }) => {
