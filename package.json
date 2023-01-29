@@ -39,7 +39,7 @@
     "clean": "rimraf ./dist",
     "watch": "NODE_ENV=production babel src --watch -d dist",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook -s ./src/stories/static --output-dir ./docs"
+    "build-storybook": "build-storybook --output-dir ./docs"
   },
   "dependencies": {
     "deferred-regl": "https://github.com/kevzettler/deferred-regl#a6dbc9dd188f433a026e70223f8d2fe945fcb377",
