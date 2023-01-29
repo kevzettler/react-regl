@@ -1,5 +1,4 @@
-
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  docs: { page: null }
+  /* actions: { argTypesRegex: "^on[A-Z].*" },
+   * docs: { page: null } */
 }
