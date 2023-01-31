@@ -1,18 +1,19 @@
-declare module "deferred-regl"{
+declare module "deferred-regl" {
   import { Regl, DrawConfig, Limits } from 'regl'
 
   type IDregl<T> = {
     setRegl: (regl?: Regl) => void
     queue: any[]
     setQueue: (queuInput: any[]) => void
-    map: {[key: string]: () => any}
+    map: { [key: string]: () => any }
     replicateTo: (target: IDregl<Regl>) => void
-    (drawConfig? : DrawConfig): IDregl<Regl>
+    (drawConfig?: DrawConfig): IDregl<Regl>
+    (drawConfig?: DrawConfig, scopeFn?: (context: any) => void): IDregl<Regl>
   } & {
-    [K in keyof T]: () => T[K]
-  } & {
-    limits: Limits
-  };
+      [K in keyof T]: () => T[K]
+    } & {
+      limits: Limits
+    };
 
   export type DeferredRegl = IDregl<Regl>
 

@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes, { ReactComponentLike } from 'prop-types'
 import { FiberRoot, ReactNodeList } from 'react-reconciler'
 import reglInit, { Cancellable, Vec4, Regl, DefaultContext } from 'regl';
 import { vec4 } from 'gl-matrix'
 import ReglReconciler from '../reconciler';
 import defregl, { DeferredRegl } from 'deferred-regl';
 
-import globalDeferredRegl from '../reactRegl';
+import globalDeferredRegl, { ReglFrameContext } from '../reactRegl';
 import Node from '../nodes/Node';
 
 interface ReglFrameProps {
@@ -33,20 +32,14 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
   initQueue: any[] = []
   legitRegl?: Regl
   deferredRegl?: DeferredRegl
-
-  static childContextTypes = {
-    reactify: PropTypes.bool,
-  }
-
-  getChildContext() {
-    return {
-      reactify: true
-    }
-  }
+  // This lock is a guard for React.StrictMode
+  // this guards against rapid sequential execution of the components lifecycle
+  isLocked: boolean = false
 
   componentWillUnmount() {
     if (!this.fiberRoot) throw Error('failed to unmount missing fiberRoot')
-    ReglRenderer.updateContainer(null, this.fiberRoot, this, () => {
+    if (this.isLocked) return;
+    ReglReconciler.updateContainer(null, this.fiberRoot, this, () => {
       globalDeferredRegl.setQueue(this.initQueue.slice(0));
       if (this.tick) this.tick.cancel();
       if (this.legitRegl) this.legitRegl.destroy();
@@ -55,6 +48,9 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
   }
 
   componentDidMount() {
+    // Set the lock untill the tree has been created.
+    if (this.isLocked) return;
+    this.isLocked = true;
     const canvasRef = this.props.canvasRef || this.canvasRef;
     const webGLContextProps = this.props.webGLContext || {};
     let initProps: reglInit.InitializationOptions = {}
@@ -81,8 +77,8 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
       this.props.forwardedRef.current = this.legitRegl._gl.canvas
     }
 
-    const node0 = new Node({ id: 'react-regl-root', regl: this.legitRegl });
-    const fiberRoot = ReglRenderer.createContainer(node0, false, false);
+    const node0 = new Node({ id: 'react-regl-root' }, this.legitRegl);
+    const fiberRoot = ReglReconciler.createContainer(node0, false, false);
     this.fiberRoot = fiberRoot
 
     this.legitRegl.on('lost', () => {
@@ -109,18 +105,24 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
     // to another deferred instance
     // This is used in react-regl so that the global instance
     // can be pointed to componets as they are rendering
-    // This is hack so users can define regl resources regl.texture regl.buffer etc
+    // This is a hack so users can define regl resources regl.texture regl.buffer etc
     // in the global space and have them magically work in the react chain
     // this is super brittle and needs a better solution.
     globalDeferredRegl.replicateTo(this.deferredRegl);
     this.deferredRegl.setRegl(this.legitRegl);
 
+    // Warp the children in a the ReglFrameContext
+    const DrawNodeChildrenTreeWithContext = <ReglFrameContext.Provider value={true}>{this.props.children}</ReglFrameContext.Provider>
+
     // This is where children get mounted to root node
     // and DrawNode constructors called
     // Update all global deferred functions to
-    ReglRenderer.updateContainer(this.props.children, this.fiberRoot, this, () => {
+    ReglReconciler.updateContainer(DrawNodeChildrenTreeWithContext, this.fiberRoot, this, () => {
       fiberRoot.containerInfo.render();
+      // Component has been fully mounted Free the lock
+      this.isLocked = false;
     });
+
 
     if (this.props.onFrame && typeof this.props.onFrame === 'function') {
       this.tick = this.legitRegl.frame((context: DefaultContext) => {
@@ -128,11 +130,12 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
         if (this.fiberRoot) this.fiberRoot.containerInfo.render();
       });
     }
+
   }
 
   componentDidUpdate(
     prevProps: ReglFrameProps,
-    prevState: ReglFrameProps
+    _prevState: ReglFrameProps
   ) {
     if (
       prevProps.width !== this.props.width ||
@@ -153,8 +156,11 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
       });
     }
 
+    // Warp the children in a the ReglFrameContext
+    const DrawNodeChildrenTreeWithContext = <ReglFrameContext.Provider value={true}>{this.props.children}</ReglFrameContext.Provider>
+
     if (!this.fiberRoot) throw new Error("regl fiberRoot was undefined...");
-    ReglRenderer.updateContainer(this.props.children, this.fiberRoot, this, () => {
+    ReglReconciler.updateContainer(DrawNodeChildrenTreeWithContext, this.fiberRoot, this, () => {
       if (!this.fiberRoot) throw new Error("regl fiberRoot was undefined on update...");
       this.fiberRoot.containerInfo.render();
     });
@@ -169,7 +175,7 @@ export class ReglFrame extends React.Component<ReglFrameProps, {}> {
       this.props.canvasRef ||
       (!this.props.width && !this.props.height)
     ) {
-      return null
+      return null;
     }
 
     // otherwise render a canvas node

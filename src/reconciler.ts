@@ -54,7 +54,7 @@ export default ReactFiberReconciler({
       return new DrawNode(props as IDrawNodeProps, rootContainerInstance.regl);
     }
 
-    return new Node(props);
+    return new Node(props, rootContainerInstance.regl);
   },
 
   appendChild(
