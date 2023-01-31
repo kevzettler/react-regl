@@ -1,7 +1,6 @@
 import { Regl } from 'regl';
-export interface IBaseNodeProps{
+export interface IBaseNodeProps {
   id?: string
-  regl: Regl
 }
 
 export default class Node {
@@ -9,38 +8,38 @@ export default class Node {
   parent?: Node | null = null;
   children: Node[] = [];
   regl?: Regl
-  constructor({ id, regl }: IBaseNodeProps){
+  constructor({ id }: IBaseNodeProps, regl: Regl) {
     this.id = id;
     this.regl = regl;
   }
 
-  appendChild(child: Node){
+  appendChild(child: Node) {
     child.parent = this;
     this.children.push(child);
   }
 
-  removeChild(child: Node){
+  removeChild(child: Node) {
     const index = this.children.indexOf(child);
     child.parent = null;
     this.children.splice(index, 1);
   }
 
-  insertBefore(child: Node, beforeChild: Node){
+  insertBefore(child: Node, beforeChild: Node) {
     const index = this.children.indexOf(beforeChild);
     child.parent = this;
     this.children.splice(index, 0, child);
   }
 
-  render(){
+  render() {
     this.children.forEach((child) => child.render());
   }
 
-  destroy(){
+  destroy() {
     this.children.forEach((child) => {
       child.destroy();
     })
 
-    if(this.parent){
+    if (this.parent) {
       this.parent = null;
     }
   }

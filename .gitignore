@@ -3,7 +3,6 @@ yarn-error.log
 node_modules/
 *.DS_Store
 .yarn/*
-!.yarn/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
