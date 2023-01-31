@@ -58,7 +58,6 @@ export default class DrawNode extends Node {
         })
       });
     } else {
-      debugger;
       this.drawCommand(this.executionProps);
     }
   }
