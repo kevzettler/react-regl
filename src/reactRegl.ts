@@ -64,7 +64,6 @@ const reactRegl: unknown = function (definitionProps: DrawConfig) {
       // the reconcilder method `createInstance` looks for this type of element
       // createInstance then makes a DrawNode instance
       // DrawNode abstracts regls rendering calls
-      debugger
       return React.createElement('ReglDraw', mergedProps, children);
     }
 
