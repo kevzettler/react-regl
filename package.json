@@ -8,7 +8,7 @@
     "dist"
   ],
   "engines": {
-    "node": "16.13.0"
+    "node": "^16.13.0"
   },
   "directories": {
     "example": "example"
