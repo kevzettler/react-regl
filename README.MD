@@ -21,10 +21,8 @@ npm install --save react-regl
 
 ### Example Usage
 
+#### Triangle.js
 ```
-import React from 'react'
-import regl, { ReglFrame } from 'react-regl';
-
 // Define a draw call for rendering a 2D triangle
 const Triangle = regl({
   // Shaders in regl are just strings.  You can use glslify or whatever you want
@@ -63,20 +61,19 @@ const Triangle = regl({
   count: 3
 });
 
-// Create an 'App' component that renders a regl frame and
-// renders the triangle draw call
-const App = () => {
-  return (
-    <ReglFrame>
-      <Triangle color={[1, 0, 0, 1]} />
-    </ReglFrame>
-  );
-};
+export default Triangle;
+```
+
+#### use in React App
+```
+import React from 'react'
+import regl, { ReglFrame } from 'react-regl';
+import Triangle from "Triangle";
 
 // Mount React and render the App component
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Triangle />
   </React.StrictMode>,
   document.getElementById('root')
 );
