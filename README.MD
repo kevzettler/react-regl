@@ -14,12 +14,13 @@ There is a [React Storybook](https://storybook.js.org/) included in the `/docs` 
 Visit the [Regl gallery page](http://regl.party/examples) for more ideas on usage.
 
 ## Install
-
+Use your perferred package manager
 ```javascript
 npm install --save react-regl
 ```
 
 ### Example Usage
+
 ```
 import React from 'react'
 import regl, { ReglFrame } from 'react-regl';
@@ -81,34 +82,32 @@ ReactDOM.render(
 );
 ```
 
-### Motivation and Goals
-This repo, `react-regl` brings a JSX interface to `regl`, enabling easy integration of Regl UI into existing `react` projects. `react-regl` Allows you to render regl draw commands as react components. You can define the regl draw command as you would with raw `regl` but with `react-regl` you can pass arnd render it as react component.
+## Design Goals
+This libaray was developed as a byproduct of using regl for an HTML5 game engine rendering layer. The game engine has many views that render 3D content. Some of the game engine views have to be high performance with as little over head as possible like the realtime gameplay view. Other views are less performance demanding and are used for stateful UI e.g. inventory, store, character select views.
 
-[regl](http://regl.party/) is a stateless functional abstraction for WebGl. Regl makes working with WebGL a more productive experience. Its stateless nature makes it easier to reason about WebGL programs. Regl's design was influenced by React. It follows React's unidirectional data flow to stateless component model. This module wraps Regl with a React reconciler for a fuller React experience
+**This libaray enables developers to write shader code in a regl syntax style and then seamlesssly execute it as a regular regl command or a ract component.**
 
+This library brings a JSX interface to `regl`, enabling easy integration of Regl UI into existing `react` projects. `react-regl` Allows you to render regl draw commands as react components. You can define the regl draw command as you would with raw `regl` but with `react-regl` you can pass arnd render it as react component.
+
+This library was inspired by a discussion in the main regl repository: https://github.com/regl-project/regl/issues/576
+
+### Caveats
+This library uses some magic to 'deferr' WebGL resource and context creation. This library is not a 1-to-1 match with base regl functionality. There are some cases of breakage with the regl examples.
+
+### Alternative libraries
+Because of the Caveats mentioned above we have feel compled to mention alternative libraries. `@psycobolt/react-regl` is a purely React focused regl reconciler which seems to 100% cover the example cases of the base regl library.
+https://github.com/psychobolt/react-regl
+
+Worldview is a higher level 3D engine (think Three.js or Babylon.js) abstraction on top of regl with corporate backing from Crusie self driving.
+https://webviz.io/worldview/#/
 
 ### Regl vs Other WebGL frameworks
 Regl follows the unix philosophy of "small sharp tools" or "do one thing and do it well". Regl has full test coverage and aims for stable non-breaking updates. Other popular WebGL frameworks encompass much more responsiblity, usually including heavy abstractions for: scene graphs, animation systems, input systems, and cross device compatibility. The large amount of responsiblity in these other libraries leads to unstable, breaking releases, and lacking documentation and support.
 
+learn more in the official [Why Regl?](https://github.com/regl-project/regl#why-regl) documentation.
+
 ## Development
-`npm link` and local installs `npm i -S react-regl@file:../react-regl`
-should link to consuming project. `npm run build` should be run in the `react-regl` module directory
-
-
-### React peer dependency error
-
-If default `npm link` or local install fails with od errors about duplicate react versions you need to ensure the module is loading react from the consuming host project
-
-```
-cd my-app
-npm link ../react-regl
-```
-
-#### Link its copy of React back to the app's React
-```
-cd ../react-regl
-npm link ../my-app/node_modules/react
-```
+This repo is using yarn. You can build the module with `yarn build` Then in a seperate project you can require the dependency with a local file path like `yarn add ../path/to/react-regl`
 
 
 #### Publishing
