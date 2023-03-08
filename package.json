@@ -41,6 +41,9 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook --output-dir ./docs"
   },
+  "workspaces": [
+    "test-app"
+  ],
   "dependencies": {
     "deferred-regl": "https://github.com/kevzettler/deferred-regl#a6dbc9dd188f433a026e70223f8d2fe945fcb377",
     "fbjs": "^3.0.0",

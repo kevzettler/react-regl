@@ -26,7 +26,6 @@ export default class DrawNode extends Node {
   drawCommand: DrawCommand
   executionProps: any
   definitionProps: any
-  id?: string
 
   constructor(props: IDrawNodeProps, regl: Regl) {
     super(props, regl);

@@ -169,11 +169,10 @@ export default ReactFiberReconciler({
   shouldSetTextContent() {
     return false
   },
-
   shouldDeprioritizeSubtree() {
     return true;
   },
-  detachDeletedInstance(drawNode: DrawNode) {
+  detachDeletedInstance(drawNode: DrawNode): null | any {
     //clean up resources here?
     return null;
   }
