@@ -27,8 +27,7 @@ const reglRef = reglInit({
 // pass the regl reference to reactRegl
 reactRegl.setRegl(reglRef);
 
-// @ts-ignore
-reactRegl.clear({
+reglRef.clear({
   color: [0.40625, 0.94921, 0.996, 1],
   depth: 1
 });
