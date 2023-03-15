@@ -1,6 +1,6 @@
 import reglInit from "regl";
 import reactRegl from "../../src";
-import { BasicTriangle } from '../../src/stories/Examples/Triangle';
+import { DrawTriangle } from '../../src/stories/Examples/Triangle';
 
 // Create a canvas
 const canvas = document.createElement('canvas');
@@ -19,7 +19,7 @@ const gl = canvas.getContext("webgl", {
   preserveDrawingBuffer: false
 });
 
-// create a regl reference
+// create a regl scope reference
 const reglRef = reglInit({
   gl,
 });
@@ -27,10 +27,11 @@ const reglRef = reglInit({
 // pass the regl reference to reactRegl
 reactRegl.setRegl(reglRef);
 
-reglRef.clear({
+// @ts-ignore
+reactRegl.clear({
   color: [0.40625, 0.94921, 0.996, 1],
   depth: 1
 });
 
 // render react regl components
-BasicTriangle();
+DrawTriangle();

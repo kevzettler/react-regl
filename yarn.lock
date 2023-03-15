@@ -13578,9 +13578,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-regl-test-app@workspace:test-app":
+"react-regl-test-app@workspace:react-regl-test-app":
   version: 0.0.0-use.local
-  resolution: "react-regl-test-app@workspace:test-app"
+  resolution: "react-regl-test-app@workspace:react-regl-test-app"
   dependencies:
     "@types/react-dom": ^18.0.11
     clean-webpack-plugin: ^3.0.0

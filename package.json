@@ -42,7 +42,7 @@
     "build-storybook": "build-storybook --output-dir ./docs"
   },
   "workspaces": [
-    "test-app"
+    "react-regl-test-app"
   ],
   "dependencies": {
     "deferred-regl": "https://github.com/kevzettler/deferred-regl#a6dbc9dd188f433a026e70223f8d2fe945fcb377",
