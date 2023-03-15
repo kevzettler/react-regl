@@ -29,7 +29,7 @@ yarn add react-regl
 There is a test app that demonstrates both modes of ussage in `./react-regl-test-app`
 
 #### Triangle.js
-```
+```javascript
 // Define a draw call for rendering a 2D triangle
 const DrawTriangle = regl({
   // Shaders in regl are just strings.  You can use glslify or whatever you want
@@ -72,7 +72,7 @@ export default DrawTriangle;
 ```
 
 #### use in React App
-```
+```javascript
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { ReglFrame } from 'react-regl';
@@ -89,7 +89,7 @@ root.render(
 ```
 
 #### use in Standalone (Non-react) App
-```
+```javascript
 import reglInit from "regl";
 import reactRegl from "react-regl";
 import { DrawTriangle } from './DrawTriangle';
