@@ -132,9 +132,9 @@ DrawTriangle();
 ## Design Goals
 This libaray was developed as a byproduct of using regl for an HTML5 game engine rendering layer. The game engine has many views that render 3D content. Some of the game engine views need to be high performance with as little over head as possible like the realtime gameplay view. Other views are less performance demanding and are used for stateful UI e.g. inventory, store, character select views.
 
-**This libaray enables developers to write shader code in a regl syntax style and then seamlesssly execute it as a ract component or regular regl**
+**This libaray enables developers to write shader code in a Regl syntax style and then seamlesssly execute it as a regular Regl command or a React component.**
 
-This library brings a JSX interface to `regl`, enabling easy integration of Regl UI into existing `react` projects. `react-regl` Allows you to render regl draw commands as react components. You can define the regl draw command as you would with raw `regl` but with `react-regl` you can pass arnd render it as react component.
+This library brings a JSX interface to `regl`, enabling easy integration of Regl UI into existing `react` projects. `react-regl` Allows you to render regl draw commands as React components. You can define the Regl draw command as you would with raw `regl` but with `react-regl` you can pass and render it as React component.
 
 This library was inspired by a discussion in the main regl repository: https://github.com/regl-project/regl/issues/576
 
@@ -145,7 +145,7 @@ This library uses some magic to 'deferr' WebGL resource and context creation. Th
 Because of the Caveats mentioned above we feel compled to mention alternative libraries. `@psycobolt/react-regl` is a purely React focused regl reconciler which seems to 100% cover the example cases of the base regl library.
 https://github.com/psychobolt/react-regl
 
-Worldview is a higher level 3D engine (think Three.js or Babylon.js) abstraction on top of regl with corporate backing from Crusie self driving.
+Worldview is a higher level 3D engine (think Three.js or Babylon.js) abstraction on top of Regl with corporate backing from Crusie self driving.
 https://webviz.io/worldview/#/
 
 ### Regl vs Other WebGL frameworks
