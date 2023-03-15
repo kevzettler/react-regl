@@ -17,7 +17,7 @@ export const ReglFrameContext = React.createContext<boolean>(false);
 export interface ReactReglComponent<DefinitionProps> extends DrawCommand {
   <
     ExecutionProps extends {} = {}
-    >(
+  >(
     executionProps: ExecutionProps,
     scopeFn: (context: DefaultContext) => void
   ): React.ReactElement<DefinitionProps & ExecutionProps & DeferredRegl, 'ReglDraw'> | null
@@ -25,14 +25,14 @@ export interface ReactReglComponent<DefinitionProps> extends DrawCommand {
 
 type ReactRegl<
   Props extends {} = {},
-  > = Merge<DeferredRegl, {
-    (drawConfig?: DrawConfig): ReactReglComponent<Props>
-    //FIXME
-    // this is an override for the regl.prop method
-    // theres some magic with the base regl.prop declaration that is failing
-    // https://github.com/regl-project/regl/issues/602
-    prop<Key>(name: Key): DynamicVariable<Key>
-  }>
+> = Merge<DeferredRegl, {
+  (drawConfig?: DrawConfig): ReactReglComponent<Props>
+  //FIXME
+  // this is an override for the regl.prop method
+  // theres some magic with the base regl.prop declaration that is failing
+  // https://github.com/regl-project/regl/issues/602
+  prop<Key>(name: Key): DynamicVariable<Key>
+}>
 
 
 
@@ -53,7 +53,12 @@ const reactRegl: unknown = function (definitionProps: DrawConfig) {
     scopeFn?: (context: DefaultContext) => void
   ) => {
     // check react context to see if this function is being invoked in a reglFrame tree
-    const reactContextValue = useContext(ReglFrameContext);
+    let reactContextValue = false;
+    try {
+      reactContextValue = useContext(ReglFrameContext);
+    } catch (ex) {
+      reactContextValue = false;
+    }
 
     // This is the react tree usage.
     // return a react element that the reconciler will use to build a regl tree

@@ -1,6 +1,7 @@
 import React from 'react'
 import regl, { ReglFrame } from '../../';
-const Triangle = regl({
+
+export const DrawTriangle = regl({
   vert: `
           precision mediump float;
           attribute vec2 position;
@@ -8,20 +9,20 @@ const Triangle = regl({
             gl_Position = vec4(position, 0, 1);
           }`,
 
-  frag:`
+  frag: `
           precision mediump float;
           uniform vec4 color;
           void main () {
             gl_FragColor = color;
           }`,
-  attributes:{
+  attributes: {
     position: [
       [-1, 0],
       [0, -1],
       [1, 1]
     ]
   },
-  uniforms:{
+  uniforms: {
     color: [1, 0, 0, 1]
   },
   count: 3
@@ -32,7 +33,7 @@ export const BasicTriangle = () => {
   return (
     <ReglFrame
       color={[0.40625, 0.94921, 0.996, 1]}>
-      <Triangle />
+      <DrawTriangle />
     </ReglFrame>
   );
 };

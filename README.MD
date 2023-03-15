@@ -3,7 +3,6 @@ This library enables [Regl](http://regl.party/) shader WebGL draw commands to be
 
 [![Stability](https://img.shields.io/badge/Stability-Experimental-orange.svg)](https://nodejs.org/api/documentation.html#documentation_stability_index)
 [![npm version](https://badge.fury.io/js/react-regl.svg)](https://badge.fury.io/js/react-regl)
-[![Dependency Status](https://david-dm.org/kevzettler/react-regl.svg)](https://david-dm.org/kevzettler/react-regl)
 [![Build Status](https://travis-ci.org/kevzettler/react-regl.svg?branch=master)](https://travis-ci.org/kevzettler/react-regl)
 
 ## Demos
@@ -15,16 +14,24 @@ Visit the [Regl gallery page](http://regl.party/examples) for more ideas on usag
 
 ## Install
 Use your perferred package manager
-```javascript
+
+### npm
+```
 npm install --save react-regl
 ```
 
+### yarn
+```
+yarn add react-regl
+```
+
 ### Example Usage
+There is a test app that demonstrates both modes of ussage in `./react-regl-test-app`
 
 #### Triangle.js
 ```
 // Define a draw call for rendering a 2D triangle
-const Triangle = regl({
+const DrawTriangle = regl({
   // Shaders in regl are just strings.  You can use glslify or whatever you want
   // to define them.  No need to manually create shader objects.
 
@@ -61,28 +68,71 @@ const Triangle = regl({
   count: 3
 });
 
-export default Triangle;
+export default DrawTriangle;
 ```
 
 #### use in React App
 ```
-import React from 'react'
-import regl, { ReglFrame } from 'react-regl';
-import Triangle from "Triangle";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { ReglFrame } from 'react-regl';
+import { DrawTriangle } from './DrawTriangle';
 
-// Mount React and render the App component
-ReactDOM.render(
-  <React.StrictMode>
-    <Triangle />
-  </React.StrictMode>,
-  document.getElementById('root')
+const container = document.getElementById('root');
+const root = createRoot(container!);
+root.render(
+  <ReglFrame
+    color={[0.40625, 0.94921, 0.996, 1]}>
+    <DrawTriangle />
+  </ReglFrame>
 );
 ```
 
-## Design Goals
-This libaray was developed as a byproduct of using regl for an HTML5 game engine rendering layer. The game engine has many views that render 3D content. Some of the game engine views have to be high performance with as little over head as possible like the realtime gameplay view. Other views are less performance demanding and are used for stateful UI e.g. inventory, store, character select views.
+#### use in Standalone (Non-react) App
+```
+import reglInit from "regl";
+import reactRegl from "react-regl";
+import { DrawTriangle } from './DrawTriangle';
 
-**This libaray enables developers to write shader code in a regl syntax style and then seamlesssly execute it as a regular regl command or a ract component.**
+// Create a canvas
+const canvas = document.createElement('canvas');
+canvas.id = 'gameplay-canvas';
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight
+canvas.style.width = '100%';
+canvas.style.height = '100%';
+document.body.appendChild(canvas);
+
+// create a gl context
+const gl = canvas.getContext("webgl", {
+  alpha: false,
+  antialias: false,
+  stencil: false,
+  preserveDrawingBuffer: false
+});
+
+// create a regl scope reference
+const reglRef = reglInit({
+  gl,
+});
+
+// pass the regl reference to reactRegl
+reactRegl.setRegl(reglRef);
+
+reglRef.clear({
+  color: [0.40625, 0.94921, 0.996, 1],
+  depth: 1
+});
+
+// render react regl components
+DrawTriangle();
+
+```
+
+## Design Goals
+This libaray was developed as a byproduct of using regl for an HTML5 game engine rendering layer. The game engine has many views that render 3D content. Some of the game engine views need to be high performance with as little over head as possible like the realtime gameplay view. Other views are less performance demanding and are used for stateful UI e.g. inventory, store, character select views.
+
+**This libaray enables developers to write shader code in a regl syntax style and then seamlesssly execute it as a ract component or regular regl**
 
 This library brings a JSX interface to `regl`, enabling easy integration of Regl UI into existing `react` projects. `react-regl` Allows you to render regl draw commands as react components. You can define the regl draw command as you would with raw `regl` but with `react-regl` you can pass arnd render it as react component.
 
@@ -92,7 +142,7 @@ This library was inspired by a discussion in the main regl repository: https://g
 This library uses some magic to 'deferr' WebGL resource and context creation. This library is not a 1-to-1 match with base regl functionality. There are some cases of breakage with the regl examples.
 
 ### Alternative libraries
-Because of the Caveats mentioned above we have feel compled to mention alternative libraries. `@psycobolt/react-regl` is a purely React focused regl reconciler which seems to 100% cover the example cases of the base regl library.
+Because of the Caveats mentioned above we feel compled to mention alternative libraries. `@psycobolt/react-regl` is a purely React focused regl reconciler which seems to 100% cover the example cases of the base regl library.
 https://github.com/psychobolt/react-regl
 
 Worldview is a higher level 3D engine (think Three.js or Babylon.js) abstraction on top of regl with corporate backing from Crusie self driving.
@@ -109,9 +159,9 @@ This repo is using yarn. You can build the module with `yarn build` Then in a se
 
 #### Publishing
 
-publish to npm with the version command and `patch` `minor` `major` or explicit tag `4.0.0-beta.2`
+publish to npm with the version command and `patch` `minor` `major`, and `pre` versions or explicit tag `4.0.0-beta.2`
 ```
-npm version
+npm version prerelease
 ```
 
 `npm version` will create a git tag that needs to be pushed..

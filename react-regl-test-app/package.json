@@ -1,0 +1,25 @@
+{
+  "name": "react-regl-test-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx webpack-dev-server --mode development --config ./webpack/web.dev.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react-dom": "^18.0.11",
+    "clean-webpack-plugin": "^3.0.0",
+    "dotenv-webpack": "^7.0.1",
+    "html-webpack-plugin": "^5.1.0",
+    "ts-loader": "^8.0.4",
+    "webpack": "^5.22.0",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^4.0.0-beta.0",
+    "webpack-merge": "^5.7.3"
+  },
+  "dependencies": {
+    "regl": "^2.1.0"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "exclude": ["src/stories", "dist"],
+  "exclude": ["src/stories", "dist", "react-regl-test-app"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
