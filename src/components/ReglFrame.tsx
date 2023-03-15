@@ -3,7 +3,7 @@ import { FiberRoot, ReactNodeList } from 'react-reconciler'
 import reglInit, { Cancellable, Vec4, Regl, DefaultContext } from 'regl';
 import { vec4 } from 'gl-matrix'
 import ReglReconciler from '../reconciler';
-import defregl, { DeferredRegl } from 'deferred-regl';
+import defregl, { DeferredRegl } from "../deferred-regl";
 
 import globalDeferredRegl, { ReglFrameContext } from '../reactRegl';
 import Node from '../nodes/Node';

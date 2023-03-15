@@ -1,8 +1,6 @@
-/// <reference path="./types/deferred-regl.d.ts" />
-/// <reference types="./types/deferred-regl" />
 import React, { useContext } from 'react';
 import { DrawCommand, DrawConfig, DynamicVariable, DefaultContext } from 'regl'
-import defregl, { DeferredRegl } from 'deferred-regl';
+import defregl, { DeferredRegl } from './deferred-regl';
 
 // Helper types for merging deferredRegl and ReactRegl
 type MergeLeft<T1, T2 extends Record<any, any>> = {
@@ -17,7 +15,7 @@ export const ReglFrameContext = React.createContext<boolean>(false);
 export interface ReactReglComponent<DefinitionProps> extends DrawCommand {
   <
     ExecutionProps extends {} = {}
-    >(
+  >(
     executionProps: ExecutionProps,
     scopeFn: (context: DefaultContext) => void
   ): React.ReactElement<DefinitionProps & ExecutionProps & DeferredRegl, 'ReglDraw'> | null
@@ -25,14 +23,14 @@ export interface ReactReglComponent<DefinitionProps> extends DrawCommand {
 
 type ReactRegl<
   Props extends {} = {},
-  > = Merge<DeferredRegl, {
-    (drawConfig?: DrawConfig): ReactReglComponent<Props>
-    //FIXME
-    // this is an override for the regl.prop method
-    // theres some magic with the base regl.prop declaration that is failing
-    // https://github.com/regl-project/regl/issues/602
-    prop<Key>(name: Key): DynamicVariable<Key>
-  }>
+> = Merge<DeferredRegl, {
+  (drawConfig?: DrawConfig): ReactReglComponent<Props>
+  //FIXME
+  // this is an override for the regl.prop method
+  // theres some magic with the base regl.prop declaration that is failing
+  // https://github.com/regl-project/regl/issues/602
+  prop<Key>(name: Key): DynamicVariable<Key>
+}>
 
 
 
@@ -40,8 +38,8 @@ type ReactRegl<
 // it mimics the regl interface of: command = regl({definitionProps});
 // where reactRegl = regl
 // The returned command then
-// Detects wethere its been invoked in a React tree or as a regular regl function
-const reactRegl: unknown = function (definitionProps: DrawConfig) {
+// Detects wether its been invoked in a React tree or as a regular regl function
+const reactRegl = function (definitionProps: DrawConfig) {
   let drawCommand: DeferredRegl | null = null;
 
   // This the returned 'command' that mimics a returned regl command
@@ -82,6 +80,5 @@ const reactRegl: unknown = function (definitionProps: DrawConfig) {
   return ReactReglComponent
 }
 Object.setPrototypeOf(reactRegl, globalDeferredRegl)
-
 
 export default reactRegl as ReactRegl;
